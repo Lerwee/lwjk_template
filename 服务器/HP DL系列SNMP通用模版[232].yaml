@@ -1,6 +1,6 @@
 zabbix_export:
   version: '6.0'
-  date: '2024-04-24T06:50:47Z'
+  date: '2024-04-24T13:22:32Z'
   groups:
     - uuid: b823e77ddf124b0aa4080384804d0160
       name: 服务器模板
@@ -8,8 +8,6 @@ zabbix_export:
     - uuid: 68beb1f7aa0b4c9cb1cd15634bfd5480
       template: 'LW_Template SNMP HP DL'
       name: 'HP DL系列SNMP通用模版[232]'
-      templates:
-        - name: 'LW_Template SNMP Haroware Generic'
       groups:
         - name: 服务器模板
       items:
@@ -182,6 +180,52 @@ zabbix_export:
           tags:
             - tag: Application
               value: 常规
+        - uuid: 095befd443274209a5dcff726d8b7cc5
+          name: 'ICMP 丢包率'
+          type: SIMPLE
+          key: 'icmppingloss[,2,,,]'
+          delay: '60'
+          history: 7d
+          value_type: FLOAT
+          units: '%'
+          description: 'ICMP pingloss'
+          tags:
+            - tag: Application
+              value: ICMP
+        - uuid: f26d411644124082aae04fff663ff377
+          name: 'ICMP 延时'
+          type: SIMPLE
+          key: 'icmppingsec[,2,,,]'
+          delay: '60'
+          history: 7d
+          value_type: FLOAT
+          units: s
+          description: 'ICMP pingsec'
+          tags:
+            - tag: Application
+              value: ICMP
+        - uuid: acf1cab12d084301878c1aa1a3a4503c
+          name: 'ICMP ping状态'
+          type: SIMPLE
+          key: 'icmpping[,2,,,]'
+          delay: '60'
+          history: 7d
+          description: 'ICMP ping'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: ICMP
+          triggers:
+            - uuid: 4d608bf6d6b140abbbf740579822e8a1
+              expression: 'max(/LW_Template SNMP HP DL/icmpping[,2,,,],#3)=0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'min(/LW_Template SNMP HP DL/icmpping[,2,,,],#10)=1'
+              name: '[硬件设备]{HOST.NAME}失联,持续3分钟未响应,设备可能宕机'
+              priority: HIGH
+              description: |
+                (状态值1表示正常，0表示不正常)
+                ICMP ping 持续4分钟不可达，,网络中断
+              manual_close: 'YES'
         - uuid: f449d46d16784087bac8eed49b619a8b
           name: 内存大小
           type: SNMP_AGENT
@@ -256,6 +300,20 @@ zabbix_export:
           tags:
             - tag: Application
               value: 常规
+        - uuid: 157abb92b1b0494297c5bbff987be43a
+          name: 'SNMP traps (fallback)'
+          type: SNMP_TRAP
+          key: snmptrap.fallback
+          delay: '0'
+          history: 7d
+          trends: '0'
+          status: DISABLED
+          value_type: LOG
+          logtimefmt: 'hh:mm:sszyyyy/MM/dd'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
         - uuid: 98173ca8aafe42cca25e2916ab5724a6
           name: 设备服务号
           type: SNMP_AGENT
@@ -267,6 +325,114 @@ zabbix_export:
           tags:
             - tag: Application
               value: 常规
+        - uuid: 4d56902959ca49899a3f2597e4c954cd
+          name: 设备详细的联系方式
+          type: SNMP_AGENT
+          snmp_oid: 'SNMPv2-MIB::sysContact.0'
+          key: sysContact
+          delay: '86400'
+          history: 7d
+          trends: '0'
+          value_type: CHAR
+          description: 'The textual identification of the contact person for this managed node, together with information on how to contact this person.  If no contact information is known, the value is the zero-length string.'
+          inventory_link: CONTACT
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: 2e257437e088481e949a824bcce5a202
+          name: 设备描述
+          type: SNMP_AGENT
+          snmp_oid: 'SNMPv2-MIB::sysDescr.0'
+          key: sysDescr
+          delay: '86400'
+          history: 7d
+          trends: '0'
+          value_type: CHAR
+          description: 'A textual description of the entity.  This value should include the full name and version identification of the system''s hardware type, software operating-system, and networking software.'
+          inventory_link: HARDWARE
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: b826c6b0e5854b58b6b219152b195837
+          name: 设备位置
+          type: SNMP_AGENT
+          snmp_oid: 'SNMPv2-MIB::sysLocation.0'
+          key: sysLocation
+          delay: '86400'
+          history: 7d
+          trends: '0'
+          value_type: CHAR
+          description: 'The physical location of this node (e.g., `telephone closet, 3rd floor'').  If the location is unknown, the value is the zero-length string.'
+          inventory_link: LOCATION
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: da1d958035bd4167a93ce3e87d6f73bd
+          name: 设备名称
+          type: SNMP_AGENT
+          snmp_oid: 'SNMPv2-MIB::sysName.0'
+          key: sysName
+          delay: '86400'
+          history: 7d
+          trends: '0'
+          value_type: CHAR
+          description: 'An administratively-assigned name for this managed node. By convention, this is the node''s fully-qualified domain name.  If the name is unknown, the value is the zero-length string.'
+          inventory_link: NAME
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+          triggers:
+            - uuid: 129a0351d6894df08bfdabc2b94a873d
+              expression: '(last(/LW_Template SNMP HP DL/sysName,#1)<>last(/LW_Template SNMP HP DL/sysName,#2))>0'
+              name: '[硬件设备]{HOST.NAME} 设备名称发生改变'
+              priority: INFO
+              description: |
+                (当前状态值为改变后的设备名称)
+                设备名称发生改变
+              manual_close: 'YES'
+        - uuid: 4dd35fcaf02c4773a9c028cec234d02d
+          name: BMC运行时间
+          type: SNMP_AGENT
+          snmp_oid: 'SNMPv2-MIB::sysUpTime.0'
+          key: sysUpTime
+          delay: '60'
+          history: 7d
+          units: uptime
+          description: 'The time since the network management portion of the system was last re-initialized.'
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.01'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+          triggers:
+            - uuid: b01c83951e3240ba97d8f694ba773ab1
+              expression: 'change(/LW_Template SNMP HP DL/sysUpTime)<0 and last(/LW_Template SNMP HP DL/sysUpTime)<1800'
+              name: '[硬件设备]{HOST.NAME} BMC刚才发生过重启'
+              priority: WARNING
+              description: |
+                (当前状态值为系统持续运行时间)
+                主机采集到的系统运行时间突然减少重置，当系统运行时间正常递增，则恢复告警
+              manual_close: 'YES'
+            - uuid: 397a20a63d394341841804fdf71b0ff4
+              expression: 'nodata(/LW_Template SNMP HP DL/sysUpTime,10m)=1'
+              name: '[硬件设备]{HOST.NAME}SNMP无法采集到数据'
+              priority: HIGH
+              description: 当前状态值为BMC持续运行时间
+              manual_close: 'YES'
+              dependencies:
+                - name: '[操作系统] {HOST.NAME}主采集服务器 Agent 无法采集到数据'
+                  expression: 'nodata(/itops-server/agent.ping,2m)=1'
+                  recovery_expression: 'count(/itops-server/zabbix[process,history syncer,avg,busy],10m,"lt","75")=10 and count(/itops-server/agent.ping,10m,"eq","1")=10'
+                - name: '[硬件设备]{HOST.NAME}失联,持续3分钟未响应,设备可能宕机'
+                  expression: 'max(/LW_Template SNMP HP DL/icmpping[,2,,,],3m)=0 and nodata(/LW_Template SNMP HP DL/sysUpTime,3m)=1'
+                  recovery_expression: 'min(/LW_Template SNMP HP DL/icmpping[,2,,,],10m)=1 and nodata(/LW_Template SNMP HP DL/sysUpTime,2m)=0'
       discovery_rules:
         - uuid: 0d27ab45e9b1497783a94d5d28d02d59
           name: CPU
@@ -479,6 +645,148 @@ zabbix_export:
               tags:
                 - tag: Application
                   value: 风扇
+        - uuid: 1b372849ebe4493d8b3c81546179ef99
+          name: 网卡
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE},IF-MIB::ifName,{#SNMPOPEN},IF-MIB::ifOperStatus]'
+          key: ifDescr
+          delay: '3600'
+          filter:
+            evaltype: AND
+            conditions:
+              - macro: '{#SNMPOPEN}'
+                value: (1|3)
+                formulaid: A
+              - macro: '{#SNMPVALUE}'
+                value: '^(lo.*|usb.*|ip6.*|sit.*|dummy0.*|tunl0.*)$'
+                operator: NOT_MATCHES_REGEX
+                formulaid: B
+          lifetime: 7d
+          description: 端口表
+          item_prototypes:
+            - uuid: c7d43c5cd8c84ff4b80f44e781657144
+              name: '{#SNMPVALUE} 网卡描述'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifAlias.{#SNMPINDEX}'
+              key: 'ifAlias[{#SNMPVALUE}]'
+              delay: '86400'
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: 端口描述
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 网卡
+            - uuid: 15eafb5956ce4d6886439bed5e3abe34
+              name: '{#SNMPVALUE} 网卡每秒接收速率'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifHCInOctets.{#SNMPINDEX}'
+              key: 'ifHCInOctetsPersecond[{#SNMPVALUE}]'
+              delay: '300'
+              history: 7d
+              units: bps
+              description: 端口每秒接收速率
+              preprocessing:
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+                - type: MULTIPLIER
+                  parameters:
+                    - '8'
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 网卡
+            - uuid: 864ce23a305b4df4a81ab6e112896b3f
+              name: '{#SNMPVALUE} 网卡每秒发送速率'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifHCOutOctets.{#SNMPINDEX}'
+              key: 'ifHCOutOctetsPersecond[{#SNMPVALUE}]'
+              delay: '300'
+              history: 7d
+              units: bps
+              description: |
+                端口每秒发送速率
+                .
+              preprocessing:
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+                - type: MULTIPLIER
+                  parameters:
+                    - '8'
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 网卡
+            - uuid: 9c633fdc79454f76ac8b595311df2346
+              name: '{#SNMPVALUE}  网卡物理连接状态'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifOperStatus.{#SNMPINDEX}'
+              key: 'ifOperStatus[{#SNMPVALUE}]'
+              delay: '300'
+              history: 7d
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 网卡
+              trigger_prototypes:
+                - uuid: c069a0cacf11462ea66ed8f046bbdd5a
+                  expression: 'last(/LW_Template SNMP HP DL/ifOperStatus[{#SNMPVALUE}])=2'
+                  name: '[硬件设备]{HOST.NAME}网卡端口{#SNMPVALUE}已关闭'
+                  priority: HIGH
+                  description: |
+                    状态值表示:
+                    1⇒正常
+                    2⇒关闭
+                    3⇒测试
+                    4⇒未知
+                    5⇒休眠
+                    6⇒不存在
+                    7⇒底层关闭
+                    {HOST.NAME}设备端口{#SNMPVALUE}状态不正常，可能连线松动、未启用、对端设备重启、端口损坏等
+                  manual_close: 'YES'
+            - uuid: e17a0de5d7f443959030f5b141cd2fcb
+              name: '{#SNMPVALUE} 网卡物理地址'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifPhysAddress.{#SNMPINDEX}'
+              key: 'ifPhysAddress[{#SNMPVALUE}]'
+              delay: '86400'
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: 端口物理地址
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 网卡
+            - uuid: e44393c8fa7a422ba829f4ea7e758b72
+              name: '{#SNMPVALUE} 网卡类型'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifType.{#SNMPINDEX}'
+              key: 'ifType[{#SNMPVALUE}]'
+              delay: '86400'
+              history: 7d
+              description: 端口类型
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 网卡
+          graph_prototypes:
+            - uuid: 5bb1e441b1dd427f9672ca049b0e17d4
+              name: '网络端口 {#SNMPVALUE} 速率'
+              graph_items:
+                - color: 2774A4
+                  item:
+                    host: 'LW_Template SNMP HP DL'
+                    key: 'ifHCInOctetsPersecond[{#SNMPVALUE}]'
+                - sortorder: '1'
+                  color: A54F10
+                  item:
+                    host: 'LW_Template SNMP HP DL'
+                    key: 'ifHCOutOctetsPersecond[{#SNMPVALUE}]'
+          request_method: POST
         - uuid: fae43c4cf8af4fdea274526a97ca7398
           name: 逻辑磁盘
           type: SNMP_AGENT
@@ -1462,3 +1770,27 @@ zabbix_export:
               newvalue: normal
             - value: '3'
               newvalue: high
+  triggers:
+    - uuid: 5fd30c15d9f445ff8d32478b931e0ec6
+      expression: 'max(/LW_Template SNMP HP DL/icmpping[,2,,,],3m)=0 and nodata(/LW_Template SNMP HP DL/sysUpTime,3m)=1'
+      recovery_mode: RECOVERY_EXPRESSION
+      recovery_expression: 'min(/LW_Template SNMP HP DL/icmpping[,2,,,],10m)=1 and nodata(/LW_Template SNMP HP DL/sysUpTime,2m)=0'
+      name: '[硬件设备]{HOST.NAME}失联,持续3分钟未响应,设备可能宕机'
+      priority: HIGH
+      description: |
+        当前状态值为系统持续运行时间和ICMP探测状态（1为通，0为断）
+        设备无法采集到数据,可能是snmp协议未开启或者被拦截，也可能是网络设备链路断连、宕机
+      manual_close: 'YES'
+      dependencies:
+        - name: '[操作系统] {HOST.NAME}主采集服务器 Agent 无法采集到数据'
+          expression: 'nodata(/itops-server/agent.ping,2m)=1'
+          recovery_expression: 'count(/itops-server/zabbix[process,history syncer,avg,busy],10m,"lt","75")=10 and count(/itops-server/agent.ping,10m,"eq","1")=10'
+  graphs:
+    - uuid: a01a2755999d4c4aac657f3d905e5b59
+      name: 'ICMP ping监控'
+      graph_items:
+        - sortorder: '1'
+          color: 00C800
+          item:
+            host: 'LW_Template SNMP HP DL'
+            key: 'icmpping[,2,,,]'
