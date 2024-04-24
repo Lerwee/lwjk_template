@@ -7,6 +7,8 @@
 
 无论是个人、团队、或是企业，都能够用 对应模板 实现基础设施监控纳管，异常告警等。
 
+开源模板原始地址：[https://gitee.com/guangdong-lewei-software/lwjktemplate](https://gitee.com/guangdong-lewei-software/lwjktemplate)
+
 
 #### 使用说明
 
