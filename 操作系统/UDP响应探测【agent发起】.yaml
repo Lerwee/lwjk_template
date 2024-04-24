@@ -1,0 +1,75 @@
+zabbix_export:
+  version: '6.0'
+  date: '2024-04-24T03:51:46Z'
+  groups:
+    - uuid: 9397477ac4614c8da379ea37c1c5b0e0
+      name: 监控模板
+  templates:
+    - uuid: d1ee9349360d4a96a5c06f047bd55457
+      template: 'LW_Template UDP Detect agent'
+      name: UDP响应探测【agent发起】
+      groups:
+        - name: 监控模板
+      items:
+        - uuid: 720b5e9e6f784d03beb5f3e15ead1e17
+          name: UDP端口延时
+          type: DEPENDENT
+          key: 'agent.udp.service.perf[{$IP},{$PORT}]'
+          delay: '0'
+          value_type: FLOAT
+          units: s
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.runtime
+          master_item:
+            key: 'agent.udp.service[{$IP} ,{$PORT}]'
+          tags:
+            - tag: Application
+              value: UDP
+          triggers:
+            - uuid: 1b57985dcdf64f9ca6c6a35977141dda
+              expression: 'min(/LW_Template UDP Detect agent/agent.udp.service.perf[{$IP},{$PORT}],"#{$D_DELAYED_NUMBER}")>{$T_DELAYED_USAGE_U_A}*0.001'
+              name: '[UDP]{HOST.NAME} 端口延时持续{$D_DELAYED_NUMBER}次取值大于{$T_DELAYED_USAGE_U_A} 毫秒'
+              priority: WARNING
+              manual_close: 'YES'
+        - uuid: d9e377a8158a4f89a6b5213da1601f0a
+          name: UDP探测数据获取
+          key: 'agent.udp.service[{$IP} ,{$PORT}]'
+          delay: '{$F_MAIN_SPEED}'
+          trends: '0'
+          value_type: CHAR
+          tags:
+            - tag: Application
+              value: UDP
+        - uuid: e6c6f79f4ab643128564161be0738d1c
+          name: UDP端口状态
+          type: DEPENDENT
+          key: 'agent.udp.service[{$IP},{$PORT}]'
+          delay: '0'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.status
+          master_item:
+            key: 'agent.udp.service[{$IP} ,{$PORT}]'
+          tags:
+            - tag: Application
+              value: UDP
+          triggers:
+            - uuid: a8f6e1d1c16a4815a943e1af47b7077e
+              expression: 'last(/LW_Template UDP Detect agent/agent.udp.service[{$IP},{$PORT}],"#{$D_FAILE_NUMBER}")=0'
+              name: '[UDP]{HOST.NAME} 端口处于关闭状态'
+              priority: WARNING
+              manual_close: 'YES'
+      macros:
+        - macro: '{$D_DELAYED_NUMBER}'
+          value: '3'
+        - macro: '{$D_FAILE_NUMBER}'
+          value: '3'
+        - macro: '{$F_MAIN_SPEED}'
+          value: 1m
+        - macro: '{$PORT}'
+          value: '161'
+        - macro: '{$T_DELAYED_USAGE_U_A}'
+          value: '2100'

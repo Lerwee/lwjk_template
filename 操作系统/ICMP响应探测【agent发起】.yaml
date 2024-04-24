@@ -1,0 +1,110 @@
+zabbix_export:
+  version: '6.0'
+  date: '2024-04-24T03:51:28Z'
+  groups:
+    - uuid: 9397477ac4614c8da379ea37c1c5b0e0
+      name: 监控模板
+  templates:
+    - uuid: 7bc749164d6f447b9ccfe887369925a7
+      template: 'LW_Template ICMP Detect agent'
+      name: ICMP响应探测【agent发起】
+      groups:
+        - name: 监控模板
+      items:
+        - uuid: e4a6f3aa6cdc43b39fed94ec85b1daf1
+          name: 'ICMP ping状态'
+          type: DEPENDENT
+          key: icmpping
+          delay: '0'
+          history: 7d
+          valuemap:
+            name: 'Service state'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $..status.first()
+          master_item:
+            key: 'icmpping[{$IP}]'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: ICMP
+          triggers:
+            - uuid: 37f6e947d9504cbeb1ce01d8a2dc3b71
+              expression: 'max(/LW_Template ICMP Detect agent/icmpping,"#{$D_FAILE_NUMBER}")=0'
+              name: '[ICMP]{HOST.NAME} 设备持续{$D_FAILE_NUMBER}次探测异常'
+              priority: HIGH
+              manual_close: 'YES'
+        - uuid: fe39c92997a841c5a90e93c1ad7da93c
+          name: 'ICMP 丢包率'
+          type: DEPENDENT
+          key: icmppingloss
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: '%'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $..loss.first()
+          master_item:
+            key: 'icmpping[{$IP}]'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: ICMP
+        - uuid: 94f1a02cbfe44da0b28e11bf8124bfb0
+          name: 'ICMP 延时'
+          type: DEPENDENT
+          key: icmppingsec
+          delay: '0'
+          history: 7d
+          value_type: FLOAT
+          units: ms
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $..sec.first()
+          master_item:
+            key: 'icmpping[{$IP}]'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: ICMP
+          triggers:
+            - uuid: 1e1c8d3e856640d6b4a4ccd0f32372e2
+              expression: 'min(/LW_Template ICMP Detect agent/icmppingsec,"#{$D_DELAYED_NUMBER}")>{$T_DELAYED_USAGE_U_A}'
+              name: '[ICMP]{HOST.NAME}设备Ping延时持续{$D_DELAYED_NUMBER}次取值大于{$T_DELAYED_USAGE_U_A} 毫秒'
+              priority: AVERAGE
+              manual_close: 'YES'
+              dependencies:
+                - name: '[ICMP]{HOST.NAME} 设备持续{$D_FAILE_NUMBER}次探测异常'
+                  expression: 'max(/LW_Template ICMP Detect agent/icmpping,"#{$D_FAILE_NUMBER}")=0'
+        - uuid: a37eac819e5b4fb78a692021e4a7be5d
+          name: 'ICMP raw'
+          key: 'icmpping[{$IP}]'
+          delay: '{$F_MAIN_SPEED}'
+          history: 7d
+          trends: '0'
+          value_type: CHAR
+          tags:
+            - tag: Application
+              value: ICMP
+      macros:
+        - macro: '{$D_DELAYED_NUMBER}'
+          value: '3'
+        - macro: '{$D_FAILE_NUMBER}'
+          value: '3'
+        - macro: '{$F_MAIN_SPEED}'
+          value: 1m
+        - macro: '{$IP}'
+        - macro: '{$T_DELAYED_USAGE_U_A}'
+          value: '300'
+      valuemaps:
+        - uuid: 043250c22eb04fd587cfd41359340fac
+          name: 'Service state'
+          mappings:
+            - value: '0'
+              newvalue: Down
+            - value: '1'
+              newvalue: Up
