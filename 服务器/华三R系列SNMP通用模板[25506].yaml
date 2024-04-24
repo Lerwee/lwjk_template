@@ -1,13 +1,13 @@
 zabbix_export:
   version: '6.0'
-  date: '2024-04-24T13:23:53Z'
+  date: '2024-04-24T13:36:38Z'
   groups:
     - uuid: b823e77ddf124b0aa4080384804d0160
       name: 服务器模板
   templates:
     - uuid: 047104505f424c49bae1583ec0e49d20
       template: 'LW_Template SNMP H3C R'
-      name: '华三服务器R系列SNMP通用模板[25506]'
+      name: '华三R系列SNMP通用模板[25506]'
       groups:
         - name: 服务器模板
       items:
