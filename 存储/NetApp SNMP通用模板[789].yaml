@@ -1,0 +1,1516 @@
+zabbix_export:
+  version: '6.0'
+  date: '2024-04-24T07:05:45Z'
+  groups:
+    - uuid: 7d78fb9f42624f15ab5ccc2e89dde6e2
+      name: 存储模板
+    - uuid: 9397477ac4614c8da379ea37c1c5b0e0
+      name: 监控模板
+  templates:
+    - uuid: ab42a4dc6aa94a8887f0963e482d6a4c
+      template: 'LW_Template SNMP NetApp General'
+      name: 'NetApp SNMP通用模板[789]'
+      groups:
+        - name: 存储模板
+        - name: 监控模板
+      items:
+        - uuid: d5393d57b0df4935b0738c92b142dded
+          name: Autosupport发送失败数
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.789.1.2.7.4.0
+          key: autosupportFailedSends
+          delay: '300'
+          description: 'Autosupport Failed Sends'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+          triggers:
+            - uuid: f7813c9ecb334822a0b4ad038c07357e
+              expression: '(max(/LW_Template SNMP NetApp General/autosupportFailedSends,5m)-min(/LW_Template SNMP NetApp General/autosupportFailedSends,5m))<>0'
+              name: '[硬件存储]{HOST.NAME}有错误的支持'
+              priority: WARNING
+              description: '{ITEM.LASTVALUE}'
+              manual_close: 'YES'
+        - uuid: c1865911f8774284a80d81676519d065
+          name: 'Autosupport 状态'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.789.1.2.7.1.0
+          key: autosupportStatus
+          delay: '300'
+          valuemap:
+            name: 'NETAPP autosupportStatus'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: 20b2b7f154bc425382d46ddec37e4e6f
+          name: 'Autosupport 状态信息'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.789.1.2.7.2.0
+          key: autosupportStatusMessage
+          delay: '300'
+          trends: '0'
+          value_type: TEXT
+          description: 'Autosupport  Status Message'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+          triggers:
+            - uuid: 126470d37a3841e1bea58f369a9e32ed
+              expression: 'find(/LW_Template SNMP NetApp General/autosupportStatusMessage,,"like","The last AutoSupport message was sent successfully.")=0'
+              name: '[硬件存储]{HOST.NAME}自动消息未发送成功'
+              priority: WARNING
+              description: '{ITEM.LASTVALUE}'
+              manual_close: 'YES'
+        - uuid: a96fb904b593429b9bb30efa70418120
+          name: 'Autosupport 成功发送数'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.789.1.2.7.3.0
+          key: autosupportSuccessfulSends
+          delay: '300'
+          description: 'Successful Sends'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: cc5e2183ee054f6a9d448799954ac390
+          name: CPU数量
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.789.1.2.1.6.0
+          key: cpuCount
+          delay: '1800'
+          description: 'CPU Count'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: c0f85d8520354128b86040816702e32e
+          name: CPU使用率
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.789.1.2.1.3.0
+          key: CPUUsage
+          delay: '60'
+          description: |
+            CPU usage (%)
+            cpuBusyTimePerCent
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: 29004fbbe9894098b787def0d62556ff
+          name: 失败的磁盘数
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.789.1.6.4.7.0
+          key: diskFailedCount
+          delay: '60'
+          description: 'Failed Disks Count'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+          triggers:
+            - uuid: 892926a9f4d24514853a5ea5a6dc0c85
+              expression: 'last(/LW_Template SNMP NetApp General/diskFailedCount)>0'
+              name: '[硬件存储]{HOST.NAME}硬盘发送错误'
+              priority: HIGH
+              manual_close: 'YES'
+        - uuid: 7ac7235d8b1e4f4abe6f8c009664ad81
+          name: 磁盘错误信息
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.789.1.6.4.10.0
+          key: diskFailedMessage
+          delay: '60'
+          trends: '0'
+          value_type: TEXT
+          description: 'Disk Failed Message'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: 95779b5ec2134826929e5a829c477d13
+          name: 磁盘Pre失败计数
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.789.1.6.4.11.0
+          key: diskPrefailedCount
+          delay: '60'
+          description: 'Prefailed Disks Count'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+          triggers:
+            - uuid: fab8fac1aae349699d5125100a5eafec
+              expression: 'last(/LW_Template SNMP NetApp General/diskPrefailedCount)>0'
+              name: '[硬件存储]{HOST.NAME}有警告的硬盘'
+              priority: WARNING
+              manual_close: 'YES'
+        - uuid: 0f7f219e910042a5a1ba4a023ff87b8d
+          name: 重建奇偶校验磁盘的数量
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.789.1.6.4.4.0
+          key: diskReconstructingParityCount
+          delay: '60'
+          description: 'Number of reconstructing parity Disks'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: d330cfda0e8648a6839d0280e65b50b1
+          name: 数量的备用磁盘
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.789.1.6.4.8.0
+          key: diskSpareCount
+          delay: '1800'
+          description: 'Number of spare Disks'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: feaa02f72399474798fa8f95c3feb758
+          name: 磁盘数
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.789.1.6.4.1.0
+          key: diskTotalCount
+          delay: '1800'
+          description: 'Number of Disks'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: c3f712e017af450bba47879f2a23edf0
+          name: 验证奇偶校验磁盘的数量
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.789.1.6.4.5.0
+          key: diskVerifyingParityCount
+          delay: '60'
+          description: 'Number of verifying parity Disks'
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '1'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: 68957dbc33ce4ff2903e6131da20f4f2
+          name: 'ICMP 丢包率'
+          type: SIMPLE
+          key: 'icmppingloss[,2,,,]'
+          delay: '60'
+          history: 7d
+          value_type: FLOAT
+          units: '%'
+          description: 'ICMP pingloss'
+          tags:
+            - tag: Application
+              value: ICMP
+        - uuid: 9e542947b5ed41a9b2eafe2f5d144068
+          name: 'ICMP 延时'
+          type: SIMPLE
+          key: 'icmppingsec[,2,,,]'
+          delay: '60'
+          history: 7d
+          value_type: FLOAT
+          units: s
+          description: 'ICMP pingsec'
+          tags:
+            - tag: Application
+              value: ICMP
+        - uuid: 9a3f4993e836474cae3c353c20c73b00
+          name: 'ICMP ping状态'
+          type: SIMPLE
+          key: 'icmpping[,2,,,]'
+          delay: '60'
+          history: 7d
+          description: 'ICMP ping'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: ICMP
+          triggers:
+            - uuid: 30919a1afab3401fab56465e9d7a8725
+              expression: 'max(/LW_Template SNMP NetApp General/icmpping[,2,,,],#3)=0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'min(/LW_Template SNMP NetApp General/icmpping[,2,,,],#10)=1'
+              name: '[硬件设备]{HOST.NAME}失联,持续3分钟未响应,设备可能宕机'
+              priority: HIGH
+              description: |
+                (状态值1表示正常，0表示不正常)
+                ICMP ping 持续4分钟不可达，,网络中断
+              manual_close: 'YES'
+        - uuid: 40c3dcc293b54ef4a4093fc2ba136ea3
+          name: LW_HARDWARE_NETAPP
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.789.1.1.2.0
+          key: LW_HARDWARE_NETAPP
+          delay: '1800'
+          trends: '0'
+          status: DISABLED
+          value_type: TEXT
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: 8b6eaad0781343ef8e32cecc9d5718ad
+          name: 产品版本
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.789.1.1.2.0
+          key: productVersio
+          delay: '1800'
+          trends: '0'
+          value_type: TEXT
+          description: 'Product Version'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: 34b229829814455f86ed42f9fe2b1f18
+          name: 'SNMP traps (fallback)'
+          type: SNMP_TRAP
+          key: snmptrap.fallback
+          delay: '0'
+          history: 7d
+          trends: '0'
+          status: DISABLED
+          value_type: LOG
+          logtimefmt: 'hh:mm:sszyyyy/MM/dd'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: 8c11c77ff5584042915f11450a10bb45
+          name: 事件信息
+          type: SNMP_TRAP
+          key: 'snmptrap[SNMPv2-SMI::enterprises.789]'
+          delay: '0'
+          trends: '0'
+          value_type: LOG
+          preprocessing:
+            - type: REGEX
+              parameters:
+                - '([\n\s\S]*)SNMPv2-SMI::enterprises.789.1.1.9.*[\n\s\S]*'
+                - \1
+            - type: REGEX
+              parameters:
+                - '(.*?)PDU[\n\s\S]*: "(.*)"(\n)[\n\s\S]*'
+                - '事件详细:\2\3时间:\1'
+          tags:
+            - tag: Application
+              value: 事件
+          triggers:
+            - uuid: 4d4292f514f94a0d827593789b510bee
+              expression: 'find(/LW_Template SNMP NetApp General/snmptrap[SNMPv2-SMI::enterprises.789],,"regexp","ERROR|WARNING|\"Failover monitor\"|INFO")=0 and nodata(/LW_Template SNMP NetApp General/snmptrap[SNMPv2-SMI::enterprises.789],10m)=0'
+              name: '[事件][硬件存储]{HOST.NAME}产生事件'
+              priority: HIGH
+              manual_close: 'YES'
+            - uuid: 92267345a3404dfd8773fc3d038f8348
+              expression: 'find(/LW_Template SNMP NetApp General/snmptrap[SNMPv2-SMI::enterprises.789],,"regexp","WARNING")=1 and nodata(/LW_Template SNMP NetApp General/snmptrap[SNMPv2-SMI::enterprises.789],10m)=0'
+              name: '[事件][硬件存储]{HOST.NAME}产生警告级别事件'
+              priority: WARNING
+              manual_close: 'YES'
+            - uuid: a5bf04f793364850a374808ecf0ebb47
+              expression: 'find(/LW_Template SNMP NetApp General/snmptrap[SNMPv2-SMI::enterprises.789],,"regexp","ERROR")=1 and nodata(/LW_Template SNMP NetApp General/snmptrap[SNMPv2-SMI::enterprises.789],10m)=0'
+              name: '[事件][硬件存储]{HOST.NAME}产生错误级别事件'
+              priority: HIGH
+              manual_close: 'YES'
+        - uuid: b3244e764c4842268082caf5871b71a4
+          name: 设备详细的联系方式
+          type: SNMP_AGENT
+          snmp_oid: 'SNMPv2-MIB::sysContact.0'
+          key: sysContact
+          delay: '86400'
+          history: 7d
+          trends: '0'
+          value_type: CHAR
+          description: 'The textual identification of the contact person for this managed node, together with information on how to contact this person.  If no contact information is known, the value is the zero-length string.'
+          inventory_link: CONTACT
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: 475e729bad2f48169600c473b34fc356
+          name: 设备描述
+          type: SNMP_AGENT
+          snmp_oid: 'SNMPv2-MIB::sysDescr.0'
+          key: sysDescr
+          delay: '86400'
+          history: 7d
+          trends: '0'
+          value_type: CHAR
+          description: 'A textual description of the entity.  This value should include the full name and version identification of the system''s hardware type, software operating-system, and networking software.'
+          inventory_link: HARDWARE
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: 47104ef0a21340febf4d1d5a9138269e
+          name: 设备位置
+          type: SNMP_AGENT
+          snmp_oid: 'SNMPv2-MIB::sysLocation.0'
+          key: sysLocation
+          delay: '86400'
+          history: 7d
+          trends: '0'
+          value_type: CHAR
+          description: 'The physical location of this node (e.g., `telephone closet, 3rd floor'').  If the location is unknown, the value is the zero-length string.'
+          inventory_link: LOCATION
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: f11377b35af44f53afea20c5ef52a1c5
+          name: 设备名称
+          type: SNMP_AGENT
+          snmp_oid: 'SNMPv2-MIB::sysName.0'
+          key: sysName
+          delay: '86400'
+          history: 7d
+          trends: '0'
+          value_type: CHAR
+          description: 'An administratively-assigned name for this managed node. By convention, this is the node''s fully-qualified domain name.  If the name is unknown, the value is the zero-length string.'
+          inventory_link: NAME
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+          triggers:
+            - uuid: 699c360455904b4ab35cd1e46bcb14cb
+              expression: '(last(/LW_Template SNMP NetApp General/sysName,#1)<>last(/LW_Template SNMP NetApp General/sysName,#2))>0'
+              name: '[硬件设备]{HOST.NAME} 设备名称发生改变'
+              priority: INFO
+              description: |
+                (当前状态值为改变后的设备名称)
+                设备名称发生改变
+              manual_close: 'YES'
+        - uuid: 35b6037c06384183b0497adab607b3aa
+          name: BMC运行时间
+          type: SNMP_AGENT
+          snmp_oid: 'SNMPv2-MIB::sysUpTime.0'
+          key: sysUpTime
+          delay: '60'
+          history: 7d
+          units: uptime
+          description: 'The time since the network management portion of the system was last re-initialized.'
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.01'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+          triggers:
+            - uuid: c0abc5226bb84b738deb900f63806bef
+              expression: 'change(/LW_Template SNMP NetApp General/sysUpTime)<0 and last(/LW_Template SNMP NetApp General/sysUpTime)<1800'
+              name: '[硬件设备]{HOST.NAME} BMC刚才发生过重启'
+              priority: WARNING
+              description: |
+                (当前状态值为系统持续运行时间)
+                主机采集到的系统运行时间突然减少重置，当系统运行时间正常递增，则恢复告警
+              manual_close: 'YES'
+            - uuid: 6202fff9685b47b48126b8be575fbfc4
+              expression: 'nodata(/LW_Template SNMP NetApp General/sysUpTime,10m)=1'
+              name: '[硬件设备]{HOST.NAME}SNMP无法采集到数据'
+              priority: HIGH
+              description: 当前状态值为BMC持续运行时间
+              manual_close: 'YES'
+              dependencies:
+                - name: '[操作系统] {HOST.NAME}主采集服务器 Agent 无法采集到数据'
+                  expression: 'nodata(/itops-server/agent.ping,2m)=1'
+                  recovery_expression: 'count(/itops-server/zabbix[process,history syncer,avg,busy],10m,"lt","75")=10 and count(/itops-server/agent.ping,10m,"eq","1")=10'
+                - name: '[硬件设备]{HOST.NAME}失联,持续3分钟未响应,设备可能宕机'
+                  expression: 'max(/LW_Template SNMP NetApp General/icmpping[,2,,,],3m)=0 and nodata(/LW_Template SNMP NetApp General/sysUpTime,3m)=1'
+                  recovery_expression: 'min(/LW_Template SNMP NetApp General/icmpping[,2,,,],10m)=1 and nodata(/LW_Template SNMP NetApp General/sysUpTime,2m)=0'
+      discovery_rules:
+        - uuid: 23310aed2c3642b19fc0ff0584cb2722
+          name: 磁盘
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#AGGRNAME}, .1.3.6.1.4.1.789.1.5.11.1.2]'
+          key: aggr
+          delay: '3600'
+          item_prototypes:
+            - uuid: 3e0c970d309e405d8115ddb05580ee41
+              name: '{#AGGRNAME} 描述'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.5.11.1.13.{#SNMPINDEX}'
+              key: 'aggrOwners[{#AGGRNAME}]'
+              delay: '1800'
+              trends: '0'
+              value_type: TEXT
+              description: 'Aggregate Owners'
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: Aggregate
+                - tag: Application
+                  value: 磁盘
+            - uuid: a9962c1d82624ab3a2fe5dd89d1cc291
+              name: '{#AGGRNAME} Raid 类型'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.5.11.1.11.{#SNMPINDEX}'
+              key: 'aggrRaidType[{#AGGRNAME}]'
+              delay: '1800'
+              trends: '0'
+              value_type: TEXT
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: Aggregate
+                - tag: Application
+                  value: 磁盘
+            - uuid: debacb38972440e4bfa83a4774971d12
+              name: '{#AGGRNAME} 运行状态'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.5.11.1.5.{#SNMPINDEX}'
+              key: 'aggrState[{#AGGRNAME}]'
+              delay: '180'
+              trends: '0'
+              value_type: TEXT
+              description: 'Aggregate State'
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: Aggregate
+                - tag: Application
+                  value: 磁盘
+            - uuid: bae20a4fc12a440d8683b22a8f8d4ebf
+              name: '{#AGGRNAME} 总体状态'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.5.11.1.6.{#SNMPINDEX}'
+              key: 'aggrStatus[{#AGGRNAME}]'
+              delay: '180'
+              trends: '0'
+              value_type: TEXT
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: Aggregate
+                - tag: Application
+                  value: 磁盘
+            - uuid: 3a088899020e4fafbb6cbb967e77b0cd
+              name: '{#AGGRNAME} 类型'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.5.11.1.10.{#SNMPINDEX}'
+              key: 'aggrType[{#AGGRNAME}]'
+              delay: '1800'
+              valuemap:
+                name: 'NETAPP aggrType'
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: Aggregate
+                - tag: Application
+                  value: 磁盘
+            - uuid: 0e679a258ef24d5298e55e098a6a11b0
+              name: '{#AGGRNAME} 总大小'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.5.4.1.29.{#SNMPINDEX}'
+              key: 'df64TotalKBytes[{#AGGRNAME}]'
+              delay: '86400'
+              units: B
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '1024'
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: Aggregate
+                - tag: Application
+                  value: 磁盘
+            - uuid: bcaf32732c7e415598da2b24b9315714
+              name: '{#AGGRNAME} 使用大小'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.5.4.1.30.{#SNMPINDEX}'
+              key: 'df64UsedKBytes[{#AGGRNAME}]'
+              delay: '600'
+              units: B
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '1024'
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: Aggregate
+                - tag: Application
+                  value: 磁盘
+            - uuid: 67a5658a31424d3eba438f26eafab50a
+              name: '{#AGGRNAME} 剩余百分比'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.5.4.1.6.{#SNMPINDEX}'
+              key: 'dfPerCentKBytesCapacity[{#AGGRNAME}]'
+              delay: '600'
+              value_type: FLOAT
+              units: '%'
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: Aggregate
+                - tag: Application
+                  value: 磁盘
+            - uuid: 83f69d52d5ac4d89a95e12d00ce3c04c
+              name: '{#AGGRNAME} 文件系统状态'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.5.4.1.20.{#SNMPINDEX}'
+              key: 'dfStatus[{#AGGRNAME}]'
+              delay: '180'
+              valuemap:
+                name: 'NETAPP dfStatus'
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: Aggregate
+                - tag: Application
+                  value: 磁盘
+              trigger_prototypes:
+                - uuid: 49a0b552102042da822ea3555a9a204f
+                  expression: 'last(/LW_Template SNMP NetApp General/dfStatus[{#AGGRNAME}])<>2'
+                  name: '[硬件存储]{HOST.NAME}设备 {#AGGRNAME} 没有挂载'
+                  priority: WARNING
+                  description: |
+                    (状态值表示当前状态)
+                    1⇒卸载
+                    2⇒挂载
+                    3⇒冻结
+                    4⇒破坏
+                    5⇒创建
+                    6⇒正在挂载
+                    7⇒卸载
+                    8⇒没找到
+                    9⇒重演
+                    10⇒重播
+                  manual_close: 'YES'
+          request_method: POST
+        - uuid: 1738747a47f44ab2ae8201a0619997ee
+          name: 背板
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#ENCLNUM}, .1.3.6.1.4.1.789.1.21.1.2.1.1]'
+          key: Encl
+          delay: '3600'
+          item_prototypes:
+            - uuid: a1daddc55b7b4118a4f8f4745f46fe03
+              name: '{#ENCLNUM} 电子错误信息'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.21.1.2.1.33.{#SNMPINDEX}'
+              key: 'enclElectronicsFailed[{#ENCLNUM}]'
+              delay: '60'
+              trends: '0'
+              value_type: TEXT
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 背板
+              trigger_prototypes:
+                - uuid: 322ee22c3655419ea9722ce48a46eaeb
+                  expression: 'length(last(/LW_Template SNMP NetApp General/enclElectronicsFailed[{#ENCLNUM}]))>0'
+                  name: '[硬件存储]{HOST.NAME}设备[{#ENCLNUM}]没电{ITEM.LASTVALUE}'
+                  priority: HIGH
+                  manual_close: 'YES'
+            - uuid: e156203261974aad8e0269391a767dff
+              name: '{#ENCLNUM} 电子'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.21.1.2.1.31.{#SNMPINDEX}'
+              key: 'enclElectronicsPresent[{#ENCLNUM}]'
+              delay: '60'
+              trends: '0'
+              value_type: TEXT
+              description: Electronic
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 背板
+            - uuid: 35d50c138c044ccabcb50f4122abfce4
+              name: '{#ENCLNUM} 风扇错误信息'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.21.1.2.1.18.{#SNMPINDEX}'
+              key: 'enclFansFailed[{#ENCLNUM}]'
+              delay: '60'
+              trends: '0'
+              value_type: TEXT
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 背板
+              trigger_prototypes:
+                - uuid: 207421b2eefc4a968af247eafdee8239
+                  expression: 'length(last(/LW_Template SNMP NetApp General/enclFansFailed[{#ENCLNUM}]))>0'
+                  name: '[硬件存储]{HOST.NAME}设备风扇[{#ENCLNUM}]异常{ITEM.LASTVALUE}'
+                  priority: HIGH
+                  manual_close: 'YES'
+            - uuid: d437d87212e64311a68d167db57744cc
+              name: '{#ENCLNUM} 风扇转速'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.21.1.2.1.62.{#SNMPINDEX}'
+              key: 'enclFansSpeed[{#ENCLNUM}]'
+              delay: '60'
+              trends: '0'
+              value_type: TEXT
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 背板
+            - uuid: 6b04f6250d764e128aaf79340b6dacb5
+              name: '{#ENCLNUM} 电源错误信息'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.21.1.2.1.15.{#SNMPINDEX}'
+              key: 'enclPowerSuppliesFailed[{#ENCLNUM}]'
+              delay: '60'
+              trends: '0'
+              value_type: TEXT
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 背板
+              trigger_prototypes:
+                - uuid: 175a9cb2ce5548bdb38d3ca5c0f5cf02
+                  expression: 'length(last(/LW_Template SNMP NetApp General/enclPowerSuppliesFailed[{#ENCLNUM}]))>0'
+                  name: '[硬件存储]{HOST.NAME}设备[{#ENCLNUM}]电力供应失败{ITEM.LASTVALUE}'
+                  priority: HIGH
+                  manual_close: 'YES'
+            - uuid: c301b9dc382045b1a84554f39380b768
+              name: '{#ENCLNUM} 产品ID'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.21.1.2.1.5.{#SNMPINDEX}'
+              key: 'enclProductID[{#ENCLNUM}]'
+              delay: '43200'
+              trends: '0'
+              value_type: TEXT
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 背板
+            - uuid: 4b344a03f9634643a9165e835478f689
+              name: '{#ENCLNUM} 产品型号'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.21.1.2.1.7.{#SNMPINDEX}'
+              key: 'enclProductModel[{#ENCLNUM}]'
+              delay: '43200'
+              trends: '0'
+              value_type: TEXT
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 背板
+            - uuid: 38135e57b42542bdb52287bf50905919
+              name: '{#ENCLNUM} 当前温度'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.21.1.2.1.25.{#SNMPINDEX}'
+              key: 'enclTempSensorsCurrentTemp[{#ENCLNUM}]'
+              delay: '60'
+              trends: '0'
+              value_type: TEXT
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 背板
+            - uuid: fa63f4d775124b5aaa84d171d5e7984c
+              name: '{#ENCLNUM} 温度错误信息'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.21.1.2.1.21.{#SNMPINDEX}'
+              key: 'enclTempSensorsOverTempFail[{#ENCLNUM}]'
+              delay: '60'
+              trends: '0'
+              value_type: TEXT
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 背板
+            - uuid: f29ce15831f14cfd87c9eb0e61081d77
+              name: '{#ENCLNUM} 温度警告信息'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.21.1.2.1.22.{#SNMPINDEX}'
+              key: 'enclTempSensorsOverTempWarn[{#ENCLNUM}]'
+              delay: '60'
+              trends: '0'
+              value_type: TEXT
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 背板
+            - uuid: 6058b02a46854e19bf5dc764a74948ee
+              name: '{#ENCLNUM} 温度错误信息'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.21.1.2.1.23.{#SNMPINDEX}'
+              key: 'enclTempSensorsUnderTempFail[{#ENCLNUM}]'
+              delay: '60'
+              trends: '0'
+              value_type: TEXT
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 背板
+            - uuid: fe96ce6d06f24d91bc72b9e9926b1af9
+              name: '{#ENCLNUM} 温度警告信息'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.21.1.2.1.24.{#SNMPINDEX}'
+              key: 'enclTempSensorsUnderTempWarn[{#ENCLNUM}]'
+              delay: '60'
+              trends: '0'
+              value_type: TEXT
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 背板
+            - uuid: 4429830a70e04b6380c23f983afb964d
+              name: '{#ENCLNUM} 当前电压'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.21.1.2.1.40.{#SNMPINDEX}'
+              key: 'enclVoltSensorsCurrentVolt[{#ENCLNUM}]'
+              delay: '60'
+              trends: '0'
+              value_type: TEXT
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 背板
+            - uuid: c0a50e1fe699446bbb38ecde9e575e23
+              name: '{#ENCLNUM} 电压错误信息'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.21.1.2.1.36.{#SNMPINDEX}'
+              key: 'enclVoltSensorsOverVoltFail[{#ENCLNUM}]'
+              delay: '60'
+              trends: '0'
+              value_type: TEXT
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 背板
+            - uuid: c5d582f2b631431ca072a8fe17dc5d70
+              name: '{#ENCLNUM} 电压警告信息'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.21.1.2.1.37.{#SNMPINDEX}'
+              key: 'enclVoltSensorsOverVoltWarn[{#ENCLNUM}]'
+              delay: '60'
+              trends: '0'
+              value_type: TEXT
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 背板
+            - uuid: 89a77ee8222f40a5b81019f36b32bcef
+              name: '{#ENCLNUM} 电压警告信息'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.21.1.2.1.38.{#SNMPINDEX}'
+              key: 'enclVoltSensorsUnderVoltFail[{#ENCLNUM}]'
+              delay: '60'
+              trends: '0'
+              value_type: TEXT
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 背板
+            - uuid: c9b9a09f3f064223949d29827bcd6f3a
+              name: '{#ENCLNUM} 电压警告信息'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.21.1.2.1.39.{#SNMPINDEX}'
+              key: 'enclVoltSensorsUnderVoltWarn[{#ENCLNUM}]'
+              delay: '60'
+              trends: '0'
+              value_type: TEXT
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 背板
+          request_method: POST
+        - uuid: 048907eb92ac4183baffe47250c38bf0
+          name: 网卡
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE},IF-MIB::ifName,{#SNMPOPEN},IF-MIB::ifOperStatus]'
+          key: ifDescr
+          delay: '3600'
+          filter:
+            evaltype: AND
+            conditions:
+              - macro: '{#SNMPOPEN}'
+                value: (1|3)
+                formulaid: A
+              - macro: '{#SNMPVALUE}'
+                value: '^(lo.*|usb.*|ip6.*|sit.*|dummy0.*|tunl0.*)$'
+                operator: NOT_MATCHES_REGEX
+                formulaid: B
+          lifetime: 7d
+          description: 端口表
+          item_prototypes:
+            - uuid: 8c22faa8f6c44d07813f10c65eadf2df
+              name: '{#SNMPVALUE} 网卡描述'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifAlias.{#SNMPINDEX}'
+              key: 'ifAlias[{#SNMPVALUE}]'
+              delay: '86400'
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: 端口描述
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 网卡
+            - uuid: 113b80ffbc9140aa8b898d241f1e71b2
+              name: '{#SNMPVALUE} 网卡每秒接收速率'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifHCInOctets.{#SNMPINDEX}'
+              key: 'ifHCInOctetsPersecond[{#SNMPVALUE}]'
+              delay: '300'
+              history: 7d
+              units: bps
+              description: 端口每秒接收速率
+              preprocessing:
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+                - type: MULTIPLIER
+                  parameters:
+                    - '8'
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 网卡
+            - uuid: 656c1461b82e46f194927470a0c8c378
+              name: '{#SNMPVALUE} 网卡每秒发送速率'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifHCOutOctets.{#SNMPINDEX}'
+              key: 'ifHCOutOctetsPersecond[{#SNMPVALUE}]'
+              delay: '300'
+              history: 7d
+              units: bps
+              description: |
+                端口每秒发送速率
+                .
+              preprocessing:
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+                - type: MULTIPLIER
+                  parameters:
+                    - '8'
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 网卡
+            - uuid: dfb19b86ff474b6780ce94e911de1373
+              name: '{#SNMPVALUE}  网卡物理连接状态'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifOperStatus.{#SNMPINDEX}'
+              key: 'ifOperStatus[{#SNMPVALUE}]'
+              delay: '300'
+              history: 7d
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 网卡
+              trigger_prototypes:
+                - uuid: afd7b39dcbdc4a8eb9501bafa356c07f
+                  expression: 'last(/LW_Template SNMP NetApp General/ifOperStatus[{#SNMPVALUE}])=2'
+                  name: '[硬件设备]{HOST.NAME}网卡端口{#SNMPVALUE}已关闭'
+                  priority: HIGH
+                  description: |
+                    状态值表示:
+                    1⇒正常
+                    2⇒关闭
+                    3⇒测试
+                    4⇒未知
+                    5⇒休眠
+                    6⇒不存在
+                    7⇒底层关闭
+                    {HOST.NAME}设备端口{#SNMPVALUE}状态不正常，可能连线松动、未启用、对端设备重启、端口损坏等
+                  manual_close: 'YES'
+            - uuid: c1e6b053ab754f8ba36d48b32d003823
+              name: '{#SNMPVALUE} 网卡物理地址'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifPhysAddress.{#SNMPINDEX}'
+              key: 'ifPhysAddress[{#SNMPVALUE}]'
+              delay: '86400'
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: 端口物理地址
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 网卡
+            - uuid: 27402b69b27648be818579dafafa9e96
+              name: '{#SNMPVALUE} 网卡类型'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifType.{#SNMPINDEX}'
+              key: 'ifType[{#SNMPVALUE}]'
+              delay: '86400'
+              history: 7d
+              description: 端口类型
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 网卡
+          graph_prototypes:
+            - uuid: 698be5264ec748019275e59e907a2f87
+              name: '网络端口 {#SNMPVALUE} 速率'
+              graph_items:
+                - color: 2774A4
+                  item:
+                    host: 'LW_Template SNMP NetApp General'
+                    key: 'ifHCInOctetsPersecond[{#SNMPVALUE}]'
+                - sortorder: '1'
+                  color: A54F10
+                  item:
+                    host: 'LW_Template SNMP NetApp General'
+                    key: 'ifHCOutOctetsPersecond[{#SNMPVALUE}]'
+          request_method: POST
+        - uuid: 31a81d72337847e5b1444820be8c15b0
+          name: LIFs
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#VIF}, .1.3.6.1.4.1.789.1.22.4.1.2]'
+          key: lif
+          delay: '3600'
+          item_prototypes:
+            - uuid: 56add61b57d440719b8010bbc330ff77
+              name: '{#VIF} 端口'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.22.4.1.10.{#SNMPINDEX}'
+              key: 'logicalInterfaceIsHome[{#VIF}]'
+              delay: '180'
+              valuemap:
+                name: 'NETAPP logicalInterfaceIsHome'
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: VIF
+              trigger_prototypes:
+                - uuid: 66d54f3ec7fc4e218c103b012e4904f1
+                  expression: 'last(/LW_Template SNMP NetApp General/logicalInterfaceIsHome[{#VIF}])>1'
+                  name: '[硬件存储]{HOST.NAME}[{#VIF}] 端口没有起来'
+                  priority: WARNING
+                  manual_close: 'YES'
+          request_method: POST
+        - uuid: 36779651d9814df7a1f23116cdec073a
+          name: 节点
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#NODENAME},  .1.3.6.1.4.1.789.1.21.2.1.1]'
+          key: node
+          delay: '3600'
+          item_prototypes:
+            - uuid: 1168e439a1b948239ab383ab70c08425
+              name: '{#NODENAME} 不能接管原因'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.21.2.1.5.{#SNMPINDEX}'
+              key: 'haCannotTakeoverCause[{#NODENAME}]'
+              delay: '180'
+              trends: '0'
+              description: |
+                cannot take over cause
+                1 ⇒ ok
+                2 ⇒ unknownReason
+                3 ⇒ disabledByOperator
+                4 ⇒ interconnectOffline
+                5 ⇒ disabledByPartner
+                6 ⇒ takeoverFailed
+                7 ⇒ mailboxIsInDegradedState
+                8 ⇒ partnermailboxIsInUninitialisedState
+                9 ⇒ mailboxVersionMismatch
+                10 ⇒ nvramSizeMismatch
+                11 ⇒ kernelVersionMismatch
+                12 ⇒ partnerIsInBootingStage
+                13 ⇒ diskshelfIsTooHot
+                14 ⇒ partnerIsPerformingRevert
+                15 ⇒ nodeIsPerformingRevert
+                16 ⇒ sametimePartnerIsAlsoTryingToTakeUsOver
+                17 ⇒ alreadyInTakenoverMode
+                18 ⇒ nvramLogUnsynchronized
+                19 ⇒ stateofBackupMailboxIsDoubtful
+              valuemap:
+                name: 'NETAPP haCannotTakeoverCause'
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 节点
+            - uuid: 13230cb3280d4ab6b0028222947cf6c7
+              name: '{#NODENAME} 连接状态'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.21.2.1.10.{#SNMPINDEX}'
+              key: 'haInterconnectStatus[{#NODENAME}]'
+              delay: '60'
+              trends: '0'
+              valuemap:
+                name: 'NETAPP haInterconnectStatus'
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 节点
+              trigger_prototypes:
+                - uuid: 4c56c0c91f2544529bffdcc46e5f1f8a
+                  expression: 'last(/LW_Template SNMP NetApp General/haInterconnectStatus[{#NODENAME}])<4'
+                  name: '[硬件存储]{HOST.NAME}节点 {#NODENAME} 会连状态已断'
+                  priority: WARNING
+                  description: |
+                    (状态值表示当前状态)
+                    1⇒不存在
+                    2⇒断开
+                    3⇒部分失效
+                    4⇒正常
+                  manual_close: 'YES'
+            - uuid: 2fdf71e3d4bb40f7a92fa2e5fbb3ec00
+              name: '{#NODENAME} 备节点名称'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.21.2.1.8.{#SNMPINDEX}'
+              key: 'haPartnerName[{#NODENAME}]'
+              delay: '86400'
+              trends: '0'
+              value_type: CHAR
+              description: 'HA Partner Name'
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 节点
+            - uuid: 4ddc8b0757424b56835986d3408ed0d7
+              name: '{#NODENAME} 备节点状态'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.21.2.1.6.{#SNMPINDEX}'
+              key: 'haPartnerStatus[{#NODENAME}]'
+              delay: '180'
+              trends: '0'
+              description: 'HA Partner Status'
+              valuemap:
+                name: 'NETAPP  haPartnerStatus'
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 节点
+              trigger_prototypes:
+                - uuid: a66ba14fed22413981d8a309afe3de0c
+                  expression: 'last(/LW_Template SNMP NetApp General/haPartnerStatus[{#NODENAME}])<>2'
+                  name: '[硬件存储]{HOST.NAME} 备节点 {#NODENAME} 状态已断'
+                  priority: WARNING
+                  description: |
+                    (状态值表示当前状态)
+                    1⇒可能断开
+                    2⇒正常
+                    3⇒断开
+                  manual_close: 'YES'
+                  tags:
+                    - tag: 'takeover By Partner'
+            - uuid: e27b4c946a514844a5d74d0ad7c81a95
+              name: '{#NODENAME} 设置'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.21.2.1.3.{#SNMPINDEX}'
+              key: 'haSettings[{#NODENAME}]'
+              delay: '180'
+              trends: '0'
+              valuemap:
+                name: 'NETAPP haSettings'
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 节点
+              trigger_prototypes:
+                - uuid: 14422c707a8646d28911fe32343c766b
+                  expression: 'last(/LW_Template SNMP NetApp General/haSettings[{#NODENAME}])>2'
+                  name: '[硬件存储]{HOST.NAME}HA {#NODENAME} 异常'
+                  priority: HIGH
+                  description: |
+                    (状态值表示当前状态)
+                    1⇒不配置
+                    2⇒启用
+                    3⇒禁用
+                    4⇒接管禁用
+                    5⇒节点故障
+                  manual_close: 'YES'
+            - uuid: 68a631b39e1f4dcdaa80bd98c3b58645
+              name: '{#NODENAME} 状态'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.21.2.1.4.{#SNMPINDEX}'
+              key: 'haState[{#NODENAME}]'
+              delay: '60'
+              trends: '0'
+              valuemap:
+                name: 'NETAPP haState'
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 节点
+              trigger_prototypes:
+                - uuid: faa55a944e3145ceaa1d0151f1254ebd
+                  expression: 'last(/LW_Template SNMP NetApp General/haState[{#NODENAME}])<>2'
+                  name: '[硬件存储]{HOST.NAME}节点 {#NODENAME} 不能接管'
+                  priority: HIGH
+                  description: |
+                    (状态值表示当前状态)
+                    1⇒故障
+                    2⇒可以接管
+                    3⇒不能接管
+                    4⇒已经接管
+                    5⇒部分接管
+                  manual_close: 'YES'
+          request_method: POST
+        - uuid: ae033a71b1734e2b8eb41488ba1a2607
+          name: 卷
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#VOLNAME},  .1.3.6.1.4.1.789.1.4.4.1.2]'
+          key: volume
+          delay: '3600'
+          item_prototypes:
+            - uuid: d70dd042dfe94e539175a97bfbe3bb80
+              name: '{#VOLNAME} 总大小'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.5.4.1.29.{#SNMPINDEX}'
+              key: 'df64TotalKBytesVol[{#VOLNAME}]'
+              delay: '60'
+              units: B
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '1024'
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 卷
+            - uuid: f88aafefd2bb477787752f34ee89a89f
+              name: '{#VOLNAME} 使用大小'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.5.4.1.30.{#SNMPINDEX}'
+              key: 'df64UsedKBytesVol[{#VOLNAME}]'
+              delay: '60'
+              units: B
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '1024'
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 卷
+            - uuid: c0b3ca1fe66d4d91bf72b169d8d1c6ed
+              name: '{#VOLNAME} 使用率'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.5.4.1.6.{#SNMPINDEX}'
+              key: 'dfPerCentKBytesCapacityVol[{#VOLNAME}]'
+              delay: '60'
+              units: '%'
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 卷
+              trigger_prototypes:
+                - uuid: e2f88e341ca3471ab6a4ca37a6492e0c
+                  expression: 'last(/LW_Template SNMP NetApp General/dfPerCentKBytesCapacityVol[{#VOLNAME}])>99'
+                  name: '[硬件存储]{HOST.NAME}设备[{#VOLNAME}]空间剩余率小于1%'
+                  priority: HIGH
+                  manual_close: 'YES'
+            - uuid: 7293569025154fcb9fc9f5cc8e2811c4
+              name: '{#VOLNAME} 群集'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.5.8.1.9.{#SNMPINDEX}'
+              key: 'volAggrName[{#VOLNAME}]'
+              delay: 1d
+              trends: '0'
+              value_type: TEXT
+              description: Aggregate
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 卷
+            - uuid: 6c8a35685d9148d6bf5b74b868784afc
+              name: '{#VOLNAME} NV Failed 状态'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.5.8.1.27.{#SNMPINDEX}'
+              key: 'volInNvfailedState[{#VOLNAME}]'
+              delay: '60'
+              description: 'Indicates whether the volume is in nvfailed state. This is only applicable to cluster-mode volumes.'
+              preprocessing:
+                - type: BOOL_TO_DECIMAL
+                  parameters:
+                    - ''
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 卷
+            - uuid: 260706e04a0b43e286e03047244ba66a
+              name: '{#VOLNAME} 语言'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.5.8.1.19.{#SNMPINDEX}'
+              key: 'volLanguage[{#VOLNAME}]'
+              delay: 1d
+              trends: '0'
+              value_type: TEXT
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 卷
+            - uuid: 12531aec34cc496cbff2b7adf2472584
+              name: '{#VOLNAME} NV Failed 开启'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.5.8.1.26.{#SNMPINDEX}'
+              key: 'volNvfail[{#VOLNAME}]'
+              delay: '60'
+              description: 'Indicates whether nvfail option is enabled on this volume.'
+              preprocessing:
+                - type: BOOL_TO_DECIMAL
+                  parameters:
+                    - ''
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 卷
+            - uuid: 01aed19e7eeb477c95455c95b7585355
+              name: '{#VOLNAME} Space Guarantee 开启'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.5.8.1.17.{#SNMPINDEX}'
+              key: 'volSpaceGuaranteeEnabled[{#VOLNAME}]'
+              delay: 1d
+              description: .
+              valuemap:
+                name: 'NETAPP volSpaceGuaranteeEnabled'
+              preprocessing:
+                - type: BOOL_TO_DECIMAL
+                  parameters:
+                    - ''
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 卷
+            - uuid: f1d9b5e46ccc40db97fdbdd6edd6ff44
+              name: '{#VOLNAME} Space Guarantee 状态'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.5.8.1.18.{#SNMPINDEX}'
+              key: 'volSpaceGuarantee[{#VOLNAME}]'
+              delay: 1d
+              description: .
+              valuemap:
+                name: 'NETAPP volSpaceGuarantee'
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 卷
+            - uuid: fa4d099b38c94beaa93e99561c24a9c9
+              name: '{#VOLNAME} 状态'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.5.8.1.6.{#SNMPINDEX}'
+              key: 'volState[{#VOLNAME}]'
+              delay: '60'
+              trends: '0'
+              value_type: TEXT
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 卷
+            - uuid: ebcb5e3615674155a72c31d4cdbc1561
+              name: '{#VOLNAME} 类型'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.5.8.1.10.{#SNMPINDEX}'
+              key: 'volType[{#VOLNAME}]'
+              delay: 1d
+              description: 'Type of this volume, older volumes are traditional while newer volumes contained in aggregates are flexible.'
+              valuemap:
+                name: 'NETAPP volType'
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 卷
+            - uuid: 07e733a834534298855d8d00dfa63ffe
+              name: '{#VOLNAME} 版本'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.789.1.5.8.1.14.{#SNMPINDEX}'
+              key: 'volVserver[{#VOLNAME}]'
+              delay: 1d
+              trends: '0'
+              value_type: TEXT
+              request_method: POST
+              tags:
+                - tag: Application
+                  value: 卷
+          request_method: POST
+      valuemaps:
+        - uuid: 7dfee0a700074c9f90da7957f93715d6
+          name: 'NETAPP aggrType'
+          mappings:
+            - value: '0'
+              newvalue: unknown
+            - value: '1'
+              newvalue: traditional
+            - value: '2'
+              newvalue: aggregate
+            - value: '3'
+              newvalue: striped
+        - uuid: c5f8b5067824416ca4aa69377a03b20b
+          name: 'NETAPP autosupportStatus'
+          mappings:
+            - value: '1'
+              newvalue: ok
+            - value: '2'
+              newvalue: smtpFailure
+            - value: '3'
+              newvalue: postFailure
+            - value: '4'
+              newvalue: smtpPostFailure
+            - value: '5'
+              newvalue: unknown
+        - uuid: a69ea7cec244486aa6e9abf18072b5e7
+          name: 'NETAPP dfStatus'
+          mappings:
+            - value: '1'
+              newvalue: unmounted
+            - value: '2'
+              newvalue: mounted
+            - value: '3'
+              newvalue: frozen
+            - value: '4'
+              newvalue: destroying
+            - value: '5'
+              newvalue: creating
+            - value: '6'
+              newvalue: mounting
+            - value: '7'
+              newvalue: unmounting
+            - value: '8'
+              newvalue: nofsinfo
+            - value: '9'
+              newvalue: replaying
+            - value: '10'
+              newvalue: replayed
+        - uuid: 5bf7f3df73c642c487b397a19d05bfb6
+          name: 'NETAPP haCannotTakeoverCause'
+          mappings:
+            - value: '1'
+              newvalue: ok
+            - value: '2'
+              newvalue: unknownReason
+            - value: '3'
+              newvalue: disabledByOperator
+            - value: '4'
+              newvalue: interconnectOffline
+            - value: '5'
+              newvalue: disabledByPartner
+            - value: '6'
+              newvalue: takeoverFailed
+            - value: '7'
+              newvalue: mailboxIsInDegradedState
+            - value: '8'
+              newvalue: partnermailboxIsInUninitialisedState
+            - value: '9'
+              newvalue: mailboxVersionMismatch
+            - value: '10'
+              newvalue: nvramSizeMismatch
+            - value: '11'
+              newvalue: kernelVersionMismatch
+            - value: '12'
+              newvalue: partnerIsInBootingStage
+            - value: '13'
+              newvalue: diskshelfIsTooHot
+            - value: '14'
+              newvalue: partnerIsPerformingRevert
+            - value: '15'
+              newvalue: nodeIsPerformingRevert
+            - value: '16'
+              newvalue: sametimePartnerIsAlsoTryingToTakeUsOver
+            - value: '17'
+              newvalue: alreadyInTakenoverMode
+            - value: '18'
+              newvalue: nvramLogUnsynchronized
+            - value: '19'
+              newvalue: stateofBackupMailboxIsDoubtful
+        - uuid: 31d3772d51da4a3abc8db9cc832d1be9
+          name: 'NETAPP haInterconnectStatus'
+          mappings:
+            - value: '1'
+              newvalue: notPresent
+            - value: '2'
+              newvalue: down
+            - value: '3'
+              newvalue: partialFailure
+            - value: '4'
+              newvalue: up
+        - uuid: 013c09ec3fa34a40be7bb726f91e3c2f
+          name: 'NETAPP  haPartnerStatus'
+          mappings:
+            - value: '1'
+              newvalue: maybeDown
+            - value: '2'
+              newvalue: ok
+            - value: '3'
+              newvalue: dead
+        - uuid: 88e51c839f4049069327b7379f511b2a
+          name: 'NETAPP haSettings'
+          mappings:
+            - value: '1'
+              newvalue: notConfigured
+            - value: '2'
+              newvalue: enabled
+            - value: '3'
+              newvalue: disabled
+            - value: '4'
+              newvalue: takeoverByPartnerDisabled
+            - value: '5'
+              newvalue: thisNodeDead
+        - uuid: 4a52a383564844e78ee971f9204557ac
+          name: 'NETAPP haState'
+          mappings:
+            - value: '1'
+              newvalue: dead
+            - value: '2'
+              newvalue: canTakeover
+            - value: '3'
+              newvalue: cannotTakeover
+            - value: '4'
+              newvalue: takeover
+            - value: '5'
+              newvalue: partialGiveback
+        - uuid: 0aae15cae3c649de8e379d5f1c637ebc
+          name: 'NETAPP logicalInterfaceIsHome'
+          mappings:
+            - value: '0'
+              newvalue: 'false'
+            - value: '1'
+              newvalue: 'true'
+        - uuid: d9d59ada93f049a988f5e58045562171
+          name: 'NETAPP volSpaceGuarantee'
+          mappings:
+            - value: '0'
+              newvalue: none
+            - value: '1'
+              newvalue: file
+            - value: '2'
+              newvalue: volume
+        - uuid: 9a2afbb4c2b6457dbd488405b4cf1c63
+          name: 'NETAPP volSpaceGuaranteeEnabled'
+          mappings:
+            - value: '1'
+              newvalue: 'true'
+            - value: '2'
+              newvalue: 'false'
+        - uuid: 31ec630347a84e6ca65a94b9043d9c87
+          name: 'NETAPP volType'
+          mappings:
+            - value: '1'
+              newvalue: traditional
+            - value: '2'
+              newvalue: flexible
+            - value: '3'
+              newvalue: striped
+            - value: '4'
+              newvalue: asis
+            - value: '5'
+              newvalue: snaplock
+  triggers:
+    - uuid: 1cd548e0a0184f8495c333a9aa67b172
+      expression: 'max(/LW_Template SNMP NetApp General/icmpping[,2,,,],3m)=0 and nodata(/LW_Template SNMP NetApp General/sysUpTime,3m)=1'
+      recovery_mode: RECOVERY_EXPRESSION
+      recovery_expression: 'min(/LW_Template SNMP NetApp General/icmpping[,2,,,],10m)=1 and nodata(/LW_Template SNMP NetApp General/sysUpTime,2m)=0'
+      name: '[硬件设备]{HOST.NAME}失联,持续3分钟未响应,设备可能宕机'
+      priority: HIGH
+      description: |
+        当前状态值为系统持续运行时间和ICMP探测状态（1为通，0为断）
+        设备无法采集到数据,可能是snmp协议未开启或者被拦截，也可能是网络设备链路断连、宕机
+      manual_close: 'YES'
+      dependencies:
+        - name: '[操作系统] {HOST.NAME}主采集服务器 Agent 无法采集到数据'
+          expression: 'nodata(/itops-server/agent.ping,2m)=1'
+          recovery_expression: 'count(/itops-server/zabbix[process,history syncer,avg,busy],10m,"lt","75")=10 and count(/itops-server/agent.ping,10m,"eq","1")=10'
+  graphs:
+    - uuid: c66055ee09f54a05a4579ff02db2aaec
+      name: 'ICMP ping监控'
+      graph_items:
+        - sortorder: '1'
+          color: 00C800
+          item:
+            host: 'LW_Template SNMP NetApp General'
+            key: 'icmpping[,2,,,]'

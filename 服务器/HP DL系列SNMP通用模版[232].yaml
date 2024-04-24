@@ -1,0 +1,1464 @@
+zabbix_export:
+  version: '6.0'
+  date: '2024-04-24T06:50:47Z'
+  groups:
+    - uuid: b823e77ddf124b0aa4080384804d0160
+      name: 服务器模板
+  templates:
+    - uuid: 68beb1f7aa0b4c9cb1cd15634bfd5480
+      template: 'LW_Template SNMP HP DL'
+      name: 'HP DL系列SNMP通用模版[232]'
+      templates:
+        - name: 'LW_Template SNMP Haroware Generic'
+      groups:
+        - name: 服务器模板
+      items:
+        - uuid: 5d14b715a68f4307b3d2102d4adc9d6c
+          name: 序列号
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.232.2.2.2.1.0
+          key: dev.serial
+          delay: '86400'
+          trends: '0'
+          value_type: CHAR
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: 6f5cb5a3128a457791b0b46475271c0d
+          name: 设备运行时间
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.2.1.1.3.0
+          key: dev.uptime
+          delay: '60'
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: a90d678fc3d545d68157392fba41783e
+          name: UUID
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.232.11.2.10.6.0
+          key: dev.uuid
+          delay: '86400'
+          trends: '0'
+          value_type: CHAR
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: 7928f06b113e448c8dd92c82172421c1
+          name: CPU风扇状态
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.232.6.2.6.5.0
+          key: FanStateCPU
+          delay: '300'
+          description: |
+            Syntax	 INTEGER {other(1),
+            ok(2),
+            degraded(3),
+            failed(4)
+            }
+             The status of the fan(s) in the system.
+            This value will be one of the following:
+            other(1)
+            Fan status detection is not supported by this system or driver.
+            ok(2)
+            All fans are operating properly.
+            degraded(3)
+            A non-required fan is not operating properly.
+            failed(4)
+            A required fan is not operating properly.
+            If the cpqHeThermalDegradedAction is set to shutdown(3) the
+            system will be shutdown if the failed(4) condition occurs.
+          valuemap:
+            name: 'HP DL 设备状态'
+          tags:
+            - tag: Application
+              value: 设备状态
+          triggers:
+            - uuid: 2dd1ba4c12004b239e65ae78834dfa94
+              expression: 'last(/LW_Template SNMP HP DL/FanStateCPU)>2'
+              name: '[硬件设备]{HOST.NAME}CPU风扇状态异常'
+              priority: HIGH
+              description: |
+                (状态值表示当前状态)
+                1 ⇒ 不支持此类监控
+                2 ⇒ 正常
+                3 ⇒ 不正常
+                4 ⇒ 失效
+              manual_close: 'YES'
+        - uuid: 8829ed64357b435aa2ade40b9808bb55
+          name: 系统风扇状态
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.232.6.2.6.4.0
+          key: FanStateSys
+          delay: '300'
+          description: |
+            Syntax	 INTEGER {other(1),
+            ok(2),
+            degraded(3),
+            failed(4)
+            }
+             The status of the fan(s) in the system.
+            This value will be one of the following:
+            other(1)
+            Fan status detection is not supported by this system or driver.
+            ok(2)
+            All fans are operating properly.
+            degraded(3)
+            A non-required fan is not operating properly.
+            failed(4)
+            A required fan is not operating properly.
+            If the cpqHeThermalDegradedAction is set to shutdown(3) the
+            system will be shutdown if the failed(4) condition occurs.
+          valuemap:
+            name: 'HP DL 设备状态'
+          tags:
+            - tag: Application
+              value: 设备状态
+          triggers:
+            - uuid: bfb39ef328514398b7bcbdc5056db821
+              expression: 'last(/LW_Template SNMP HP DL/FanStateSys)>2'
+              name: '[硬件设备]{HOST.NAME}系统风扇状态异常'
+              priority: HIGH
+              description: |
+                (状态值表示当前状态)
+                1 ⇒ 不支持此类监控
+                2 ⇒ 正常
+                3 ⇒ 不正常
+                4 ⇒ 失效
+              manual_close: 'YES'
+        - uuid: 2b78aee462a84011838e0329909fc8ad
+          name: 温度传感器状态
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.232.6.2.6.3.0
+          key: HeThermalTempStatus
+          delay: '300'
+          description: |
+            Syntax	 INTEGER {other(1),
+            ok(2),
+            degraded(3),
+            failed(4)
+            }
+             The status of the system's temperature sensors:
+            This value will be one of the following:
+            other(1)
+            Temp sensing is not supported by this system or driver.
+            ok(2)
+            All temp sensors are within normal operating range.
+            degraded(3)
+            A temp sensor is outside of normal operating range.
+            failed(4)
+            A temp sensor detects a condition that could permanently
+            damage the system.
+            The system will automatically shutdown if the failed(4) condition
+            results, so it is unlikely that this value will ever be returned
+            by the agent.  If the cpqHeThermalDegradedAction is set to
+            shutdown(3) the system will be shutdown if the degraded(3)
+            condition occurs.
+          valuemap:
+            name: 'HP DL 设备状态'
+          tags:
+            - tag: Application
+              value: 设备状态
+          triggers:
+            - uuid: 890f254de7304de39fd883cd5435aabe
+              expression: 'last(/LW_Template SNMP HP DL/HeThermalTempStatus)>2'
+              name: '[硬件设备]{HOST.NAME}温度传感器状态异常'
+              priority: HIGH
+              description: |
+                (状态值表示当前状态)
+                1 ⇒ 不支持此类监控
+                2 ⇒ 正常
+                3 ⇒ 不正常
+                4 ⇒ 失效
+              manual_close: 'YES'
+        - uuid: 21ab8efc7c46454ab735f9b23bdd2845
+          name: 主机名
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.2.1.1.5.0
+          key: host.name
+          delay: '86400'
+          trends: '0'
+          value_type: CHAR
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: f449d46d16784087bac8eed49b619a8b
+          name: 内存大小
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.232.1.2.3.3.0
+          key: memory.all.size
+          delay: '60'
+          tags:
+            - tag: Application
+              value: 内存
+        - uuid: c3878666898d4cde9c4f3c448f73a555
+          name: 网卡状态
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.232.9.2.5.1.1.7.2
+          key: 'net.ifOperStatus[config-nic]'
+          delay: '300'
+          description: |
+            Remote Insight/ Integrated Lights-Out Network Interface Controller
+            Enabled Status
+            The following values are defined:
+            other(1)
+            The Insight Agent is unable to determine type of network
+            interface controller enabled status
+            enabled(2)
+            This network interface controller is enabled.
+            disabled(3)
+            This network interface controller is disabled.
+          valuemap:
+            name: 'HP DL 设备状态'
+          tags:
+            - tag: Application
+              value: 设备状态
+          triggers:
+            - uuid: 1b3c0fcbca2740e6a2f851d0a6e88c10
+              expression: 'last(/LW_Template SNMP HP DL/net.ifOperStatus[config-nic])>2'
+              name: '[硬件设备]{HOST.NAME}网卡状态异常'
+              priority: HIGH
+              description: |
+                (状态值表示当前状态)
+                1 ⇒ 不支持此类监控
+                2 ⇒ 正常
+                3 ⇒ 不正常
+                4 ⇒ 失效
+              manual_close: 'YES'
+        - uuid: 9d54b76acf924076ac52c9ff890eb1d6
+          name: 网卡MAC地址
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.232.9.2.5.1.1.4.2
+          key: 'net.ifPhysAddress[config-nic]'
+          delay: '86400'
+          trends: '0'
+          value_type: CHAR
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: bb76de24e68741038bc7451bb4c6c9d6
+          name: 电功率
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.232.6.2.15.3.0
+          key: PowerMeterCurrReading
+          delay: '300'
+          tags:
+            - tag: Application
+              value: 电源
+        - uuid: 53617be8cdc6493abade722fa1f551a9
+          name: 设备名称
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.232.2.2.4.2.0
+          key: product.name
+          delay: '86400'
+          trends: '0'
+          value_type: CHAR
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: 98173ca8aafe42cca25e2916ab5724a6
+          name: 设备服务号
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.232.2.2.2.5.0
+          key: sys.service.num
+          delay: '86400'
+          trends: '0'
+          value_type: CHAR
+          tags:
+            - tag: Application
+              value: 常规
+      discovery_rules:
+        - uuid: 0d27ab45e9b1497783a94d5d28d02d59
+          name: CPU
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE},.1.3.6.1.4.1.232.1.2.2.1.1.1]'
+          key: CPU
+          delay: '3600'
+          lifetime: 3d
+          item_prototypes:
+            - uuid: 9059b62d9ed04c30a9327964f4e5905e
+              name: 'CPU {#SNMPVALUE} 核数'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.1.2.2.1.1.15.{#SNMPINDEX}'
+              key: 'cpu.core[{#SNMPVALUE}]'
+              delay: '86400'
+              tags:
+                - tag: Application
+                  value: CPU
+            - uuid: 2a2c5743a70b491cac5490d419166758
+              name: 'CPU {#SNMPVALUE} 最大主频'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.1.2.2.1.1.21.{#SNMPINDEX}'
+              key: 'cpu.frequency.max[{#SNMPVALUE}]'
+              delay: '86400'
+              units: Hz
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '1'
+              tags:
+                - tag: Application
+                  value: CPU
+            - uuid: 8040e269cf084480ba18cb9ed674774f
+              name: 'CPU {#SNMPVALUE} 速率'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.1.2.2.1.1.4.{#SNMPINDEX}'
+              key: 'cpu.frequency[{#SNMPVALUE}]'
+              delay: '60'
+              units: Hz
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '1'
+              tags:
+                - tag: Application
+                  value: CPU
+            - uuid: 9531a4de011946cea3bed463cbcfc7b8
+              name: 'CPU {#SNMPVALUE} 厂商'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.1.2.2.1.1.3.{#SNMPINDEX}'
+              key: 'cpu.mfc[{#SNMPVALUE}]'
+              delay: '86400'
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: Application
+                  value: CPU
+            - uuid: 642f9782959f4798a89c6441d39cda53
+              name: 'CPU {#SNMPVALUE} 型号'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.1.2.2.1.1.23.{#SNMPINDEX}'
+              key: 'cpu.model[{#SNMPVALUE}]'
+              delay: '86400'
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: Application
+                  value: CPU
+            - uuid: 28fd9ad1d084437f8f81ce10a1136d06
+              name: 'CPU {#SNMPVALUE} 是否支持多线程'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.1.2.2.1.1.24.{#SNMPINDEX}'
+              key: 'cpu.multi.thread.status[{#SNMPVALUE}]'
+              delay: '86400'
+              valuemap:
+                name: 'HP DL CPU线程'
+              tags:
+                - tag: Application
+                  value: CPU
+            - uuid: a230ddc6bee947d18a68e0ffa96697f3
+              name: 'CPU {#SNMPVALUE} 状态'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.1.2.2.1.1.6.{#SNMPINDEX}'
+              key: 'cpu.status[{#SNMPVALUE}]'
+              delay: '300'
+              description: |
+                Syntax	 INTEGER {unknown(1),
+                ok(2),
+                degraded(3),
+                failed(4),
+                disabled(5)
+                }
+              valuemap:
+                name: 'HP DL CPU状态'
+              tags:
+                - tag: Application
+                  value: CPU
+              trigger_prototypes:
+                - uuid: 85a2d33d70c74070abe57c25d81de721
+                  expression: 'last(/LW_Template SNMP HP DL/cpu.status[{#SNMPVALUE}])>2'
+                  name: '[硬件设备]{HOST.NAME} CPU{#SNMPINDEX}状态异常'
+                  priority: HIGH
+                  description: |
+                    (状态值表示当前状态)
+                    1 ⇒ unknown
+                    2 ⇒ ok
+                    3 ⇒ degraded
+                    4 ⇒ failed
+                    5 ⇒ disabled
+                  manual_close: 'YES'
+            - uuid: 75858028d0c34c0094e73c349119f71e
+              name: 'CPU {#SNMPVALUE} 步进'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.1.2.2.1.1.5.{#SNMPINDEX}'
+              key: 'cpu.step[{#SNMPVALUE}]'
+              delay: '86400'
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: Application
+                  value: CPU
+            - uuid: c25af3e088a848d588a7213e03cf6ae6
+              name: 'CPU {#SNMPVALUE} 最大线程数'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.1.2.2.1.1.25.{#SNMPINDEX}'
+              key: 'cpu.thread[{#SNMPVALUE}]'
+              delay: '86400'
+              tags:
+                - tag: Application
+                  value: CPU
+          trigger_prototypes:
+            - uuid: ef9c962c8dd24091b51b7c83d34fbc6b
+              expression: 'last(/LW_Template SNMP HP DL/cpu.frequency[{#SNMPVALUE}])>last(/LW_Template SNMP HP DL/cpu.frequency.max[{#SNMPVALUE}])*0.8'
+              name: '[硬件设备]{HOST.NAME} CPU{#SNMPINDEX}]当前速率高于上限速率的80%'
+              priority: WARNING
+              description: (状态值表示当前速率)
+              manual_close: 'YES'
+        - uuid: 91d8ce61c5074120bf901da72ee540fd
+          name: 风扇
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE}, .1.3.6.1.4.1.232.6.2.6.7.1.2]'
+          key: Fan
+          delay: '3600'
+          lifetime: 3d
+          item_prototypes:
+            - uuid: e80e3dd1c113419b9dd99e0a16c996b8
+              name: '{#SNMPVALUE} 风扇位置'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.6.2.6.7.1.3.{#SNMPINDEX}'
+              key: 'FanLocal[{#SNMPVALUE}]'
+              delay: '86400'
+              description: |
+                INTEGER {other(1),
+                unknown(2),
+                system(3),
+                systemBoard(4),
+                ioBoard(5),
+                cpu(6),
+                memory(7),
+                storage(8),
+                removableMedia(9),
+                powerSupply(10),
+                ambient(11),
+                chassis(12),
+                bridgeCard(13),
+                managementBoard(14),
+                backplane(15),
+                networkSlot(16),
+                bladeSlot(17),
+                virtual(18)
+                }
+              valuemap:
+                name: 'HP DL 风扇位置'
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '1'
+              tags:
+                - tag: Application
+                  value: 风扇
+            - uuid: e00783b945794801ac0f1929ab3154df
+              name: '{#SNMPVALUE} 风扇速度等级'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.6.2.6.7.1.6.{#SNMPINDEX}'
+              key: 'FanSpeedLevel[{#SNMPVALUE}]'
+              delay: '300'
+              description: |
+                {other(1),
+                normal(2),
+                high(3)
+                }
+              valuemap:
+                name: 'HP DL 风扇转速'
+              tags:
+                - tag: Application
+                  value: 风扇
+            - uuid: 1a46f0bc956d4ee492c1ab20b57910aa
+              name: '{#SNMPVALUE} 风扇类型'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.6.2.6.7.1.5.{#SNMPINDEX}'
+              key: 'FanType[{#SNMPVALUE}]'
+              delay: '86400'
+              description: |
+                {other(1),
+                tachOutput(2),
+                spinDetect(3)
+                }
+              valuemap:
+                name: 'HP DL 风扇类型'
+              tags:
+                - tag: Application
+                  value: 风扇
+        - uuid: fae43c4cf8af4fdea274526a97ca7398
+          name: 逻辑磁盘
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE}, .1.3.6.1.4.1.232.3.2.3.1.1.2]'
+          key: LogicalDriveTable
+          delay: '3600'
+          lifetime: 3d
+          item_prototypes:
+            - uuid: 32d8a0c4c3f04e81ab1e52e05fba31b0
+              name: '逻辑磁盘 {#SNMPVALUE} 大小'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.3.2.3.1.1.9.{#SNMPINDEX}'
+              key: 'disk.logic.size[{#SNMPVALUE}]'
+              delay: '86400'
+              units: B
+              tags:
+                - tag: Application
+                  value: 磁盘
+            - uuid: 47cb3182be914dfba3b382b24597a05e
+              name: '逻辑磁盘 {#SNMPVALUE} 状态'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.3.2.3.1.1.4.{#SNMPINDEX}'
+              key: 'disk.logic.status[{#SNMPVALUE}]'
+              delay: '300'
+              description: |
+                Syntax	 INTEGER {
+                other(1),
+                ok(2),
+                failed(3),
+                unconfigured(4),
+                recovering(5),
+                readyForRebuild(6),
+                rebuilding(7),
+                wrongDrive(8),
+                badConnect(9),
+                overheating(10),
+                shutdown(11),
+                expanding(12),
+                notAvailable(13),
+                queuedForExpansion(14),
+                multipathAccessDegraded(15),
+                erasing(16),
+                predictiveSpareRebuildReady(17),
+                rapidParityInitInProgress(18),
+                rapidParityInitPending(19),
+                noAccessEncryptedNoCntlrKey(20),
+                unencryptedToEncryptedInProgress(21),
+                newLogDrvKeyRekeyInProgress(22),
+                noAccessEncryptedCntlrEncryptnNotEnbld(23),
+                unencryptedToEncryptedNotStarted(24),
+                newLogDrvKeyRekeyRequestReceived(25)
+                }
+              valuemap:
+                name: 'HP DL 逻辑磁盘状态'
+              tags:
+                - tag: Application
+                  value: 磁盘
+              trigger_prototypes:
+                - uuid: a49ce6d2fd22461c8ded897ed0569259
+                  expression: 'last(/LW_Template SNMP HP DL/disk.logic.status[{#SNMPVALUE}])>2'
+                  name: '[硬件设备]{HOST.NAME}磁盘{#SNMPVALUE}逻辑磁盘状态异常'
+                  priority: HIGH
+                  description: |
+                    (状态值表示当前状态)
+                    Syntax	 INTEGER {
+                    other(1),
+                    ok(2),
+                    failed(3),
+                    unconfigured(4),
+                    recovering(5),
+                    readyForRebuild(6),
+                    rebuilding(7),
+                    wrongDrive(8),
+                    badConnect(9),
+                    overheating(10),
+                    shutdown(11),
+                    expanding(12),
+                    notAvailable(13),
+                    queuedForExpansion(14),
+                    multipathAccessDegraded(15),
+                    erasing(16),
+                    predictiveSpareRebuildReady(17),
+                    rapidParityInitInProgress(18),
+                    rapidParityInitPending(19),
+                    noAccessEncryptedNoCntlrKey(20),
+                    unencryptedToEncryptedInProgress(21),
+                    newLogDrvKeyRekeyInProgress(22),
+                    noAccessEncryptedCntlrEncryptnNotEnbld(23),
+                    unencryptedToEncryptedNotStarted(24),
+                    newLogDrvKeyRekeyRequestReceived(25)
+                    }
+                  manual_close: 'YES'
+        - uuid: 34263ac1b1514852987c5424b4550a98
+          name: 内存
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE}, .1.3.6.1.4.1.232.6.2.14.13.1.9,{#SNMPMODE}, 1.3.6.1.4.1.232.6.2.14.13.1.13]'
+          key: Memory
+          delay: '3600'
+          filter:
+            conditions:
+              - macro: '{#SNMPVALUE}'
+                value: '^((?!UNKNOWN).)*$'
+                formulaid: A
+          lifetime: 3d
+          item_prototypes:
+            - uuid: bc9a2294874c49628cdb6e3a207ba5c8
+              name: '{#SNMPMODE} 内存ECC状态'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.6.2.14.13.1.20.{#SNMPINDEX}'
+              key: 'memory.ecc.status[{#SNMPMODE}]'
+              delay: '300'
+              description: |
+                This provides the current status of the correctable memory
+                errors for this memory module.
+                The following status values are supported:
+                other(1):
+                ECC is not supported on this memory module or the
+                condition could not be determined.
+                ok(2):
+                The memory module is operating normally.
+                degraded(3):
+                The memory module is correctable error count has exceeded
+                threshold or a configuration error has been detected.
+                degradedModuleIndexUnknown(4):
+                The correctable error count has exceeded threshold.
+                The module number not available.
+              tags:
+                - tag: Application
+                  value: 内存
+              trigger_prototypes:
+                - uuid: 75dac68075d64fcd8d2bd8f3317194c8
+                  expression: 'last(/LW_Template SNMP HP DL/memory.ecc.status[{#SNMPMODE}])=0'
+                  name: '[硬件设备]{HOST.NAME}设备内存{#SNMPMODE}ECC状态异常'
+                  priority: HIGH
+                  description: |
+                    (状态值表示当前状态)
+                    1 ⇒ 其他
+                    2 ⇒ 正常
+                    3 ⇒ 不正常
+                    4 ⇒ 损坏
+                  manual_close: 'YES'
+            - uuid: 499f1e57000142ebb54899fb78902e26
+              name: '{#SNMPMODE} 内存主频'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.6.2.14.13.1.14.{#SNMPINDEX}'
+              key: 'memory.frequency[{#SNMPMODE}]'
+              delay: '86400'
+              units: Hz
+              tags:
+                - tag: Application
+                  value: 内存
+            - uuid: b0dd6bec986c4d889d9c6b376bcf4012
+              name: '{#SNMPMODE} 内存厂商'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.6.2.14.13.1.9.{#SNMPINDEX}'
+              key: 'memory.mfc[{#SNMPMODE}]'
+              delay: '86400'
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: Application
+                  value: 内存
+            - uuid: d91bed0794d948b19aa51f0c5c08e578
+              name: '{#SNMPMODE} 内存部件型号'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.6.2.14.13.1.10.{#SNMPINDEX}'
+              key: 'memory.parts.model[{#SNMPMODE}]'
+              delay: '86400'
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: Application
+                  value: 内存
+            - uuid: 1e49d30dec26489eb3cbc6f1e10507c9
+              name: '{#SNMPMODE} 内存大小'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.6.2.14.13.1.6.{#SNMPINDEX}'
+              key: 'memory.size.total[{#SNMPMODE}]'
+              delay: '86400'
+              units: B
+              tags:
+                - tag: Application
+                  value: 内存
+            - uuid: e1957ef894cd4166832bc81d3b9b1568
+              name: '{#SNMPMODE} 内存状态'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.6.2.14.13.1.19.{#SNMPINDEX}'
+              key: 'memory.status[{#SNMPMODE}]'
+              delay: '300'
+              description: |
+                This provides the current status of the correctable memory
+                errors for this memory module.
+                The following status values are supported:
+                other(1):
+                The status is unknown or could not be determined.
+                notPresent(2):
+                The memory module is not present or is un-initialized.
+                present(3):
+                The memory module is present but not in use.
+                good(4):
+                The memory module is present and in use.  The corrected
+                error threshold has not been exceeded.
+                add(5):
+                The memory module has been added, but is not yet in use.
+                upgraded(6):
+                The memory module has been upgraded, but the memory is not
+                yet in use.
+                missing(7):
+                An expected memory module is missing.
+                doesNotMatch(8):
+                The memory module does not match the other memory modules
+                within the bank.
+                notSupported(9):
+                The memory module is not supported.
+                badConfig(10):
+                The memory module violates the add/upgrade configuration
+                rules.
+                degraded(11):
+                The memory module's correctable error count has exceeded
+                threshold.
+                spare(12):
+                The memory module is configured as a spare.
+                partial(13):
+                The memory module is present and is partially in use.
+              valuemap:
+                name: 'HP DL 内存状态'
+              tags:
+                - tag: Application
+                  value: 内存
+              trigger_prototypes:
+                - uuid: ae2dc5202a5340b4b69be645234bd5c3
+                  expression: 'last(/LW_Template SNMP HP DL/memory.status[{#SNMPMODE}])<>4'
+                  name: '[硬件设备]{HOST.NAME}设备内存{#SNMPMODE}异常'
+                  priority: HIGH
+                  description: |
+                    (状态值表示当前状态)
+                    其他（1）：
+                    状态未知或无法确定。
+                    不存在（2）：
+                    内存模块不存在或未初始化。
+                    出席（3）：
+                    内存模块存在但未使用。
+                    好（4）：
+                    内存模块存在且正在使用中。修正后的
+                    未超过错误阈值。
+                    添加（5）：
+                    内存模块已添加，但尚未使用。
+                    升级（6）：
+                    内存模块已升级，但内存不是
+                    但在使用中。
+                    缺少（7）：
+                    缺少预期的内存模块。
+                    Doesnotmatch（8个）：
+                    内存模块与其他内存模块不匹配
+                    不支持（9）：
+                    不支持内存模块。
+                    badconfig（10）：
+                    内存模块违反了添加/升级配置规则。
+                    降级（11）：
+                    内存模块的可更正错误计数已超过门槛。
+                    备用（12）：
+                    内存模块配置为备用。
+                    部分（13）：
+                    内存模块存在并且部分正在使用中。
+                  manual_close: 'YES'
+            - uuid: 772d51b8a6b848be976d5fc5a64a05c1
+              name: '{#SNMPMODE} 内存类型'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.6.2.14.13.1.7.{#SNMPINDEX}'
+              key: 'memory.type[{#SNMPMODE}]'
+              delay: '86400'
+              description: |
+                INTEGER {other(1),
+                board(2),
+                cpqSingleWidthModule(3),
+                cpqDoubleWidthModule(4),
+                simm(5),
+                pcmcia(6),
+                compaq-specific(7),
+                dimm(8),
+                smallOutlineDimm(9),
+                rimm(10),
+                srimm(11),
+                fb-dimm(12),
+                dimmddr(13),
+                dimmddr2(14),
+                dimmddr3(15),
+                dimmfbd2(16),
+                fb-dimmddr2(17),
+                fb-dimmddr3(18),
+                dimmddr4(19)
+                }
+                Type of memory module installed.  The value other(1) will be
+                given if the type is not known.  The value board(2) will be
+                given if the memory module is permanently mounted (not modular)
+                on a system board or memory expansion board.
+              valuemap:
+                name: 'HP DL 内存类型'
+              tags:
+                - tag: Application
+                  value: 内存
+        - uuid: ef31eb8b97794694831241ddb77bbdca
+          name: 网卡
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE}, .1.3.6.1.4.1.232.18.2.3.1.1.1]'
+          key: nic.discovery
+          delay: '3600'
+          lifetime: 3d
+          item_prototypes:
+            - uuid: 5acab58c476a47128a24cb6707fc74d2
+              name: '网卡 {#SNMPVALUE} 型号'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.18.2.3.1.1.39.{#SNMPINDEX}'
+              key: 'net.ifOperModel[eth{#SNMPVALUE}]'
+              delay: '86400'
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: Application
+                  value: 网卡
+            - uuid: b4e1978b35f94c58b195b3bb043d86d5
+              name: '网卡 {#SNMPVALUE} 状态'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.18.2.3.1.1.12.{#SNMPINDEX}'
+              key: 'net.ifOperStatus[eth{#SNMPVALUE}]'
+              delay: '300'
+              description: |
+                The condition of this physical adapter.
+                This value is driven by the cpqNicIfPhysAdapterStatus object
+                as follows:
+                other(1)
+                Indicates that the value of the Physical Adapter
+                Status is unknown(1).
+                ok(2)
+                Indicates that the value of the Physical Adapter
+                Status is ok(2).
+                degraded(3)
+                Defined for all condition variables, but is
+                not applicable for single adapters.
+                failed(4)
+                Indicates that the value of the Physical Adapter
+                Status is linkFailure(4).
+              valuemap:
+                name: 'HP DL 网卡状态'
+              tags:
+                - tag: Application
+                  value: 网卡
+              trigger_prototypes:
+                - uuid: 8c9de34781924f4586f5f368aae5bf94
+                  expression: 'last(/LW_Template SNMP HP DL/net.ifOperStatus[eth{#SNMPVALUE}])>2'
+                  name: '[硬件设备]{HOST.NAME}网卡 {#SNMPVALUE} 状态异常'
+                  priority: HIGH
+                  description: |
+                    (状态值表示当前状态)
+                    1 ⇒ 不支持此类监控
+                    2 ⇒ 正常
+                    3 ⇒ 不正常
+                    4 ⇒ 失效
+                  manual_close: 'YES'
+            - uuid: f8976e3fe472400d89d4680e251ce1ef
+              name: '网卡 {#SNMPVALUE} MAC地址'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.18.2.3.1.1.4.{#SNMPINDEX}'
+              key: 'net.ifPhysAddress[eth{#SNMPVALUE}]'
+              delay: '86400'
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: Application
+                  value: 网卡
+        - uuid: e582bfc0d77147acabb6d006831ed663
+          name: 磁盘
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE},.1.3.6.1.4.1.232.3.2.5.1.1.64]'
+          key: PhysicalDriveTable
+          delay: '3600'
+          lifetime: 3d
+          item_prototypes:
+            - uuid: 54fe607b82f34684b4300475d80b81ec
+              name: '{#SNMPVALUE} 物理驱动器介质类型'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.3.2.5.1.1.69.{#SNMPINDEX}'
+              key: 'disk.media.type[disk{#SNMPVALUE}]'
+              delay: '86400'
+              description: |
+                Drive Array Physical Drive Media Type.
+                The following values are defined:
+                other(1)
+                The instrument agent is unable to determine the physical drives
+                media type.
+                rotatingPlatters(2)
+                The physical drive media is composed of rotating platters.
+                solidState(3)
+                The physical drive media is composed of solid state electronics.
+              valuemap:
+                name: 'HP DL 磁盘介质类型'
+              tags:
+                - tag: Application
+                  value: 磁盘
+            - uuid: 270b60f9680a4cd2b1c190cb7fb5238a
+              name: '物理磁盘 {#SNMPVALUE} 型号'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.3.2.5.1.1.3.{#SNMPINDEX}'
+              key: 'disk.model[disk{#SNMPVALUE}]'
+              delay: '86400'
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: Application
+                  value: 磁盘
+            - uuid: a8ddeda063674e9189f14196610086b0
+              name: '物理磁盘 {#SNMPVALUE} 序列号'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.3.2.5.1.1.51.{#SNMPINDEX}'
+              key: 'disk.serial[disk{#SNMPVALUE}]'
+              delay: '86400'
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: Application
+                  value: 磁盘
+            - uuid: 7d08f2591ef74603952443f977ec9e6f
+              name: '物理磁盘 {#SNMPVALUE} 大小'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.3.2.5.1.1.45.{#SNMPINDEX}'
+              key: 'disk.size.total[disk{#SNMPVALUE}]'
+              delay: '86400'
+              units: B
+              tags:
+                - tag: Application
+                  value: 磁盘
+            - uuid: 8f8ba796ab4947fa8a0ddcd0562199df
+              name: '物理磁盘 {#SNMPVALUE} 转速'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.3.2.5.1.1.59.{#SNMPINDEX}'
+              key: 'disk.speed[disk{#SNMPVALUE}]'
+              delay: '86400'
+              tags:
+                - tag: Application
+                  value: 磁盘
+            - uuid: c50130f60a114889afce7393f8610452
+              name: '物理磁盘 {#SNMPVALUE} 状态'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.3.2.5.1.1.6.{#SNMPINDEX}'
+              key: 'disk.status[disk{#SNMPVALUE}]'
+              delay: '300'
+              description: |
+                Syntax	 INTEGER {other(1),
+                ok(2),
+                failed(3),
+                predictiveFailure(4),
+                erasing(5),
+                eraseDone(6),
+                eraseQueued(7),
+                ssdWearOut(8),
+                notAuthenticated(9)
+                }
+              valuemap:
+                name: 'HP DL 磁盘状态'
+              tags:
+                - tag: Application
+                  value: 磁盘
+              trigger_prototypes:
+                - uuid: af73906edd3f4e619e9b1a1761460f79
+                  expression: 'last(/LW_Template SNMP HP DL/disk.status[disk{#SNMPVALUE}])>2'
+                  name: '[硬件设备]{HOST.NAME}磁盘 {#SNMPVALUE} 状态异常'
+                  priority: HIGH
+                  description: |
+                    (状态值表示当前状态)
+                    1⇒其他
+                    2⇒正常
+                    3⇒错误
+                    4⇒预测错误
+                    5⇒擦除
+                    6⇒完成擦除
+                    7⇒排队擦除
+                    8⇒ssd磨损
+                    9⇒不验证
+                  manual_close: 'YES'
+            - uuid: e79dea8dcbe64878a33a0153a6dd4e53
+              name: '物理磁盘 {#SNMPVALUE} 当前温度'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.3.2.5.1.1.70.{#SNMPINDEX}'
+              key: 'disk.temp[disk{#SNMPVALUE}]'
+              delay: '300'
+              units: °C
+              tags:
+                - tag: Application
+                  value: 磁盘
+              trigger_prototypes:
+                - uuid: 8ee73694cf5742caae6abe8d0f174413
+                  expression: 'last(/LW_Template SNMP HP DL/disk.temp[disk{#SNMPVALUE}])>65'
+                  name: '[硬件设备]{HOST.NAME}磁盘 {#SNMPVALUE} 温度高于65度'
+                  priority: HIGH
+                  description: (状态值表示当前温度)
+                  manual_close: 'YES'
+            - uuid: 53a23303e25e40cca80abaad24a2e092
+              name: '物理磁盘 {#SNMPVALUE} 类型'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.3.2.5.1.1.60.{#SNMPINDEX}'
+              key: 'disk.type[disk{#SNMPVALUE}]'
+              delay: '86400'
+              description: |
+                Syntax	 INTEGER {other(1),
+                parallelScsi(2),
+                sata(3),
+                sas(4)
+                }
+              valuemap:
+                name: 'HP DL 磁盘类型'
+              tags:
+                - tag: Application
+                  value: 磁盘
+            - uuid: 11f5a1ab20394179a7dc7947531df5d0
+              name: '物理磁盘 {#SNMPVALUE} 固件版本'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.3.2.5.1.1.4.{#SNMPINDEX}'
+              key: 'disk.version[disk{#SNMPVALUE}]'
+              delay: '86400'
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: Application
+                  value: 磁盘
+        - uuid: 20abeba100d3425b85ad3cea31d267e4
+          name: 电源
+          type: SNMP_AGENT
+          snmp_oid: 'discover[{#SNMPVALUE}, .1.3.6.1.4.1.232.6.2.9.3.1.2]'
+          key: Power
+          delay: '3600'
+          lifetime: 3d
+          item_prototypes:
+            - uuid: 8ca229c9b0ec4bd282ca724ed90beb73
+              name: '电源 {#SNMPINDEX} 输入电压'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.6.2.9.3.1.6.{#SNMPINDEX}'
+              key: 'power.input.voltage[power{#SNMPINDEX}]'
+              delay: '300'
+              units: V
+              tags:
+                - tag: Application
+                  value: 电源
+            - uuid: b916f597cd6a474ab4d044625d020ae2
+              name: '电源 {#SNMPINDEX} 当前功率'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.6.2.9.3.1.7.{#SNMPINDEX}'
+              key: 'power.in[power{#SNMPINDEX}]'
+              delay: '300'
+              units: watts
+              tags:
+                - tag: Application
+                  value: 电源
+            - uuid: 6b02a6c40afb47fca92f0b83f5b31890
+              name: '电源 {#SNMPINDEX} 最大功率'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.6.2.9.3.1.8.{#SNMPINDEX}'
+              key: 'power.max[power{#SNMPINDEX}]'
+              delay: '86400'
+              units: watts
+              tags:
+                - tag: Application
+                  value: 电源
+            - uuid: 3ffc930747cb474f9fea3f14b3f2002d
+              name: '电源 {#SNMPINDEX} 型号'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.6.2.9.3.1.10.{#SNMPINDEX}'
+              key: 'power.model[power{#SNMPINDEX}]'
+              delay: '86400'
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: Application
+                  value: 电源
+            - uuid: 02f9fa70fb44482eb7b2a596f6e47dce
+              name: '电源 {#SNMPINDEX} 部件号'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.6.2.9.3.1.16.{#SNMPINDEX}'
+              key: 'power.part.number[power{#SNMPINDEX}]'
+              delay: '86400'
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: Application
+                  value: 电源
+            - uuid: 2e539159ef9d4e3880f6ed4c0e7d6218
+              name: '电源 {#SNMPINDEX} 是否在位'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.6.2.9.3.1.3.{#SNMPINDEX}'
+              key: 'power.present[power{#SNMPINDEX}]'
+              delay: '300'
+              description: |
+                INTEGER {other(1),
+                absent(2),
+                present(3)
+                }
+              valuemap:
+                name: 'HP DL 电源在位状态'
+              tags:
+                - tag: Application
+                  value: 电源
+              trigger_prototypes:
+                - uuid: c927553c07aa4cde8c500db195f74800
+                  expression: 'last(/LW_Template SNMP HP DL/power.present[power{#SNMPINDEX}])=2'
+                  name: '[硬件设备]{HOST.NAME}设备电源{#SNMPINDEX}]拔出'
+                  priority: HIGH
+                  description: |
+                    (状态值表示当前状态)
+                    1 ⇒ 其他
+                    2 ⇒ 缺失
+                    3 ⇒ 在位
+                  manual_close: 'YES'
+            - uuid: 93018dd25f12489ea6ac328fb5fe1c90
+              name: '电源 {#SNMPINDEX} 序列号'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.6.2.9.3.1.11.{#SNMPINDEX}'
+              key: 'power.serial[power{#SNMPINDEX}]'
+              delay: '86400'
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: Application
+                  value: 电源
+            - uuid: 3e63d05c53b547c2ba48c56a5668589a
+              name: '电源 {#SNMPINDEX} 状态'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.6.2.9.3.1.5.{#SNMPINDEX}'
+              key: 'power.status[power{#SNMPINDEX}]'
+              delay: '300'
+              description: |
+                INTEGER {noError(1),
+                generalFailure(2),
+                bistFailure(3),
+                fanFailure(4),
+                tempFailure(5),
+                interlockOpen(6),
+                epromFailed(7),
+                vrefFailed(8),
+                dacFailed(9),
+                ramTestFailed(10),
+                voltageChannelFailed(11),
+                orringdiodeFailed(12),
+                brownOut(13),
+                giveupOnStartup(14),
+                nvramInvalid(15),
+                calibrationTableInvalid(16),
+                noPowerInput(17)
+                }
+              valuemap:
+                name: 'HP DL 电源状态'
+              tags:
+                - tag: Application
+                  value: 电源
+              trigger_prototypes:
+                - uuid: 870fe2fe505849ba9719af592440fa3f
+                  expression: 'last(/LW_Template SNMP HP DL/power.status[power{#SNMPINDEX}])>1'
+                  name: '[硬件设备]{HOST.NAME}设备电源{#SNMPINDEX}]发生错误'
+                  priority: HIGH
+                  description: |
+                    (状态值表示当前状态)
+                    INTEGER {noError(1),
+                    generalFailure(2),
+                    bistFailure(3),
+                    fanFailure(4),
+                    tempFailure(5),
+                    interlockOpen(6),
+                    epromFailed(7),
+                    vrefFailed(8),
+                    dacFailed(9),
+                    ramTestFailed(10),
+                    voltageChannelFailed(11),
+                    orringdiodeFailed(12),
+                    brownOut(13),
+                    giveupOnStartup(14),
+                    nvramInvalid(15),
+                    calibrationTableInvalid(16),
+                    noPowerInput(17)
+                    }
+                  manual_close: 'YES'
+            - uuid: 65e95979921f4122b2fa6737d4e234f5
+              name: '电源 {#SNMPINDEX} 固件版本'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.232.6.2.9.3.1.14.{#SNMPINDEX}'
+              key: 'power.version[power{#SNMPINDEX}]'
+              delay: '86400'
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: Application
+                  value: 电源
+      valuemaps:
+        - uuid: 9688741060ee42288b8ff8a4d70406e3
+          name: 'HP DL CPU状态'
+          mappings:
+            - value: '1'
+              newvalue: unknown
+            - value: '2'
+              newvalue: ok
+            - value: '3'
+              newvalue: degraded
+            - value: '4'
+              newvalue: failed
+            - value: '5'
+              newvalue: disabled
+        - uuid: 413ba20d82e941dc834e2ec40bdf38dd
+          name: 'HP DL CPU线程'
+          mappings:
+            - value: '1'
+              newvalue: unknown
+            - value: '2'
+              newvalue: enabled
+            - value: '3'
+              newvalue: disabled
+        - uuid: 0bf90065053a4964b0ad56ef8dcf01d1
+          name: 'HP DL 内存状态'
+          mappings:
+            - value: '1'
+              newvalue: other
+            - value: '2'
+              newvalue: ok
+            - value: '3'
+              newvalue: degraded
+            - value: '4'
+              newvalue: degradedModuleIndexUnknown
+        - uuid: 9e55470ad3d24261b46a852dc6a5e197
+          name: 'HP DL 内存类型'
+          mappings:
+            - value: '1'
+              newvalue: other
+            - value: '2'
+              newvalue: board
+            - value: '3'
+              newvalue: cpqSingleWidthModule
+            - value: '4'
+              newvalue: cpqDoubleWidthModule
+            - value: '5'
+              newvalue: simm
+            - value: '6'
+              newvalue: pcmcia
+            - value: '7'
+              newvalue: compaq-specific
+            - value: '8'
+              newvalue: dimm
+            - value: '9'
+              newvalue: smallOutlineDimm
+            - value: '10'
+              newvalue: rimm
+            - value: '11'
+              newvalue: srimm
+            - value: '12'
+              newvalue: fb-dimm
+            - value: '13'
+              newvalue: dimmddr
+            - value: '14'
+              newvalue: dimmddr2
+            - value: '15'
+              newvalue: dimmddr3
+            - value: '16'
+              newvalue: dimmfbd2
+            - value: '17'
+              newvalue: fb-dimmddr2
+            - value: '18'
+              newvalue: fb-dimmddr3
+            - value: '19'
+              newvalue: dimmddr4
+        - uuid: 563c499f811f4f3cae2791f23074877e
+          name: 'HP DL 电源在位状态'
+          mappings:
+            - value: '1'
+              newvalue: other
+            - value: '2'
+              newvalue: absent
+            - value: '3'
+              newvalue: present
+        - uuid: 14e985134a8445adbc361e04e6832e6b
+          name: 'HP DL 电源状态'
+          mappings:
+            - value: '1'
+              newvalue: noError
+            - value: '2'
+              newvalue: generalFailure
+            - value: '3'
+              newvalue: bistFailure
+            - value: '4'
+              newvalue: fanFailure
+            - value: '5'
+              newvalue: tempFailure
+            - value: '6'
+              newvalue: interlockOpen
+            - value: '7'
+              newvalue: epromFailed
+            - value: '8'
+              newvalue: vrefFailed
+            - value: '9'
+              newvalue: dacFailed
+            - value: '10'
+              newvalue: ramTestFailed
+            - value: '11'
+              newvalue: voltageChannelFailed
+            - value: '12'
+              newvalue: orringdiodeFailed
+            - value: '13'
+              newvalue: brownOut
+            - value: '14'
+              newvalue: giveupOnStartup
+            - value: '15'
+              newvalue: nvramInvalid
+            - value: '16'
+              newvalue: calibrationTableInvalid
+            - value: '17'
+              newvalue: noPowerInput
+        - uuid: 3878b8bf15064e0e80d82ccce12bad93
+          name: 'HP DL 磁盘介质类型'
+          mappings:
+            - value: '1'
+              newvalue: other
+            - value: '2'
+              newvalue: rotatingPlatters
+            - value: '3'
+              newvalue: solidState
+        - uuid: 97ad50609f2d4778b7d7ec3d7b9422ce
+          name: 'HP DL 磁盘状态'
+          mappings:
+            - value: '1'
+              newvalue: other
+            - value: '2'
+              newvalue: ok
+            - value: '3'
+              newvalue: failed
+            - value: '4'
+              newvalue: predictiveFailure
+            - value: '5'
+              newvalue: erasing
+            - value: '6'
+              newvalue: eraseDone
+            - value: '7'
+              newvalue: eraseQueued
+            - value: '8'
+              newvalue: ssdWearOut
+            - value: '9'
+              newvalue: notAuthenticated
+        - uuid: 4652053ad9274a7ba7f40ee46120766a
+          name: 'HP DL 磁盘类型'
+          mappings:
+            - value: '1'
+              newvalue: other
+            - value: '2'
+              newvalue: parallelScs
+            - value: '3'
+              newvalue: sata
+            - value: '4'
+              newvalue: sas
+        - uuid: 73fc669881834d1db8ae5c91aacdcf38
+          name: 'HP DL 网卡状态'
+          mappings:
+            - value: '1'
+              newvalue: other
+            - value: '2'
+              newvalue: ok
+            - value: '3'
+              newvalue: degraded
+            - value: '4'
+              newvalue: failed
+        - uuid: d2f73ac90beb4e3f868705db9b824f38
+          name: 'HP DL 设备状态'
+          mappings:
+            - value: '1'
+              newvalue: other
+            - value: '2'
+              newvalue: ok
+            - value: '3'
+              newvalue: degraded
+            - value: '4'
+              newvalue: failed
+        - uuid: 74990f2f2cd7441d91c72b16bf201f93
+          name: 'HP DL 逻辑磁盘状态'
+          mappings:
+            - value: '1'
+              newvalue: other
+            - value: '2'
+              newvalue: ok
+            - value: '3'
+              newvalue: failed
+            - value: '4'
+              newvalue: unconfigured
+            - value: '5'
+              newvalue: recovering
+            - value: '6'
+              newvalue: readyForRebuild
+            - value: '7'
+              newvalue: rebuilding
+            - value: '8'
+              newvalue: wrongDrive(
+            - value: '9'
+              newvalue: badConnect
+            - value: '10'
+              newvalue: overheating
+            - value: '11'
+              newvalue: shutdown
+            - value: '12'
+              newvalue: expanding
+            - value: '13'
+              newvalue: notAvailable
+            - value: '14'
+              newvalue: queuedForExpansion
+            - value: '15'
+              newvalue: multipathAccessDegraded
+            - value: '16'
+              newvalue: erasing
+            - value: '17'
+              newvalue: predictiveSpareRebuildReady
+            - value: '18'
+              newvalue: rapidParityInitInProgress
+            - value: '19'
+              newvalue: rapidParityInitPending
+            - value: '20'
+              newvalue: noAccessEncryptedNoCntlrKey
+            - value: '21'
+              newvalue: unencryptedToEncryptedInProgress
+            - value: '22'
+              newvalue: newLogDrvKeyRekeyInProgress
+            - value: '23'
+              newvalue: noAccessEncryptedCntlrEncryptnNotEnbld
+            - value: '24'
+              newvalue: unencryptedToEncryptedNotStarted
+            - value: '25'
+              newvalue: newLogDrvKeyRekeyRequestReceived
+        - uuid: a314e1a2feb54da4a162f802807c8897
+          name: 'HP DL 风扇位置'
+          mappings:
+            - value: '1'
+              newvalue: other
+            - value: '2'
+              newvalue: unknown
+            - value: '3'
+              newvalue: system
+            - value: '4'
+              newvalue: systemBoard
+            - value: '5'
+              newvalue: ioBoard
+            - value: '6'
+              newvalue: cpu
+            - value: '7'
+              newvalue: memory
+            - value: '8'
+              newvalue: storage
+            - value: '9'
+              newvalue: removableMedia
+            - value: '10'
+              newvalue: powerSupply
+            - value: '11'
+              newvalue: ambient
+            - value: '12'
+              newvalue: chassis
+            - value: '13'
+              newvalue: bridgeCard
+            - value: '14'
+              newvalue: managementBoard
+            - value: '15'
+              newvalue: backplane
+            - value: '16'
+              newvalue: networkSlot
+            - value: '17'
+              newvalue: bladeSlot
+            - value: '18'
+              newvalue: virtual
+        - uuid: 031139180dd24ab8b135451acff3f793
+          name: 'HP DL 风扇类型'
+          mappings:
+            - value: '1'
+              newvalue: other
+            - value: '2'
+              newvalue: tachOutput
+            - value: '3'
+              newvalue: spinDetect
+        - uuid: e647aad98a24485ba4be26e4dba0d297
+          name: 'HP DL 风扇转速'
+          mappings:
+            - value: '1'
+              newvalue: other
+            - value: '2'
+              newvalue: normal
+            - value: '3'
+              newvalue: high

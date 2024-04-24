@@ -1,0 +1,1016 @@
+zabbix_export:
+  version: '6.0'
+  date: '2024-04-24T07:20:28Z'
+  groups:
+    - uuid: 9397477ac4614c8da379ea37c1c5b0e0
+      name: 监控模板
+    - uuid: 989d6a022aab491b8a20c2ee4be9c738
+      name: 网络设备模板
+  templates:
+    - uuid: 8638ddead0a0416297455d72ecdcd076
+      template: 'Template of Snmp RuiJie General'
+      name: '锐捷网络设备通用模板[4881]'
+      groups:
+        - name: 监控模板
+        - name: 网络设备模板
+      items:
+        - uuid: 063d2bb3edd64113a95d0215fdceaf0c
+          name: CPU使用率(1min内)
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.4881.1.1.10.2.36.1.1.2.0
+          key: 'CPUUsage[last1min]'
+          units: '%'
+          tags:
+            - tag: Application
+              value: 性能
+        - uuid: 700666feb3ef43feb68523ca55640fbb
+          name: CPU使用率(5min内)
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.4881.1.1.10.2.36.1.1.3.0
+          key: CPUUsage_last5min
+          units: '%'
+          tags:
+            - tag: Application
+              value: 性能
+        - uuid: 341e2cb7372d4cf49b2afd5a045739cb
+          name: CPU使用率(5s内)
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.4881.1.1.10.2.36.1.1.1.0
+          key: CPUUsage_last5sec
+          units: '%'
+          tags:
+            - tag: Application
+              value: 性能
+        - uuid: 236a8292058745269e3b166c0c7b696b
+          name: 序列号
+          type: SNMP_AGENT
+          snmp_oid: enterprises.4881.1.1.10.2.1.1.24.0
+          key: dev.serial
+          delay: 1d
+          history: 7d
+          trends: '0'
+          value_type: CHAR
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: 2e07dbe2cbb349a3b1ac3d4bb6b0ebb3
+          name: 软件版本
+          type: SNMP_AGENT
+          snmp_oid: enterprises.4881.1.1.10.2.1.1.2.0
+          key: dev.software.version
+          delay: 1d
+          history: 7d
+          trends: '0'
+          value_type: CHAR
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: f4309682963647a39f32fc2b7a3a8aca
+          name: 固件版本
+          type: SNMP_AGENT
+          snmp_oid: enterprises.4881.1.1.10.2.1.1.3.0
+          key: dev.version
+          delay: 1d
+          history: 7d
+          trends: '0'
+          value_type: CHAR
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: 68514d89df5a442897944ccb91166a07
+          name: 'ICMP 丢包率'
+          type: SIMPLE
+          key: 'icmppingloss[,2,,,]'
+          delay: '60'
+          history: 7d
+          value_type: FLOAT
+          units: '%'
+          description: 'ICMP pingloss'
+          tags:
+            - tag: Application
+              value: ICMP
+        - uuid: 8c7fe52fe59444dcb23358f6b6c8f4d1
+          name: 'ICMP 延时'
+          type: SIMPLE
+          key: 'icmppingsec[,2,,,]'
+          delay: '60'
+          history: 7d
+          value_type: FLOAT
+          units: ms
+          description: 'ICMP pingsec'
+          tags:
+            - tag: Application
+              value: ICMP
+        - uuid: e6250b047dad486396d33c804c5d8da3
+          name: 'ICMP ping状态'
+          type: SIMPLE
+          key: 'icmpping[,2,,,]'
+          delay: '60'
+          history: 7d
+          description: 'ICMP ping'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: ICMP
+        - uuid: 1761ce5a6e8042579ded8704d6cbee8c
+          name: 端口数量
+          type: SNMP_AGENT
+          snmp_oid: 'IF-MIB::ifNumber.0'
+          key: ifNumber
+          delay: '3600'
+          history: 7d
+          description: 'The number of network interfaces (regardless of their current state) present on this system.'
+          tags:
+            - tag: Application
+              value: 端口信息
+        - uuid: 635e552e732e41ffaa803f1a8757f5c0
+          name: 空闲内存(KB/B)
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.4881.1.1.10.2.35.1.1.1.8.1
+          key: MemoryFree
+          units: B
+          description: 不同型号锐捷返回内存单位可能为B/KB，请根据具体情况对进程的倍率调整
+          tags:
+            - tag: Application
+              value: 性能
+        - uuid: ed93bc3565aa4b56b3a07828feea8c8e
+          name: 内存大小(KB/B)
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.4881.1.1.10.2.35.1.1.1.6.1
+          key: MemorySize
+          units: B
+          description: 不同型号锐捷返回内存单位可能为B/KB，请根据具体情况对进程的倍率调整
+          tags:
+            - tag: Application
+              value: 性能
+        - uuid: 5a03424f10484a058cb8ddf3535027c0
+          name: 内存使用率
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.4881.1.1.10.2.35.1.1.1.3.1
+          key: MemoryUsage
+          units: '%'
+          tags:
+            - tag: Application
+              value: 性能
+        - uuid: d22fa0e0d02b4619957f25410854f9b5
+          name: 已用内存(KB/B)
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.4.1.4881.1.1.10.2.35.1.1.1.7.1
+          key: MemoryUsed
+          units: B
+          description: 不同型号锐捷返回内存单位可能为B/KB，请根据具体情况对进程的倍率调整
+          tags:
+            - tag: Application
+              value: 性能
+        - uuid: 8f92df40a4da4238848a32b78b9dc737
+          name: 'SNMP traps (fallback)'
+          type: SNMP_TRAP
+          key: snmptrap.fallback
+          delay: '0'
+          history: 7d
+          trends: '0'
+          value_type: LOG
+          logtimefmt: 'hh:mm:sszyyyy/MM/dd'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: 65887f43a8c145a1b8d54fbc06a28cb6
+          name: 设备详细的联系方式
+          type: SNMP_AGENT
+          snmp_oid: 'SNMPv2-MIB::sysContact.0'
+          key: sysContact
+          delay: 1d
+          history: 7d
+          trends: '0'
+          value_type: CHAR
+          description: 'The textual identification of the contact person for this managed node, together with information on how to contact this person.  If no contact information is known, the value is the zero-length string.'
+          inventory_link: CONTACT
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: 22476fa914cc4ccc8ef28f02bef9275c
+          name: 设备描述
+          type: SNMP_AGENT
+          snmp_oid: 'SNMPv2-MIB::sysDescr.0'
+          key: sysDescr
+          delay: 1d
+          history: 7d
+          trends: '0'
+          value_type: CHAR
+          description: 'A textual description of the entity.  This value should include the full name and version identification of the system''s hardware type, software operating-system, and networking software.'
+          inventory_link: HARDWARE
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: 1cbd949b6af844759a18b79748e81970
+          name: 设备位置
+          type: SNMP_AGENT
+          snmp_oid: 'SNMPv2-MIB::sysLocation.0'
+          key: sysLocation
+          delay: 1d
+          history: 7d
+          trends: '0'
+          value_type: CHAR
+          description: 'The physical location of this node (e.g., `telephone closet, 3rd floor'').  If the location is unknown, the value is the zero-length string.'
+          inventory_link: LOCATION
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: a4606c3f2e5b419999a314aefcba045e
+          name: 设备名称
+          type: SNMP_AGENT
+          snmp_oid: 'SNMPv2-MIB::sysName.0'
+          key: sysName
+          delay: 1d
+          history: 7d
+          trends: '0'
+          value_type: CHAR
+          description: 'An administratively-assigned name for this managed node. By convention, this is the node''s fully-qualified domain name.  If the name is unknown, the value is the zero-length string.'
+          inventory_link: NAME
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+          triggers:
+            - uuid: b38548aa2c2a4cb7b09d869e1f6e25c8
+              expression: '(last(/Template of Snmp RuiJie General/sysName,#1)<>last(/Template of Snmp RuiJie General/sysName,#2))>0'
+              name: '[网络设备]{HOST.NAME}设备名称发生改变'
+              priority: WARNING
+              description: |
+                (当前状态值为改变后的设备名称)
+                设备名称发生改变
+              manual_close: 'YES'
+        - uuid: 4a1bf7aa5d714f5d8eec354d8730e244
+          name: 设备运行时间
+          type: SNMP_AGENT
+          snmp_oid: 'SNMPv2-MIB::sysUpTime.0'
+          key: sysUpTime
+          history: 7d
+          units: uptime
+          description: 'The time since the network management portion of the system was last re-initialized.，该值在设备连续运行未超过300多天时可以当作设备运行时间，当超过300多天根据型号不同，改计数器会自动重置为0重新计算时间'
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.01'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+          triggers:
+            - uuid: be68c299a51a481b9f576505a304f72d
+              expression: 'nodata(/Template of Snmp RuiJie General/sysUpTime,10m)=1'
+              name: '[网络设备]{HOST.NAME}SNMP采集中断'
+              priority: HIGH
+              description: |
+                状态值1为BMC运行时间
+                需要检查SNMP团体名是否不对应，或网络设备不支持多进程请求，或网络拦截snmp协议等
+              manual_close: 'YES'
+              dependencies:
+                - name: '[操作系统] {HOST.NAME}主采集服务器 Agent 无法采集到数据'
+                  expression: 'nodata(/itops-server/agent.ping,2m)=1'
+                  recovery_expression: 'count(/itops-server/zabbix[process,history syncer,avg,busy],10m,"lt","75")=10 and count(/itops-server/agent.ping,10m,"eq","1")=10'
+                - name: '[网络设备]{HOST.NAME}失联,持续3分钟未响应'
+                  expression: 'max(/Template of Snmp RuiJie General/icmpping[,2,,,],3m)=0 and nodata(/Template of Snmp RuiJie General/sysUpTime,3m)=1'
+                  recovery_expression: 'min(/Template of Snmp RuiJie General/icmpping[,2,,,],3m)=1 and nodata(/Template of Snmp RuiJie General/sysUpTime,2m)=0'
+      discovery_rules:
+        - uuid: 8dd330fed0fb4b6da2d3977aa18bd6f7
+          name: 设备信息
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE},enterprises.4881.1.1.10.2.1.1.25.1.1]'
+          key: dev.info
+          delay: 1h
+          lifetime: 10d
+          description: 索引号
+          item_prototypes:
+            - uuid: 3c6fdbdf0c7949a3b5a54335e28d4f97
+              name: '设备 {#SNMPVALUE} 描述'
+              type: SNMP_AGENT
+              snmp_oid: 'enterprises.4881.1.1.10.2.1.1.25.1.2.{#SNMPINDEX}'
+              key: 'dev.descr[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: Application
+                  value: 设备信息
+            - uuid: b79ca4c03653448b8451ced5259b65d1
+              name: '设备 {#SNMPVALUE} 固件版本'
+              type: SNMP_AGENT
+              snmp_oid: 'enterprises.4881.1.1.10.2.1.1.25.1.3.{#SNMPINDEX}'
+              key: 'dev.firmware[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: Application
+                  value: 设备信息
+            - uuid: 7032ad545a494d0999c7d96957528e09
+              name: '设备 {#SNMPVALUE} 序列号'
+              type: SNMP_AGENT
+              snmp_oid: 'enterprises.4881.1.1.10.2.1.1.25.1.7.{#SNMPINDEX}'
+              key: 'dev.serial[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: Application
+                  value: 设备信息
+            - uuid: fc460bc7750849f8bd3618e84afee954
+              name: '设备 {#SNMPVALUE}系统版本'
+              type: SNMP_AGENT
+              snmp_oid: 'enterprises.4881.1.1.10.2.1.1.25.1.5.{#SNMPINDEX}'
+              key: 'dev.version[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: Application
+                  value: 设备信息
+        - uuid: 149595da01db4a5a8fa64c0be30ed2c8
+          name: 风扇
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE},enterprises.4881.1.1.10.2.1.1.21.1.3]'
+          key: fan
+          delay: 1h
+          lifetime: 10d
+          item_prototypes:
+            - uuid: 490b3576efee4bcea4d8ad7d37da7919
+              name: '风扇{#SNMPVALUE} 状态'
+              type: SNMP_AGENT
+              snmp_oid: 'enterprises.4881.1.1.10.2.1.1.21.1.2.{#SNMPINDEX}'
+              key: 'fan.status[FAN{#SNMPVALUE}]'
+              delay: 60s
+              history: 7d
+              valuemap:
+                name: '锐捷S6220 设备状态'
+              tags:
+                - tag: Application
+                  value: 风扇
+              trigger_prototypes:
+                - uuid: 9d445c1b997f429aa207d7c9d0951c06
+                  expression: 'last(/Template of Snmp RuiJie General/fan.status[FAN{#SNMPVALUE}])=1'
+                  name: '设备 {HOST.NAME} 风扇 {#SNMPINDEX} 状态不正常'
+                  priority: HIGH
+                  description: |
+                    4 - 正常
+                    1 - 缺失
+                  manual_close: 'YES'
+        - uuid: 98857d0ba1da498694e8f177b5bb7798
+          name: '端口表 UP'
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE},IF-MIB::ifName,{#SNMPOPEN},IF-MIB::ifOperStatus]'
+          key: ifDescr
+          delay: '3600'
+          filter:
+            evaltype: AND
+            conditions:
+              - macro: '{#SNMPOPEN}'
+                value: (1|3)
+                formulaid: A
+              - macro: '{#SNMPVALUE}'
+                value: '@Network interfaces for discovery'
+                formulaid: B
+          lifetime: 3d
+          description: 端口表
+          item_prototypes:
+            - uuid: bf45e63157cb4103acc4abf26752d20f
+              name: '{#SNMPVALUE}（端口启用管理状态）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifAdminStatus.{#SNMPINDEX}'
+              key: 'ifAdminStatus[{#SNMPVALUE}]'
+              delay: 2m
+              history: 7d
+              tags:
+                - tag: Application
+                  value: 端口状态
+            - uuid: 2dfccdae73f749cabb840dca551fde3b
+              name: '{#SNMPVALUE}（端口描述）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifAlias.{#SNMPINDEX}'
+              key: 'ifAlias[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: 端口描述
+              tags:
+                - tag: Application
+                  value: 端口信息
+            - uuid: b06a03c4b7a74e4fb003f163cd87d0ba
+              name: '{#SNMPVALUE}（端口每秒接收速率）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifHCInOctets.{#SNMPINDEX}'
+              key: 'ifHCInOctetsPersecond[{#SNMPVALUE}]'
+              delay: 2m
+              history: 7d
+              units: bps
+              description: 端口每秒接收速率
+              preprocessing:
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+                - type: MULTIPLIER
+                  parameters:
+                    - '8'
+              tags:
+                - tag: Application
+                  value: 端口速率
+            - uuid: 1af5938a60df48fd9de883ef7b2cd9b7
+              name: '{#SNMPVALUE}（端口接收总流量）(5分钟)'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifHCInOctets.{#SNMPINDEX}'
+              key: 'ifHCInOctets[{#SNMPVALUE}]'
+              delay: 5m
+              history: 7d
+              status: DISABLED
+              discover: NO_DISCOVER
+              units: B
+              preprocessing:
+                - type: SIMPLE_CHANGE
+                  parameters:
+                    - ''
+              tags:
+                - tag: Application
+                  value: 端口速率
+            - uuid: 60b2d95ed3f14f35afe3c3c75cac14bf
+              name: '{#SNMPVALUE}（端口每秒发送速率）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifHCOutOctets.{#SNMPINDEX}'
+              key: 'ifHCOutOctetsPersecond[{#SNMPVALUE}]'
+              delay: 2m
+              history: 7d
+              units: bps
+              description: |
+                端口每秒发送速率
+                .
+              preprocessing:
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+                - type: MULTIPLIER
+                  parameters:
+                    - '8'
+              tags:
+                - tag: Application
+                  value: 端口速率
+            - uuid: a435dfd9dd2e4b22bfa2627d50f4827f
+              name: '{#SNMPVALUE}（端口发送总流量）(5分钟)'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifHCOutOctets.{#SNMPINDEX}'
+              key: 'ifHCOutOctets[{#SNMPVALUE}]'
+              delay: 5m
+              history: 7d
+              status: DISABLED
+              discover: NO_DISCOVER
+              units: B
+              preprocessing:
+                - type: SIMPLE_CHANGE
+                  parameters:
+                    - ''
+              tags:
+                - tag: Application
+                  value: 端口速率
+            - uuid: 5fc91d8e48d249fca1320c2156cc58fd
+              name: '{#SNMPVALUE}（端口带宽）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifHighSpeed.{#SNMPINDEX}'
+              key: 'ifHighSpeed[{#SNMPVALUE}]'
+              delay: 5m
+              history: 7d
+              units: bps
+              description: 端口带宽
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '1000000'
+              tags:
+                - tag: Application
+                  value: 端口带宽
+            - uuid: bb17f9f100114c7da5d6f70c39c84c5f
+              name: '{#SNMPVALUE}（端口序号）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifIndex.{#SNMPINDEX}'
+              key: 'ifIndex[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              description: 端口序号
+              tags:
+                - tag: Application
+                  value: 端口信息
+            - uuid: 11f20a6f81324efe9df1b16f016d68e2
+              name: '{#SNMPVALUE}（端口每秒接收丢包数）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifInDiscards.{#SNMPINDEX}'
+              key: 'ifInDiscards[{#SNMPVALUE}]'
+              delay: 10m
+              history: 7d
+              description: 端口每秒接收丢包数
+              preprocessing:
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+              tags:
+                - tag: Application
+                  value: 端口错丢包
+            - uuid: c02d5eea45ed401fa7252018939a97c9
+              name: '{#SNMPVALUE}（端口每秒接收错误包数）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifInErrors.{#SNMPINDEX}'
+              key: 'ifInErrors[{#SNMPVALUE}]'
+              delay: 10m
+              history: 7d
+              description: 端口每秒接收错误包数
+              preprocessing:
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+              tags:
+                - tag: Application
+                  value: 端口错丢包
+            - uuid: f422359b79984a0ca358b7343dc34f3e
+              name: '{#SNMPVALUE}（端口名称）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifName.{#SNMPINDEX}'
+              key: 'ifName[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: 端口名称
+              tags:
+                - tag: Application
+                  value: 端口信息
+            - uuid: 4c601d3db35e4c9799a40bd5c1d13000
+              name: '{#SNMPVALUE}（端口物理连接状态）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifOperStatus.{#SNMPINDEX}'
+              key: 'ifOperStatus[{#SNMPVALUE}]'
+              delay: 2m
+              history: 7d
+              tags:
+                - tag: Application
+                  value: 端口状态
+              trigger_prototypes:
+                - uuid: 28d078260f6d41e2bd3c8a73769a2037
+                  expression: 'last(/Template of Snmp RuiJie General/ifOperStatus[{#SNMPVALUE}])=2'
+                  name: '[网络设备]{HOST.NAME}设备端口{#SNMPVALUE}处于DOWN状态'
+                  priority: AVERAGE
+                  description: |
+                    状态值表示:
+                    1⇒正常
+                    2⇒关闭
+                    {HOST.NAME}设备端口{#SNMPVALUE}状态不正常，可能连线松动、未启用、对端设备重启、端口损坏等
+                  manual_close: 'YES'
+            - uuid: 34ca5a47f193441f8b87bb0895a1092b
+              name: '{#SNMPVALUE}（端口每秒发送丢包数）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifOutDiscards.{#SNMPINDEX}'
+              key: 'ifOutDiscards[{#SNMPVALUE}]'
+              delay: 10m
+              history: 7d
+              description: 端口每秒发送丢包数
+              preprocessing:
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+              tags:
+                - tag: Application
+                  value: 端口错丢包
+            - uuid: 0816bf026d7e4e86b9bfc947c638239c
+              name: '{#SNMPVALUE}（端口每秒发送错误包数）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifOutErrors.{#SNMPINDEX}'
+              key: 'ifOutErrors[{#SNMPVALUE}]'
+              delay: 10m
+              history: 7d
+              description: 端口每秒发送错误包数
+              preprocessing:
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+              tags:
+                - tag: Application
+                  value: 端口错丢包
+            - uuid: 34b1f224015b46619b3138f11844d9b3
+              name: '{#SNMPVALUE}（端口物理地址）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifPhysAddress.{#SNMPINDEX}'
+              key: 'ifPhysAddress[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: 端口物理地址
+              tags:
+                - tag: Application
+                  value: 端口信息
+            - uuid: f159c21efb7f46bbbfc5c5204c4eb4e7
+              name: '{#SNMPVALUE}（端口带宽接收利用率）'
+              type: CALCULATED
+              key: 'ifSpeedifHCInOctetsPersecond[{#SNMPVALUE}]'
+              delay: 2m
+              history: 7d
+              units: '%'
+              params: '100*last(//ifHCInOctetsPersecond[{#SNMPVALUE}])/last(//ifHighSpeed[{#SNMPVALUE}])'
+              description: 端口带宽利用率
+              tags:
+                - tag: Application
+                  value: 端口带宽
+            - uuid: 38c3d81d1cc143689c560e067e172212
+              name: '{#SNMPVALUE}（端口带宽发送利用率）'
+              type: CALCULATED
+              key: 'ifSpeedifHCOutOctetsPersecond[{#SNMPVALUE}]'
+              delay: 2m
+              history: 7d
+              units: '%'
+              params: '100*last(//ifHCOutOctetsPersecond[{#SNMPVALUE}])/last(//ifHighSpeed[{#SNMPVALUE}])'
+              description: 端口带宽利用率
+              tags:
+                - tag: Application
+                  value: 端口带宽
+            - uuid: 691a28ace89540c088d05bb9ffc18a4b
+              name: '{#SNMPVALUE}（端口类型）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifType.{#SNMPINDEX}'
+              key: 'ifType[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              description: 端口类型
+              tags:
+                - tag: Application
+                  value: 端口信息
+          trigger_prototypes:
+            - uuid: 29b860adfbaf4f35b0753d3e7303798e
+              expression: 'last(/Template of Snmp RuiJie General/ifSpeedifHCOutOctetsPersecond[{#SNMPVALUE}])>90 and last(/Template of Snmp RuiJie General/ifHighSpeed[{#SNMPVALUE}])>0'
+              name: '[网络设备]{HOST.NAME}设备端口{#SNMPVALUE}带宽发送利用率大于90%'
+              priority: WARNING
+              description: |
+                (状态值表示当前利用率)
+                {HOST.NAME}设备端口{#SNMPVALUE}带宽发送利用率大于90%
+              manual_close: 'YES'
+            - uuid: 706ed4820fc8469d86852a6f2112f1a5
+              expression: 'last(/Template of Snmp RuiJie General/ifSpeedifHCInOctetsPersecond[{#SNMPVALUE}])>90 and last(/Template of Snmp RuiJie General/ifHighSpeed[{#SNMPVALUE}])>0'
+              name: '[网络设备]{HOST.NAME}设备端口{#SNMPVALUE}带宽接收利用率大于90%'
+              priority: WARNING
+              description: |
+                (状态值表示当前利用率)
+                {HOST.NAME}设备端口{#SNMPVALUE}带宽接收利用率大于80%
+              manual_close: 'YES'
+          graph_prototypes:
+            - uuid: 452930a00f604856b6695225cf2099e1
+              name: '网络端口 {#SNMPVALUE} 利用率'
+              graph_items:
+                - color: 2774A4
+                  item:
+                    host: 'Template of Snmp RuiJie General'
+                    key: 'ifSpeedifHCOutOctetsPersecond[{#SNMPVALUE}]'
+                - sortorder: '1'
+                  color: A54F10
+                  item:
+                    host: 'Template of Snmp RuiJie General'
+                    key: 'ifSpeedifHCInOctetsPersecond[{#SNMPVALUE}]'
+            - uuid: c358aa52eab441fc97b1f74c064cbe93
+              name: '网络端口 {#SNMPVALUE} 总流量'
+              graph_items:
+                - drawtype: GRADIENT_LINE
+                  color: 00AA00
+                  item:
+                    host: 'Template of Snmp RuiJie General'
+                    key: 'ifHCInOctets[{#SNMPVALUE}]'
+                - sortorder: '1'
+                  drawtype: GRADIENT_LINE
+                  color: 3333FF
+                  item:
+                    host: 'Template of Snmp RuiJie General'
+                    key: 'ifHCOutOctets[{#SNMPVALUE}]'
+            - uuid: 92da37c29cfd43b69dba3a9cbe0c3a08
+              name: '网络端口 {#SNMPVALUE} 速率'
+              graph_items:
+                - color: 2774A4
+                  item:
+                    host: 'Template of Snmp RuiJie General'
+                    key: 'ifHCInOctetsPersecond[{#SNMPVALUE}]'
+                - sortorder: '1'
+                  color: A54F10
+                  item:
+                    host: 'Template of Snmp RuiJie General'
+                    key: 'ifHCOutOctetsPersecond[{#SNMPVALUE}]'
+        - uuid: b9ab7782eb164d82a1055ef28d19e91c
+          name: '端口表 DOWN'
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE2},IF-MIB::ifName,{#SNMPOPEN},IF-MIB::ifOperStatus]'
+          key: ifDescr2
+          delay: '3600'
+          filter:
+            evaltype: AND
+            conditions:
+              - macro: '{#SNMPOPEN}'
+                value: (2)
+                formulaid: A
+              - macro: '{#SNMPVALUE2}'
+                value: '@Network interfaces for discovery'
+                formulaid: B
+          lifetime: 0d
+          description: 端口表
+          item_prototypes:
+            - uuid: 0554203764c4416fb0a3f07158f5c4e3
+              name: '{#SNMPVALUE2} （端口启用管理状态）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifAdminStatus.{#SNMPINDEX}'
+              key: 'ifAdminStatus[{#SNMPVALUE2}]'
+              delay: 2m
+              tags:
+                - tag: Application
+                  value: 端口状态
+            - uuid: 69032a48dc654a548d948d26ecb3eb3b
+              name: '{#SNMPVALUE2} （端口物理连接状态）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifOperStatus.{#SNMPINDEX}'
+              key: 'ifOperStatus[{#SNMPVALUE2}]'
+              delay: 2m
+              tags:
+                - tag: Application
+                  value: 端口状态
+        - uuid: 18f97fdf24d74c1d89ed59622329eadf
+          name: 电源
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE},enterprises.4881.1.1.10.2.1.1.18.1.3]'
+          key: power
+          delay: 1h
+          lifetime: 10d
+          item_prototypes:
+            - uuid: 1497baabf4434998a385dbce6e93afda
+              name: '电源 {#SNMPVALUE} 状态'
+              type: SNMP_AGENT
+              snmp_oid: 'enterprises.4881.1.1.10.2.1.1.18.1.2.{#SNMPINDEX}'
+              key: 'power.status[{#SNMPVALUE}]'
+              delay: 60s
+              history: 7d
+              valuemap:
+                name: '锐捷S6220 设备状态'
+              tags:
+                - tag: Application
+                  value: 电源
+              trigger_prototypes:
+                - uuid: 6c1aa6fe933942f78404740f9d9cd0fc
+                  expression: 'last(/Template of Snmp RuiJie General/power.status[{#SNMPVALUE}])=1'
+                  name: '设备 {HOST.NAME} 电源 {#SNMPINDEX} 状态不正常'
+                  priority: HIGH
+                  description: |
+                    4 - 正常
+                    1 - 缺失
+                  manual_close: 'YES'
+        - uuid: 99540e0902ec4f8cbf8a0e8080e68da0
+          name: 风扇模块
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE},enterprises.4881.1.1.10.2.1.1.42.1.1.1]'
+          key: switch1.fan
+          delay: 1h
+          lifetime: 1d
+          description: 模块名称
+          item_prototypes:
+            - uuid: 3b76d284ef7a464caa588c0771605895
+              name: '风扇 {#SNMPINDEX} 序列号'
+              type: SNMP_AGENT
+              snmp_oid: 'enterprises.4881.1.1.10.2.1.1.42.1.9.1.{#SNMPINDEX}'
+              key: 'switch1.fan.serial[{#SNMPINDEX}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: Application
+                  value: '交换机1 风扇模块'
+            - uuid: e4a657565f69494b959adfb1ecfdcd22
+              name: '风扇 {#SNMPINDEX} 当前转速'
+              type: SNMP_AGENT
+              snmp_oid: 'enterprises.4881.1.1.10.2.1.1.43.1.5.1.{#SNMPINDEX}.1'
+              key: 'switch1.fan.speed[{#SNMPINDEX}]'
+              delay: 60s
+              history: 7d
+              tags:
+                - tag: Application
+                  value: '交换机1 风扇模块'
+            - uuid: e92c07f09df74be09df755e54a872ecb
+              name: '风扇 {#SNMPINDEX} 状态'
+              type: SNMP_AGENT
+              snmp_oid: 'enterprises.4881.1.1.10.2.1.1.42.1.3.1.{#SNMPINDEX}'
+              key: 'switch1.fan.status[{#SNMPINDEX}]'
+              delay: 60s
+              history: 7d
+              valuemap:
+                name: '锐捷S6220 设备状态'
+              tags:
+                - tag: Application
+                  value: '交换机1 风扇模块'
+              trigger_prototypes:
+                - uuid: 60b6169cea874578ac5d08e85b800a53
+                  expression: 'last(/Template of Snmp RuiJie General/switch1.fan.status[{#SNMPINDEX}])=1'
+                  name: '设备 {HOST.NAME} 风扇 {#SNMPINDEX} 状态不正常'
+                  priority: HIGH
+                  description: |
+                    4 - 正常
+                    1 - 缺失
+                  manual_close: 'YES'
+            - uuid: 9833551865284d498a9e7ef35b43a582
+              name: '风扇 {#SNMPINDEX} 转速上限'
+              type: SNMP_AGENT
+              snmp_oid: 'enterprises.4881.1.1.10.2.1.1.43.1.6.1.{#SNMPINDEX}.1'
+              key: 'swith1.fan.upper[{#SNMPINDEX}]'
+              delay: 1d
+              history: 7d
+              value_type: FLOAT
+              tags:
+                - tag: Application
+                  value: '交换机1 风扇模块'
+            - uuid: 13fb8a5bc3f74663b6219911732b6a15
+              name: '风扇 {#SNMPINDEX} 版本'
+              type: SNMP_AGENT
+              snmp_oid: 'enterprises.4881.1.1.10.2.1.1.42.1.8.1.{#SNMPINDEX}'
+              key: 'swithc1.fan.version[{#SNMPINDEX}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: Application
+                  value: '交换机1 风扇模块'
+        - uuid: ebc3b1034caf4bc296ee7cf0c8e2148f
+          name: 电源适配器模块
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE},enterprises.4881.1.1.10.2.1.1.41.1.1.1]'
+          key: switch1.module
+          delay: 1h
+          lifetime: 1d
+          description: 模板名称
+          item_prototypes:
+            - uuid: abc04c479e12499187b08eda01d1a219
+              name: '电源模块 {#SNMPVALUE} 额定电流'
+              type: SNMP_AGENT
+              snmp_oid: 'enterprises.4881.1.1.10.2.1.1.41.1.13.1.{#SNMPINDEX}'
+              key: 'switch1.power.amp[{#SNMPINDEX}]'
+              delay: 1d
+              history: 7d
+              units: A
+              tags:
+                - tag: Application
+                  value: '交换机1 电源模块'
+            - uuid: 925a248f536642abb784ea7f05a294e4
+              name: '电源模块 {#SNMPVALUE} 序列号'
+              type: SNMP_AGENT
+              snmp_oid: 'enterprises.4881.1.1.10.2.1.1.41.1.8.1.{#SNMPINDEX}'
+              key: 'switch1.power.serial[{#SNMPINDEX}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: Application
+                  value: '交换机1 电源模块'
+            - uuid: c323de25d40b4deea20027d6c64ed455
+              name: '电源模块 {#SNMPVALUE} 状态'
+              type: SNMP_AGENT
+              snmp_oid: 'enterprises.4881.1.1.10.2.1.1.41.1.3.1.{#SNMPINDEX}'
+              key: 'switch1.power.status[{#SNMPINDEX}]'
+              delay: 60s
+              history: 7d
+              valuemap:
+                name: '锐捷S6220 设备状态'
+              tags:
+                - tag: Application
+                  value: '交换机1 电源模块'
+              trigger_prototypes:
+                - uuid: 680873cd89e748c08ce74c397a3a2996
+                  expression: 'last(/Template of Snmp RuiJie General/switch1.power.status[{#SNMPINDEX}])=1'
+                  name: '设备 {HOST.NAME} 风扇 {#SNMPINDEX} 状态不正常'
+                  priority: HIGH
+                  manual_close: 'YES'
+            - uuid: 00bf5f1b113a4583bb435184cadd5527
+              name: '电源模块 {#SNMPVALUE} 额定功率'
+              type: SNMP_AGENT
+              snmp_oid: 'enterprises.4881.1.1.10.2.1.1.41.1.10.1.{#SNMPINDEX}'
+              key: 'switch1.power.upper[{#SNMPINDEX}]'
+              delay: 1d
+              history: 7d
+              units: W
+              tags:
+                - tag: Application
+                  value: '交换机1 电源模块'
+            - uuid: 1c7dbc0b7b744cf094cb097158a7fc65
+              name: '电源模块 {#SNMPVALUE} 当前功率'
+              type: SNMP_AGENT
+              snmp_oid: 'enterprises.4881.1.1.10.2.1.1.41.1.11.1.{#SNMPINDEX}'
+              key: 'switch1.power.value[{#SNMPINDEX}]'
+              delay: 60s
+              history: 7d
+              units: W
+              tags:
+                - tag: Application
+                  value: '交换机1 电源模块'
+            - uuid: c32d85f4cedb4c9d95e41cebbb63a0fb
+              name: '电源模块 {#SNMPVALUE} 版本'
+              type: SNMP_AGENT
+              snmp_oid: 'enterprises.4881.1.1.10.2.1.1.41.1.7.1.{#SNMPINDEX}'
+              key: 'switch1.power.version[{#SNMPINDEX}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: Application
+                  value: '交换机1 电源模块'
+            - uuid: 2421ccd9dfa9406ea400323513ecbef9
+              name: '电源模块 {#SNMPVALUE} 当前电压'
+              type: SNMP_AGENT
+              snmp_oid: 'enterprises.4881.1.1.10.2.1.1.41.1.16.1.{#SNMPINDEX}'
+              key: 'switch1.power.voltage[{#SNMPINDEX}]'
+              delay: 60s
+              history: 7d
+              value_type: FLOAT
+              units: V
+              tags:
+                - tag: Application
+                  value: '交换机1 电源模块'
+        - uuid: 452526d75ef64bd6b057051ae1f315e0
+          name: 其他模块
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE},enterprises.4881.1.1.10.2.1.1.44.1.4.1.0]'
+          key: switch1.other
+          delay: 1h
+          lifetime: 1d
+          description: 模块名称
+          item_prototypes:
+            - uuid: 2c195795d44946a98c96446afe60beee
+              name: '模块 {#SNMPVALUE} 温度上限值'
+              type: SNMP_AGENT
+              snmp_oid: 'enterprises.4881.1.1.10.2.1.1.44.1.7.1.0.{#SNMPINDEX}'
+              key: 'switch1.temp.upper[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              units: ℃
+              tags:
+                - tag: Application
+                  value: '交换机1 其他模块'
+            - uuid: 7d02885a606d42fb88da3ec2ca1cd2fe
+              name: '模块 {#SNMPVALUE} 当前温度'
+              type: SNMP_AGENT
+              snmp_oid: 'enterprises.4881.1.1.10.2.1.1.44.1.6.1.0.{#SNMPINDEX}'
+              key: 'switch1.temp.value[{#SNMPVALUE}]'
+              delay: 60s
+              history: 7d
+              units: ℃
+              tags:
+                - tag: Application
+                  value: '交换机1 其他模块'
+              trigger_prototypes:
+                - uuid: 3d1208a765c641749e80c97e160a1e66
+                  expression: 'sum(/Template of Snmp RuiJie General/switch1.temp.value[{#SNMPVALUE}],300s)>80'
+                  name: '设备 {HOST.NAME} 模块 {#SNMPVALUE} 温度持续5分钟大于80℃'
+                  priority: HIGH
+                  manual_close: 'YES'
+            - uuid: 865318980c7d4fed9aa20a913b6b151b
+              name: '模块 {#SNMPVALUE} 当前电压'
+              type: SNMP_AGENT
+              snmp_oid: 'enterprises.4881.1.1.10.2.1.1.44.1.5.1.0.{#SNMPINDEX}'
+              key: 'switch1.voltage[{#SNMPVALUE}]'
+              delay: 60s
+              history: 7d
+              units: V
+              tags:
+                - tag: Application
+                  value: '交换机1 其他模块'
+      valuemaps:
+        - uuid: 2851250bd54e4c98b0bda1c53c55fefa
+          name: '锐捷S6220 设备状态'
+          mappings:
+            - value: '1'
+              newvalue: 缺失
+            - value: '4'
+              newvalue: 正常
+  triggers:
+    - uuid: 53d2a0a90af74ed1bc7ed40247490271
+      expression: 'max(/Template of Snmp RuiJie General/icmpping[,2,,,],3m)=0 and nodata(/Template of Snmp RuiJie General/sysUpTime,3m)=1'
+      recovery_mode: RECOVERY_EXPRESSION
+      recovery_expression: 'min(/Template of Snmp RuiJie General/icmpping[,2,,,],3m)=1 and nodata(/Template of Snmp RuiJie General/sysUpTime,2m)=0'
+      name: '[网络设备]{HOST.NAME}失联,持续3分钟未响应'
+      priority: HIGH
+      description: |
+        状态值1为系统持续运行时间和ICMP探测状态（1为通，0为断）
+        状态值2为BMC运行时间
+      manual_close: 'YES'
+    - uuid: bbfab612643341359381b3f03212446b
+      expression: 'change(/Template of Snmp RuiJie General/sysUpTime)<0 and last(/Template of Snmp RuiJie General/sysUpTime)<1800 and avg(/Template of Snmp RuiJie General/icmpping[,2,,,],2m)<1'
+      name: '[网络设备]{HOST.NAME}设备刚发生重启'
+      priority: HIGH
+      description: |
+        (当前状态值为系统持续运行时间)
+        主机采集到的系统运行时间突然减少重置，当系统运行时间正常递增，则恢复告警，该值在设备连续运行未超过300多天时可以当作设备运行时间，当超过300多天根据型号不同，计数器会自动重置为0重新计算时间
+      manual_close: 'YES'

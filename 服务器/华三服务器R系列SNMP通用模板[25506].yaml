@@ -1,0 +1,1153 @@
+zabbix_export:
+  version: '6.0'
+  date: '2024-04-24T06:53:41Z'
+  groups:
+    - uuid: b823e77ddf124b0aa4080384804d0160
+      name: 服务器模板
+  templates:
+    - uuid: 047104505f424c49bae1583ec0e49d20
+      template: 'LW_Template SNMP H3C R'
+      name: '华三服务器R系列SNMP通用模板[25506]'
+      templates:
+        - name: 'LW_Template SNMP Haroware Generic'
+      groups:
+        - name: 服务器模板
+      discovery_rules:
+        - uuid: 2da79748110c4ec8ae7a6f0bfa612eb8
+          name: CPU
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE},.1.3.6.1.4.1.25506.13.1.2.1.1.1.1.1.2]'
+          key: Cpu
+          delay: 1h
+          lifetime: 7d
+          item_prototypes:
+            - uuid: 7642b5cc1016410a9c1587b68726bde9
+              name: '{#SNMPINDEX}（CPU核数）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.1.1.1.4.{#SNMPINDEX}'
+              key: 'hh3cCPUCors[{#SNMPINDEX}]'
+              delay: 1d
+              history: 7d
+              description: |
+                The number of CPU cores of the CPU associated with the ID.
+                与ID关联的CPU内核的数量。
+              tags:
+                - tag: Application
+                  value: CPU
+            - uuid: 1d7a89726e8a45d4961fa0526b2a7b80
+              name: '{#SNMPINDEX}（与ID关联的CPU频率）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.1.1.1.3.{#SNMPINDEX}'
+              key: 'hh3cCPUFreq[{#SNMPINDEX}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The CPU Frequence of the CPU associated with the ID.
+                与ID关联的CPU频率。
+              tags:
+                - tag: Application
+                  value: CPU
+            - uuid: 93419b325bd34ea6a9c46a2ced58097f
+              name: '{#SNMPINDEX}（CPUid号）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.1.1.1.1.{#SNMPINDEX}'
+              key: 'hh3cCPUID[{#SNMPINDEX}]'
+              delay: 1d
+              history: 7d
+              description: |
+                The ID uniquely identifies the CPU.
+                ID唯一地标识CPU。
+              tags:
+                - tag: Application
+                  value: CPU
+            - uuid: 1d6da44f655d450489f59265386253b0
+              name: '{#SNMPINDEX}（CPU一级缓存）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.1.1.1.9.{#SNMPINDEX}'
+              key: 'hh3cCPUL1Cache[{#SNMPINDEX}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The L1 cache(KB) of the CPU associated with the ID.
+                与ID关联的CPU的L1缓存(KB)。
+              tags:
+                - tag: Application
+                  value: CPU
+            - uuid: 95eae83699b640149b499f4559f91697
+              name: '{#SNMPINDEX}（CPU二级缓存）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.1.1.1.10.{#SNMPINDEX}'
+              key: 'hh3cCPUL2Cache[{#SNMPINDEX}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The L2 cache(KB) of the CPU associated with the ID.
+                与ID关联的CPU的L2缓存(KB)。
+              tags:
+                - tag: Application
+                  value: CPU
+            - uuid: ed492629cdec4e9b870a88dd2abb8871
+              name: '{#SNMPINDEX}（CPU三级缓存）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.1.1.1.11.{#SNMPINDEX}'
+              key: 'hh3cCPUL3Cache[{#SNMPINDEX}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The L3 cache(KB) of the CPU associated with the ID.
+                与ID关联的CPU的L3缓存(KB)。
+              tags:
+                - tag: Application
+                  value: CPU
+            - uuid: e12b7af3355d4f6caa494b38413b4c63
+              name: '{#SNMPINDEX}（CPU厂商）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.1.1.1.5.{#SNMPINDEX}'
+              key: 'hh3cCPUManufactry[{#SNMPINDEX}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The CPU manufactory of the CPU associated with the ID.
+                与ID关联的CPU的CPU制造厂。
+              tags:
+                - tag: Application
+                  value: CPU
+            - uuid: f9e6d21b4a714ad1adb33d4eed6d9425
+              name: '{#SNMPINDEX}（CPU型号）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.1.1.1.2.{#SNMPINDEX}'
+              key: 'hh3cCPUModel[{#SNMPINDEX}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The CPU model of the CPU associated with the ID.
+                与ID关联的CPU的CPU模型。
+              tags:
+                - tag: Application
+                  value: CPU
+            - uuid: 8949634fd8da4081923dd9d7d4469a8d
+              name: '{#SNMPINDEX}（CPU状态）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.1.1.1.6.{#SNMPINDEX}'
+              key: 'hh3cCPUStatus[{#SNMPINDEX}]'
+              delay: 5m
+              history: 7d
+              description: |
+                The working status of the CPU associated with the ID.
+                与ID关联的CPU的工作状态。
+                Information about
+                PCIe health status.
+                abnomar(0)
+                normal(1)
+              valuemap:
+                name: 华三R服务器主备电源
+              tags:
+                - tag: Application
+                  value: CPU
+              trigger_prototypes:
+                - uuid: e53d24f2dbb64edea9cbca367936bc15
+                  expression: 'last(/LW_Template SNMP H3C R/hh3cCPUStatus[{#SNMPINDEX}])=0'
+                  name: '[硬件服务设备]{HOST.NAME} 处理器 {#SNMPVALUE} 处于严重状态'
+                  priority: HIGH
+                  description: |
+                    (状态值表示当前状态)
+                    0⇒不正常
+                    1⇒正常
+                  manual_close: 'YES'
+            - uuid: 589977426e6c459f9bed7930ec7326f0
+              name: '{#SNMPINDEX}（CPU可用性）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.1.1.1.7.{#SNMPINDEX}'
+              key: 'hh3cCPUSupport64bit[{#SNMPINDEX}]'
+              delay: 5m
+              history: 7d
+              description: |
+                Whether the CPU supports 64bit of the CPU associated with the ID.
+                CPU是否支持与ID关联的64位CPU。
+              tags:
+                - tag: Application
+                  value: CPU
+            - uuid: 08383200cbf0486f8ab4eed67ae34b2d
+              name: '{#SNMPINDEX}（CPU线程）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.1.1.1.8.{#SNMPINDEX}'
+              key: 'hh3cCPUThreads[{#SNMPINDEX}]'
+              delay: 1d
+              history: 7d
+              description: |
+                The total threads of the CPU support associated with the ID.
+                与ID关联的CPU支持的总线程数。
+              tags:
+                - tag: Application
+                  value: CPU
+        - uuid: 80c7467f1ab24beab717f36b431abd2d
+          name: 硬盘
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE},.1.3.6.1.4.1.25506.13.1.2.1.1.9.1.1.2]'
+          key: Disk
+          delay: 1h
+          lifetime: 7d
+          description: |
+            The slot number of hard disk.
+            硬盘的槽号。
+          item_prototypes:
+            - uuid: cc4d15b102f3476caef524354dc0e241
+              name: '{#SNMPVALUE}（硬盘的BIOS号）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.9.1.1.2.{#SNMPINDEX}'
+              key: 'hh3cSrvHardDiskBiosNum[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              description: |
+                The BIOS number of hard disk.
+                硬盘的BIOS号。
+              tags:
+                - tag: Application
+                  value: 硬盘
+            - uuid: b7cc7cd505844dc0b476f37ba27444f4
+              name: '{#SNMPVALUE}（硬盘容量）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.9.1.1.9.{#SNMPINDEX}'
+              key: 'hh3cSrvHardDiskCapacity[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The capacity(GB) of hard disk.
+                硬盘容量(GB)。
+              tags:
+                - tag: Application
+                  value: 硬盘
+            - uuid: 4b21dcc25dc0413fa272a6f4f7bb462d
+              name: '{#SNMPVALUE}（硬盘固件版本信息）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.9.1.1.6.{#SNMPINDEX}'
+              key: 'hh3cSrvHardDiskFirmVersion[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The firmware version of hard disk.
+                硬盘的固件版本。
+              tags:
+                - tag: Application
+                  value: 硬盘
+            - uuid: 9375ea32f01b44cab8f3fd4e3859bbcc
+              name: '{#SNMPVALUE}（操作系统下的硬盘数量）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.9.1.1.3.{#SNMPINDEX}'
+              key: 'hh3cSrvHardDiskOsNum[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              description: |
+                The number of hard disk under OS, always the same as BIOS number.
+                操作系统下的硬盘数量，总是与BIOS数量相同。
+              tags:
+                - tag: Application
+                  value: 硬盘
+            - uuid: 05079d7f6bc5419480fe72a2cf242fe7
+              name: '{#SNMPVALUE}（硬盘的面板）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.9.1.1.10.{#SNMPINDEX}'
+              key: 'hh3cSrvHardDiskPanel[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The panel of hard disk.
+                硬盘的面板。
+              tags:
+                - tag: Application
+                  value: 硬盘
+            - uuid: e36195fe0bf249e08af5b256e8ea2c3d
+              name: '{#SNMPVALUE}（硬盘的序列号信息）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.9.1.1.7.{#SNMPINDEX}'
+              key: 'hh3cSrvHardDiskSerial[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The serial number of hard disk.
+                硬盘的序列号。
+              tags:
+                - tag: Application
+                  value: 硬盘
+            - uuid: 10cab1ec2c934acead191cea227b81e7
+              name: '{#SNMPVALUE}（硬盘状态）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.9.1.1.4.{#SNMPINDEX}'
+              key: 'hh3cSrvHardDiskStatus[{#SNMPVALUE}]'
+              delay: 2m
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The status of hard disk.
+                硬盘的状态。
+              tags:
+                - tag: Application
+                  value: 硬盘
+              trigger_prototypes:
+                - uuid: 1c59b071f94443118fffee4772fb3a04
+                  expression: 'find(/LW_Template SNMP H3C R/hh3cSrvHardDiskStatus[{#SNMPVALUE}],,"regexp","#Online|JBOD")=0 and find(/LW_Template SNMP H3C R/hh3cSrvHardDiskStatus[{#SNMPVALUE}],#2,"regexp","#Online|JBOD")=1'
+                  recovery_mode: RECOVERY_EXPRESSION
+                  recovery_expression: 'find(/LW_Template SNMP H3C R/hh3cSrvHardDiskStatus[{#SNMPVALUE}],,"regexp","#Online|JBOD")=1'
+                  name: '[硬件服务器设备]{HOST.NAME} 硬盘 {#SNMPVALUE} 状态异常'
+                  priority: HIGH
+                  description: 状态值表示当前状态
+                  manual_close: 'YES'
+            - uuid: 8bbdf59163244b3caf6ef594629f4d12
+              name: '{#SNMPVALUE}（硬盘类型,包括接口类型）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.9.1.1.8.{#SNMPINDEX}'
+              key: 'hh3cSrvHardDiskType[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The type of hard disk, including the link speed, interface type and media type.
+                硬盘的类型，包括连接速度、接口类型和媒体类型。
+              tags:
+                - tag: Application
+                  value: 硬盘
+            - uuid: d5de6795f25e4f56ab3a93f6936a9ddf
+              name: '{#SNMPVALUE}（不支持SATA硬盘的硬盘供应商）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.9.1.1.5.{#SNMPINDEX}'
+              key: 'hh3cSrvHardDiskVendor[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The vendor of hard disk which not support SATA hard disk.
+                不支持SATA硬盘的硬盘供应商。
+              tags:
+                - tag: Application
+                  value: 硬盘
+        - uuid: b1ee8b318dc64b24a46e4487c1b53c30
+          name: 风扇
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE},.1.3.6.1.4.1.25506.13.1.2.1.2.1.1.1.2]'
+          key: Fan
+          delay: 1h
+          lifetime: 7d
+          item_prototypes:
+            - uuid: e7325e9467374c7c95e38b053525c941
+              name: '{#SNMPVALUE}（风扇模型）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.2.1.1.1.4.{#SNMPINDEX}'
+              key: 'hh3cFanModel[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The model of fan associated with ID.
+                与ID关联的fan模型。
+              tags:
+                - tag: Application
+                  value: 风扇
+            - uuid: a3afbfcfbb064d1086192a21c7d814eb
+              name: '{#SNMPVALUE}（风扇名称）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.2.1.1.1.2.{#SNMPINDEX}'
+              key: 'hh3cFanName[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The name of fan associated with the ID.
+                与ID关联的fan的名称。
+              tags:
+                - tag: Application
+                  value: 风扇
+            - uuid: 16b1b5a92ab04840a66fd0b468d025be
+              name: '{#SNMPVALUE}（风扇当前状态）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.2.1.1.1.5.{#SNMPINDEX}'
+              key: 'hh3cFanPresentStatus[{#SNMPVALUE}]'
+              delay: 2m
+              history: 7d
+              description: |
+                The present status of fan associated with the ID.
+                与ID关联的fan的当前状态。
+                Information about fan health
+                status.
+                absent(0),
+                present(1)
+              valuemap:
+                name: 华为电源状态
+              tags:
+                - tag: Application
+                  value: 风扇
+              trigger_prototypes:
+                - uuid: 82c84b701f3b4770a66adfe71b407d23
+                  expression: 'last(/LW_Template SNMP H3C R/hh3cFanPresentStatus[{#SNMPVALUE}])=0'
+                  name: '[硬件服务器设备]{HOST.NAME} 风扇 {#SNMPVALUE} 缺失'
+                  priority: HIGH
+                  description: |
+                    (状态值表示当前状态)
+                    0⇒缺失
+                    1⇒在位
+                  manual_close: 'YES'
+            - uuid: 21bce9ed22cd467fa442b8591949ebc7
+              name: '{#SNMPVALUE}（风扇转速百分比）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.2.1.1.1.3.{#SNMPINDEX}'
+              key: 'hh3cFanRatio[{#SNMPVALUE}]'
+              delay: 5m
+              history: 7d
+              units: '%'
+              description: |
+                The actual speed is divided by the full speed.
+                实际速度除以全速。
+              tags:
+                - tag: Application
+                  value: 风扇
+            - uuid: debb9eeff1d0472c8746e6a5498d3514
+              name: '{#SNMPVALUE}（风扇冗余状态）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.2.1.1.1.7.{#SNMPINDEX}'
+              key: 'hh3cFanRedundStatus[{#SNMPVALUE}]'
+              delay: 2m
+              history: 7d
+              description: |
+                The redundant status of fan associated with ID.
+                与ID关联的风扇的冗余状态。
+                Information about fan health
+                status.
+                normal(0)
+                abnormal(1)
+              valuemap:
+                name: 华三R服务器总线关联的网络状态
+              tags:
+                - tag: Application
+                  value: 风扇
+              trigger_prototypes:
+                - uuid: 0c7d02e9902d4abfa4834d2a449e2665
+                  expression: 'last(/LW_Template SNMP H3C R/hh3cFanRedundStatus[{#SNMPVALUE}])=1'
+                  name: '[硬件服务器设备]{HOST.NAME} 风扇 {#SNMPVALUE} 冗余状态异常'
+                  priority: HIGH
+                  description: |
+                    (状态值表示当前状态)
+                    0⇒正常
+                    1⇒不正常
+                  manual_close: 'YES'
+            - uuid: 16ca5e6baab049bc828fb7bdc74d1212
+              name: '{#SNMPVALUE}（风扇转速）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.2.1.1.1.6.{#SNMPINDEX}'
+              key: 'hh3cFanSpeed[{#SNMPVALUE}]'
+              delay: 5m
+              history: 7d
+              units: rpm
+              description: |
+                The current actual speed of fan associated with ID.
+                与ID关联的风扇的当前实际速度。
+              tags:
+                - tag: Application
+                  value: 风扇
+        - uuid: 3d9431feb57c4db198f4e651f9eabbc2
+          name: 内存
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE},1.3.6.1.4.1.25506.13.1.2.1.1.2.2.1.4]'
+          key: Memory
+          delay: 1h
+          lifetime: 7d
+          item_prototypes:
+            - uuid: caddf589f3444207bed8cbd4bf8f4102
+              name: '槽位 {#SNMPVALUE}（内存通道数）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.2.2.1.3.{#SNMPINDEX}'
+              key: 'hh3cMemChannel[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              description: |
+                The processor's channel number of memory associated with the ID.
+                处理器与ID关联的内存的通道数。
+              tags:
+                - tag: Application
+                  value: 内存
+            - uuid: 4fac3a2415be427da20b3113fb2d8304
+              name: '槽位 {#SNMPVALUE}（ECC状态）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.2.2.1.14.{#SNMPINDEX}'
+              key: 'hh3cMemEccStatus[{#SNMPVALUE}]'
+              delay: 5m
+              history: 7d
+              description: |
+                The ECC status of memory associated with ID.
+                 INTEGER32 {support ( 1 ) , others ( 0 ) }
+              valuemap:
+                name: '华三 R ECC状态'
+              tags:
+                - tag: Application
+                  value: 内存
+            - uuid: 01c50a45407f4b3aa0c612e551d05fdb
+              name: '槽位 {#SNMPVALUE}（内存关联的处理器）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.2.2.1.2.{#SNMPINDEX}'
+              key: 'hh3cMemLocation[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The memory location indicates the processor associated with the hh3cMemIndexID in MemSummaryInfoTable.
+                内存位置指示与MemSummaryInfoTable中的hh3cMemIndexID关联的处理器。
+              tags:
+                - tag: Application
+                  value: 内存
+            - uuid: 979985889e404f6ea6d33e9920143f7f
+              name: '槽位 {#SNMPVALUE}（内存厂商）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.2.2.1.12.{#SNMPINDEX}'
+              key: 'hh3cMemManufactry[{#SNMPVALUE}]'
+              delay: 1d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The manufacturer of memory associated with ID.
+                与ID关联的内存的制造商。
+              tags:
+                - tag: Application
+                  value: 内存
+            - uuid: 453da48ff2d34a4a8133413d3fee27db
+              name: '槽位 {#SNMPVALUE}（内存主频）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.2.2.1.7.{#SNMPINDEX}'
+              key: 'hh3cMemMaxFreq[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The memory main frequency of memory associated with ID.
+                与ID关联的内存的主频率。
+              tags:
+                - tag: Application
+                  value: 内存
+            - uuid: bbcf4be2d5554061bab3791cd1f1d151
+              name: '槽位 {#SNMPVALUE}（内存部件号）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.2.2.1.11.{#SNMPINDEX}'
+              key: 'hh3cMemPartNum[{#SNMPVALUE}]'
+              delay: 1d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The part number of memory associated with ID.
+                与ID关联的内存部件号。
+              tags:
+                - tag: Application
+                  value: 内存
+            - uuid: f2b1e73e7c9c4421bd3f3476c29639a9
+              name: '槽位 {#SNMPVALUE}（内存的容量）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.2.2.1.6.{#SNMPINDEX}'
+              key: 'hh3cMemSize[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The volume of single memory of memory associated with the ID.
+                与ID关联的单个内存的容量。
+              tags:
+                - tag: Application
+                  value: 内存
+            - uuid: cd684a7e8e974e36b8358a6ba296e8af
+              name: '槽位 {#SNMPVALUE}（内存状态）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.2.2.1.5.{#SNMPINDEX}'
+              key: 'hh3cMemStatus[{#SNMPVALUE}]'
+              delay: 5m
+              history: 7d
+              description: |
+                The memory status of memory associated with the ID.
+                与ID关联的内存的内存状态。
+                Information about
+                PCIe health status.
+                absent(0)
+                normal(1)
+                exception(2)
+                uninitialized(3)
+              valuemap:
+                name: 华三R服务器内存状态
+              tags:
+                - tag: Application
+                  value: 内存
+              trigger_prototypes:
+                - uuid: c26c4f76f7d247c18d027e2bfb049fed
+                  expression: 'last(/LW_Template SNMP H3C R/hh3cMemStatus[{#SNMPVALUE}])>1'
+                  name: '[硬件服务器设备]{HOST.NAME} 内存 {#SNMPVALUE} 处于严重状态'
+                  priority: HIGH
+                  description: |
+                    (状态值表示当前状态)
+                    0⇒不存在
+                    1⇒正常
+                    2⇒异常
+                    3⇒未初始化
+                  manual_close: 'YES'
+            - uuid: 3b8b72a28b7d430da4fb2b1c6bfaddfb
+              name: '槽位 {#SNMPVALUE}（相应处理器的总内存容量）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.2.1.1.3.{#SNMPINDEX}'
+              key: 'hh3cMemTotalVolum[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The total memory capacity of the corresponding processor.
+                相应处理器的总内存容量。
+              tags:
+                - tag: Application
+                  value: 内存
+            - uuid: 62cc20e5bc584bbc808b34c6d2a68c44
+              name: '槽位 {#SNMPVALUE}（内存类型）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.2.2.1.8.{#SNMPINDEX}'
+              key: 'hh3cMemType[{#SNMPVALUE}]'
+              delay: 1d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The memory DIMM type of memory associated with ID.
+                与ID关联的内存的类型。
+              tags:
+                - tag: Application
+                  value: 内存
+        - uuid: c7b69478e3ff4765a170eba1b00516aa
+          name: 扩展总线
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE},.1.3.6.1.4.1.25506.13.1.2.1.1.6.3.1.2]'
+          key: Pcie
+          delay: 1h
+          lifetime: 7d
+          description: 'The PCIe card express.'
+          item_prototypes:
+            - uuid: 16a8605a428e425183fff3ded35f72be
+              name: '{#SNMPVALUE}（与索引关联的网卡类型）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.6.3.1.11.{#SNMPINDEX}'
+              key: 'hh3cNetTypeCardType[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: 'The type of card of the net type associated with index.'
+              tags:
+                - tag: Application
+                  value: 扩展总线
+            - uuid: d3f1617ecaf54cae9d766c258d9b0526
+              name: '{#SNMPVALUE}（与索引关联的网络类型的端口号）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.6.3.1.9.{#SNMPINDEX}'
+              key: 'hh3cNetTypePortNum[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              description: 'The port number of the net type associated with index.'
+              tags:
+                - tag: Application
+                  value: 扩展总线
+            - uuid: 680fe26952fd4ea9bf3f56039b872b2f
+              name: '{#SNMPVALUE}（与索引关联的网络类型的端口的类型）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.6.3.1.10.{#SNMPINDEX}'
+              key: 'hh3cNetTypePortType[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: 'The type of port of the net type associated with index.'
+              tags:
+                - tag: Application
+                  value: 扩展总线
+            - uuid: f301c41efe434fa09c967f55b79f2ff4
+              name: '{#SNMPVALUE}（PCIe的产品名称）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.6.3.1.3.{#SNMPINDEX}'
+              key: 'hh3cNetTypeProductName[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The product name of PCIe.
+                PCIe的产品名称
+              tags:
+                - tag: Application
+                  value: 扩展总线
+            - uuid: 49c487dc54884e6da059bcf89f0b9fe0
+              name: '{#SNMPVALUE}（PCIe的槽号）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.6.3.1.2.{#SNMPINDEX}'
+              key: 'hh3cNetTypeSlotNum[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              description: |
+                The slot number of PCIe.
+                PCIe的槽号。
+              tags:
+                - tag: Application
+                  value: 扩展总线
+            - uuid: 29b9e5a5813449319eec11f7fca5c1c0
+              name: '{#SNMPVALUE}（当前网速(GT/s)）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.6.3.1.4.{#SNMPINDEX}'
+              key: 'hh3cPCIeCardCurSpeed[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: 'The current speed(GT/s) of net.'
+              tags:
+                - tag: Application
+                  value: 扩展总线
+            - uuid: e8e870461d2f4a568d59339e0cb96c4e
+              name: '{#SNMPVALUE}（与索引关联的网络类型的端口的速度）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.6.3.1.8.{#SNMPINDEX}'
+              key: 'hh3cPCIeCardDataWidth[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: 'The speed of the port of the net type associated with index.'
+              tags:
+                - tag: Application
+                  value: 扩展总线
+            - uuid: 0a2cfb1ea16d480da891cf4dffe6b944
+              name: '{#SNMPVALUE}（PCIe卡的供应商）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.6.2.1.1.5.{#SNMPINDEX}'
+              key: 'hh3cPCIeCardManuID[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The vender of PCIe card.
+                PCIe卡的供应商。
+              tags:
+                - tag: Application
+                  value: 扩展总线
+            - uuid: 86d70a84780c49b288b81a7f74fd867c
+              name: '{#SNMPVALUE}（最大速度(GT/s)）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.6.3.1.5.{#SNMPINDEX}'
+              key: 'hh3cPCIeCardMaxSpeed[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: 'The max speed(GT/s) of net.'
+              tags:
+                - tag: Application
+                  value: 扩展总线
+            - uuid: 7942ff0a221042458e132a7328cabb34
+              name: '{#SNMPVALUE}（产品的接口类型）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.6.3.1.7.{#SNMPINDEX}'
+              key: 'hh3cPCIeCardModel[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: 'The interface type of product.'
+              tags:
+                - tag: Application
+                  value: 扩展总线
+            - uuid: d2bc2ecaacac4fcb88a82b53aba8152b
+              name: '{#SNMPVALUE}（与索引关联的网络类型的状态）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.6.3.1.6.{#SNMPINDEX}'
+              key: 'hh3cPCIeCardStatus[{#SNMPVALUE}]'
+              delay: 5m
+              history: 7d
+              description: 'The status of the net type associated with index.'
+              valuemap:
+                name: 华三R服务器总线关联的网络状态
+              tags:
+                - tag: Application
+                  value: 扩展总线
+              trigger_prototypes:
+                - uuid: 528ee9c5a0624f38b5c3a5f5d9cdb170
+                  expression: 'last(/LW_Template SNMP H3C R/hh3cPCIeCardStatus[{#SNMPVALUE}])=1'
+                  name: '[硬件服务器设备]{HOST.NAME} 扩展总线 {#SNMPVALUE} 处于严重状态'
+                  priority: HIGH
+                  description: |
+                    (状态值表示当前状态)
+                    0⇒正常
+                    1⇒不正常
+                  manual_close: 'YES'
+        - uuid: 505cee2907a54053a89ac63e6963d860
+          name: 电源
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE},.1.3.6.1.4.1.25506.13.1.2.1.1.7.1.1.1.3]'
+          key: Power
+          delay: 1h
+          lifetime: 7d
+          item_prototypes:
+            - uuid: 6020cfa11f4045a597233e6837b8bdfb
+              name: '{#SNMPINDEX}（电源厂商）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.7.1.1.1.6.{#SNMPINDEX}'
+              key: 'hh3cPowerManu[{#SNMPINDEX}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The manufacturer of power supply associated with ID.
+                与ID关联的电源制造商。
+              tags:
+                - tag: Application
+                  value: 电源
+            - uuid: 1ec175edf9bc4a288e44cd4e65af2135
+              name: '{#SNMPINDEX}（电源型号）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.7.1.1.1.3.{#SNMPINDEX}'
+              key: 'hh3cPowerModel[{#SNMPINDEX}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The model of power supply associated with ID.
+                与ID关联的电源模型。
+              tags:
+                - tag: Application
+                  value: 电源
+            - uuid: c1dc6f100eff4fb4885b8b0e9e259725
+              name: '{#SNMPINDEX}（电源输入功率）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.7.1.1.1.4.{#SNMPINDEX}'
+              key: 'hh3cPowerNumber[{#SNMPINDEX}]'
+              delay: 5m
+              history: 7d
+              units: W
+              description: |
+                The maximum input power of the power supply associated with ID.
+                与ID关联的电源的最大输入功率。
+              tags:
+                - tag: Application
+                  value: 电源
+            - uuid: a8c6bc2e893d47748fd95e91866cd9a9
+              name: '{#SNMPINDEX}（电源当前状态）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.7.1.1.1.2.{#SNMPINDEX}'
+              key: 'hh3cPowerPresentStatus[{#SNMPINDEX}]'
+              delay: 2m
+              history: 7d
+              description: |
+                The present status of power supply associated with ID.
+                与ID相关的电源的当前状态。
+                Information about fan health
+                status.
+                absent ( 0 ) 
+                present ( 1 )
+              valuemap:
+                name: 华三R服务器风扇电源状态
+              tags:
+                - tag: Application
+                  value: 电源
+              trigger_prototypes:
+                - uuid: f48d9c79fe4a4dc69f8a3ea7149b830f
+                  expression: 'last(/LW_Template SNMP H3C R/hh3cPowerPresentStatus[{#SNMPINDEX}])=0'
+                  name: '[硬件服务器设备]{HOST.NAME} 电源 {#SNMPVALUE} 缺失'
+                  priority: HIGH
+                  description: |
+                    (状态值表示当前状态)
+                    0⇒缺失
+                    1⇒正常
+                  manual_close: 'YES'
+            - uuid: 619f3efa62f441c680d98448cd2b644e
+              name: '{#SNMPINDEX}（电源序列号）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.7.1.1.1.7.{#SNMPINDEX}'
+              key: 'hh3cPowerSN[{#SNMPINDEX}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The serial number of power supply associated with ID.
+                与ID相关的电源序列号。
+              tags:
+                - tag: Application
+                  value: 电源
+            - uuid: c2d1423f2fe5496f9de0ac99b51b370a
+              name: '{#SNMPINDEX}（电源主备状态）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.7.1.1.1.8.{#SNMPINDEX}'
+              key: 'hh3cPowerStatus[{#SNMPINDEX}]'
+              delay: 1d
+              history: 7d
+              description: |
+                The main and standby status of power supply associated with ID.
+                与ID相关的电源的主备状态。
+                Information about
+                power status.
+                main(0)
+                standby(1)
+                unrecognized(255)
+              valuemap:
+                name: 华三R服务器主备电源
+              tags:
+                - tag: Application
+                  value: 电源
+              trigger_prototypes:
+                - uuid: d4a64aa6f265414482c05e68085a48cf
+                  expression: 'change(/LW_Template SNMP H3C R/hh3cPowerStatus[{#SNMPINDEX}])=0'
+                  recovery_mode: RECOVERY_EXPRESSION
+                  recovery_expression: 'last(/LW_Template SNMP H3C R/hh3cPowerStatus[{#SNMPINDEX}])=3'
+                  name: '[硬件服务器设备]{HOST.NAME} 电源 {#SNMPVALUE} 主备状态改变'
+                  priority: WARNING
+                  description: |
+                    (状态值表示当前状态)
+                    0⇒主电源
+                    1⇒备电源
+                    255⇒未识别
+                  type: MULTIPLE
+                  manual_close: 'YES'
+            - uuid: cfc8742f5b504bb189d9138ff21eb5e6
+              name: '{#SNMPINDEX}（电源固件版本信息）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.1.7.1.1.1.5.{#SNMPINDEX}'
+              key: 'hh3cPowerVersion[{#SNMPINDEX}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The current firmware version information of the power supply associated with ID.
+                与ID关联的电源的当前固件版本信息。
+              tags:
+                - tag: Application
+                  value: 电源
+        - uuid: 604f9de57b084b54a2b12970881f9c17
+          name: 传感器
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE}, .1.3.6.1.4.1.25506.13.1.2.1.2.2.1.1.3,{#TEM}, .1.3.6.1.4.1.25506.13.1.2.1.2.2.1.1.5]'
+          key: Sensor
+          delay: 1h
+          status: DISABLED
+          filter:
+            conditions:
+              - macro: '{#TEM}'
+                value: '^0.*'
+                operator: NOT_MATCHES_REGEX
+                formulaid: A
+          lifetime: 7d
+          item_prototypes:
+            - uuid: 9c0ec95039a54ac3a5ccd440d54f6568
+              name: '{#SNMPVALUE}（临界上线值）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.2.2.1.1.12.{#SNMPINDEX}'
+              key: 'hh3cHigherCriticalThres[{#SNMPVALUE}]'
+              delay: 1d
+              value_type: FLOAT
+              description: |
+                The critical upper limit.
+                临界上限。
+              valuemap:
+                name: 华三R服务器传感器阈值
+              tags:
+                - tag: Application
+                  value: 传感器
+            - uuid: 373d220ec8d642339edf3531a2f12184
+              name: '{#SNMPVALUE}（临界下线值）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.2.2.1.1.9.{#SNMPINDEX}'
+              key: 'hh3cLowerCriticalThres[{#SNMPVALUE}]'
+              delay: 1d
+              value_type: FLOAT
+              description: |
+                The critical floor threshold.
+                临界下限。
+              tags:
+                - tag: Application
+                  value: 传感器
+            - uuid: dfd0a4ecea7b4ba78cabead1ed333419
+              name: '{#SNMPVALUE}（当前值）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.2.2.1.1.5.{#SNMPINDEX}'
+              key: 'hh3cSensorReading[{#SNMPVALUE}]'
+              delay: 5m
+              value_type: FLOAT
+              description: |
+                The current sensors of the component.
+                组件的当前传感器。
+              tags:
+                - tag: Application
+                  value: 传感器
+            - uuid: e137d2cd6cca4c19a4229fade263c21e
+              name: '{#SNMPVALUE}（状态）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.2.2.1.1.7.{#SNMPINDEX}'
+              key: 'hh3cSensorServerityLevel[{#SNMPVALUE}]'
+              delay: 5m
+              description: |
+                The Sensors state of component.
+                组件的传感器状态。
+                 INTEGER32 {unavailable ( 0 ) , normal ( 1 ) , warning ( 2 ) , severity ( 3 ) , fatal ( 4 ) }
+              valuemap:
+                name: 华三R服务器传感器状态
+              tags:
+                - tag: Application
+                  value: 传感器
+              trigger_prototypes:
+                - uuid: 09c53b7b7b5f487cb072a66d21d9ea87
+                  expression: 'last(/LW_Template SNMP H3C R/hh3cSensorServerityLevel[{#SNMPVALUE}])>2'
+                  name: '[硬件服务设备]{HOST.NAME} 传感器 {#SNMPVALUE} 处于严重状态'
+                  priority: HIGH
+                  description: |
+                    状态值表示当前状态
+                    不可用(0)
+                    正常(1)
+                    警告(2)，
+                    严重(3)，
+                    致命(4)}
+                  manual_close: 'YES'
+                - uuid: 14c4bc06398b4ee8af89bd613294788e
+                  expression: 'last(/LW_Template SNMP H3C R/hh3cSensorServerityLevel[{#SNMPVALUE}])=2'
+                  name: '[硬件服务设备]{HOST.NAME} 传感器 {#SNMPVALUE} 处于警告状态'
+                  priority: WARNING
+                  description: |
+                    状态值表示当前状态
+                    不可用(0)
+                    正常(1)
+                    警告(2)，
+                    严重(3)，
+                    致命(4)}
+                  manual_close: 'YES'
+            - uuid: dc30a8b8aed14fe68657ef522120b4a5
+              name: '{#SNMPVALUE}（类型）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.2.2.1.1.4.{#SNMPINDEX}'
+              key: 'hh3cSensorType[{#SNMPVALUE}]'
+              delay: 1d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The type of sensors associated with index.
+                与索引关联的传感器类型。
+              tags:
+                - tag: Application
+                  value: 传感器
+            - uuid: 80d76f2dbaf14c82b660915192eb0bf7
+              name: '{#SNMPVALUE}（单位）'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.4.1.25506.13.1.2.1.2.2.1.1.6.{#SNMPINDEX}'
+              key: 'hh3cSensorUnit[{#SNMPVALUE}]'
+              delay: 1d
+              trends: '0'
+              value_type: CHAR
+              description: |
+                The unit of sensor.
+                传感器的单位。
+              tags:
+                - tag: Application
+                  value: 传感器
+          trigger_prototypes:
+            - uuid: ac0e2c0feaaa4fb383db658aa83d768f
+              expression: 'last(/LW_Template SNMP H3C R/hh3cSensorReading[{#SNMPVALUE}])>last(/LW_Template SNMP H3C R/hh3cHigherCriticalThres[{#SNMPVALUE}]) and last(/LW_Template SNMP H3C R/hh3cHigherCriticalThres[{#SNMPVALUE}])>0'
+              name: '[硬件服务设备]{HOST.NAME} 传感器 {#SNMPVALUE} 高于临界值'
+              priority: WARNING
+              description: 状态值表示当前值和阈值
+              manual_close: 'YES'
+      valuemaps:
+        - uuid: 5cc212d68f814af586b0e80f0fc8af45
+          name: '华三 R ECC状态'
+          mappings:
+            - value: '0'
+              newvalue: support
+            - value: '1'
+              newvalue: others
+        - uuid: 856de262d5574ca59e360396409cfb09
+          name: 华三R服务器主备电源
+          mappings:
+            - value: '0'
+              newvalue: main
+            - value: '1'
+              newvalue: standby
+            - value: '255'
+              newvalue: unrecognized
+        - uuid: f9ef0a3c2bee4fb38636abac011de8ec
+          name: 华三R服务器传感器状态
+          mappings:
+            - value: '0'
+              newvalue: unavailable
+            - value: '1'
+              newvalue: normal
+            - value: '2'
+              newvalue: severity
+            - value: '3'
+              newvalue: fatal
+        - uuid: 0f651b2bb0bc49d6baf6c28de194c109
+          name: 华三R服务器传感器阈值
+          mappings:
+            - value: '0'
+              newvalue: unavailable
+        - uuid: a360e7cf6fbb4a24828fb7cd0a3472a7
+          name: 华三R服务器内存状态
+          mappings:
+            - value: '0'
+              newvalue: absent
+            - value: '1'
+              newvalue: normal
+            - value: '2'
+              newvalue: exception
+            - value: '3'
+              newvalue: uninitialized
+        - uuid: 564d281ced6f43269998ccd564695891
+          name: 华三R服务器总线关联的网络状态
+          mappings:
+            - value: '0'
+              newvalue: existent
+            - value: '1'
+              newvalue: 'no existent'
+        - uuid: 9e07aff30b9944f5991ad59466398322
+          name: 华三R服务器风扇电源状态
+          mappings:
+            - value: '0'
+              newvalue: absent
+            - value: '1'
+              newvalue: present
+        - uuid: 66e9dabecf2d4ce488f1a0e4da8220b4
+          name: 华为电源状态
+          mappings:
+            - value: '1'
+              newvalue: normal
+            - value: '2'
+              newvalue: warning
+            - value: '3'
+              newvalue: critical
+            - value: '4'
+              newvalue: shutdown
+            - value: '5'
+              newvalue: notPresent
+            - value: '6'
+              newvalue: notFunctioning

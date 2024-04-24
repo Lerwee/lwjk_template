@@ -1,0 +1,1166 @@
+zabbix_export:
+  version: '6.0'
+  date: '2024-04-24T07:14:05Z'
+  groups:
+    - uuid: 9397477ac4614c8da379ea37c1c5b0e0
+      name: 监控模板
+    - uuid: 989d6a022aab491b8a20c2ee4be9c738
+      name: 网络设备模板
+  templates:
+    - uuid: 6c6edbf3fc5c407dbb05675910c9d97e
+      template: 'LW_Template SNMP Huawei Switch Network_S General'
+      name: '华为S系列无光口设备模板[2011]'
+      groups:
+        - name: 监控模板
+        - name: 网络设备模板
+      items:
+        - uuid: 90b50680017a4b4f838a5e777d214e43
+          name: 'ICMP 丢包率'
+          type: SIMPLE
+          key: 'icmppingloss[,2,,,]'
+          delay: '60'
+          history: 7d
+          value_type: FLOAT
+          units: '%'
+          description: 'ICMP pingloss'
+          tags:
+            - tag: Application
+              value: ICMP
+        - uuid: 8a446b4dae294b8aa2e4ba09b31b8eb5
+          name: 'ICMP 延时'
+          type: SIMPLE
+          key: 'icmppingsec[,2,,,]'
+          delay: '60'
+          history: 7d
+          value_type: FLOAT
+          units: ms
+          description: 'ICMP pingsec'
+          tags:
+            - tag: Application
+              value: ICMP
+        - uuid: fa53a541c63448b5aebc16e387d140d0
+          name: 'ICMP ping状态'
+          type: SIMPLE
+          key: 'icmpping[,2,,,]'
+          delay: '60'
+          history: 7d
+          description: 'ICMP ping'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: ICMP
+        - uuid: f1fac7ed7a20405db2d5396319353a0b
+          name: 端口数量
+          type: SNMP_AGENT
+          snmp_oid: 'IF-MIB::ifNumber.0'
+          key: ifNumber
+          delay: '3600'
+          history: 7d
+          description: 'The number of network interfaces (regardless of their current state) present on this system.'
+          tags:
+            - tag: Application
+              value: 端口信息
+        - uuid: bd2fc1882a034ca68a7473023799eb1f
+          name: 'LW:LW_NETWORKDEVICES_HUAWEI'
+          type: SNMP_AGENT
+          snmp_oid: interfaces.ifTable.ifEntry.ifInOctets.1
+          key: LW_NETWORKDEVICES_HUAWEI
+          delay: '30'
+          status: DISABLED
+          description: '{"snmp":1}'
+        - uuid: 07c76fad915646a8a7706918ef1e208c
+          name: 'SNMP traps (fallback)'
+          type: SNMP_TRAP
+          key: snmptrap.fallback
+          delay: '0'
+          history: 7d
+          trends: '0'
+          value_type: LOG
+          logtimefmt: 'hh:mm:sszyyyy/MM/dd'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: 57228c3777794c7e9ccc640284be3384
+          name: 设备详细的联系方式
+          type: SNMP_AGENT
+          snmp_oid: 'SNMPv2-MIB::sysContact.0'
+          key: sysContact
+          delay: 1d
+          history: 7d
+          trends: '0'
+          value_type: CHAR
+          description: 'The textual identification of the contact person for this managed node, together with information on how to contact this person.  If no contact information is known, the value is the zero-length string.'
+          inventory_link: CONTACT
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: 3bf9b49af6c448928a491a780f6922b2
+          name: 设备描述
+          type: SNMP_AGENT
+          snmp_oid: 'SNMPv2-MIB::sysDescr.0'
+          key: sysDescr
+          delay: 1d
+          history: 7d
+          trends: '0'
+          value_type: CHAR
+          description: 'A textual description of the entity.  This value should include the full name and version identification of the system''s hardware type, software operating-system, and networking software.'
+          inventory_link: HARDWARE
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: d33637f2e0ab4923941bc3250cd05178
+          name: 设备位置
+          type: SNMP_AGENT
+          snmp_oid: 'SNMPv2-MIB::sysLocation.0'
+          key: sysLocation
+          delay: 1d
+          history: 7d
+          trends: '0'
+          value_type: CHAR
+          description: 'The physical location of this node (e.g., `telephone closet, 3rd floor'').  If the location is unknown, the value is the zero-length string.'
+          inventory_link: LOCATION
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+        - uuid: 550ee61b460a4b51b5ad5160fcabd3f5
+          name: 设备名称
+          type: SNMP_AGENT
+          snmp_oid: 'SNMPv2-MIB::sysName.0'
+          key: sysName
+          delay: 1d
+          history: 7d
+          trends: '0'
+          value_type: CHAR
+          description: 'An administratively-assigned name for this managed node. By convention, this is the node''s fully-qualified domain name.  If the name is unknown, the value is the zero-length string.'
+          inventory_link: NAME
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+          triggers:
+            - uuid: bb12e8d514ed4e01a5c9b171d7616abe
+              expression: '(last(/LW_Template SNMP Huawei Switch Network_S General/sysName,#1)<>last(/LW_Template SNMP Huawei Switch Network_S General/sysName,#2))>0'
+              name: '[网络设备]{HOST.NAME}设备名称发生改变'
+              priority: WARNING
+              description: |
+                (当前状态值为改变后的设备名称)
+                设备名称发生改变
+              manual_close: 'YES'
+        - uuid: fe3ae0bdb4754419b8e77b0e9ed78c8c
+          name: 设备运行时间
+          type: SNMP_AGENT
+          snmp_oid: 'SNMPv2-MIB::sysUpTime.0'
+          key: sysUpTime
+          history: 7d
+          units: uptime
+          description: 'The time since the network management portion of the system was last re-initialized.，该值在设备连续运行未超过300多天时可以当作设备运行时间，当超过300多天根据型号不同，改计数器会自动重置为0重新计算时间'
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.01'
+          request_method: POST
+          tags:
+            - tag: Application
+              value: 常规
+          triggers:
+            - uuid: 9e948707ba8b4e24932872027e30b4dc
+              expression: 'nodata(/LW_Template SNMP Huawei Switch Network_S General/sysUpTime,10m)=1'
+              name: '[网络设备]{HOST.NAME}SNMP采集中断'
+              priority: HIGH
+              description: |
+                状态值1为BMC运行时间
+                需要检查SNMP团体名是否不对应，或网络设备不支持多进程请求，或网络拦截snmp协议等
+              manual_close: 'YES'
+              dependencies:
+                - name: '[操作系统] {HOST.NAME}主采集服务器 Agent 无法采集到数据'
+                  expression: 'nodata(/itops-server/agent.ping,2m)=1'
+                  recovery_expression: 'count(/itops-server/zabbix[process,history syncer,avg,busy],10m,"lt","75")=10 and count(/itops-server/agent.ping,10m,"eq","1")=10'
+                - name: '[网络设备]{HOST.NAME}失联,持续3分钟未响应'
+                  expression: 'max(/LW_Template SNMP Huawei Switch Network_S General/icmpping[,2,,,],3m)=0 and nodata(/LW_Template SNMP Huawei Switch Network_S General/sysUpTime,3m)=1'
+                  recovery_expression: 'min(/LW_Template SNMP Huawei Switch Network_S General/icmpping[,2,,,],3m)=1 and nodata(/LW_Template SNMP Huawei Switch Network_S General/sysUpTime,2m)=0'
+      discovery_rules:
+        - uuid: 64ad61febf1c469bb43d0d7c57b3f51c
+          name: 风扇2
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE2},1.3.6.1.4.1.2011.2.23.1.9.1.1.1.1]'
+          key: Fan2.23.1
+          delay: '3600'
+          lifetime: 1d
+          item_prototypes:
+            - uuid: dbb2e6da9f2a442e91e4b8d7710d8f55
+              name: '{#SNMPVALUE2},{#SNMPINDEX} (风扇状态)'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.2.23.1.9.1.1.1.2.{#SNMPINDEX}'
+              key: 'FanState[{#SNMPVALUE2},{#SNMPINDEX}]'
+              delay: '180'
+              valuemap:
+                name: 华为风扇运行状态5.25.31
+              tags:
+                - tag: Application
+                  value: 风扇
+              trigger_prototypes:
+                - uuid: 70af682926c14861be70148942bdc03f
+                  expression: 'last(/LW_Template SNMP Huawei Switch Network_S General/FanState[{#SNMPVALUE2},{#SNMPINDEX}])>1'
+                  name: '[网络设备]{HOST.NAME}设备风扇{#SNMPVALUE2} 异常'
+                  priority: HIGH
+                  description: |
+                    (状态值表示当前状态)
+                    1⇒正常
+                    2⇒异常
+                  manual_close: 'YES'
+        - uuid: 9dddd7e8c7b2403c9fd20dd58cc5c97e
+          name: 风扇5
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE},1.3.6.1.4.1.2011.5.25.31.1.1.10.1.2]'
+          key: Fan5.25.31
+          delay: '3600'
+          lifetime: 3d
+          description: 5.25.31
+          item_prototypes:
+            - uuid: 5254b5d836994b66b40add91efff6362
+              name: '{#SNMPINDEX} (风扇在位状态)'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.5.25.31.1.1.10.1.6.{#SNMPINDEX}'
+              key: 'FanPresent[{#SNMPINDEX}]'
+              delay: '180'
+              valuemap:
+                name: 华为风扇在位状态5.25.31
+              tags:
+                - tag: Application
+                  value: 风扇
+              trigger_prototypes:
+                - uuid: 379bc9ebab7f40fbb3d5ac604fa70215
+                  expression: 'last(/LW_Template SNMP Huawei Switch Network_S General/FanPresent[{#SNMPINDEX}])>1'
+                  name: '[网络设备]{HOST.NAME}设备风扇{#SNMPVALUE}不在位'
+                  status: DISABLED
+                  priority: HIGH
+                  description: |
+                    状态值表示：
+                    1⇒在位
+                    2⇒不在位
+            - uuid: daefd9a021464ad2b8b5dcc31a673fbf
+              name: '{#SNMPINDEX}  (风扇转速)'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.5.25.31.1.1.10.1.5.{#SNMPINDEX}'
+              key: 'FanRPM[{#SNMPINDEX}]'
+              delay: '180'
+              units: '(% or rpm)'
+              tags:
+                - tag: Application
+                  value: 风扇
+            - uuid: 0a625c74b3634e94a9625f4bfc369021
+              name: '{#SNMPINDEX} (单板槽位号)'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.5.25.31.1.1.10.1.1.{#SNMPINDEX}'
+              key: 'FanSlot[{#SNMPINDEX}]'
+              delay: '86400'
+              tags:
+                - tag: Application
+                  value: 风扇
+            - uuid: 606563277a1a4bc8bb3000022eb2c41b
+              name: '{#SNMPINDEX} (风扇运行状态)'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.5.25.31.1.1.10.1.7.{#SNMPINDEX}'
+              key: 'FanState[{#SNMPINDEX}]'
+              delay: '180'
+              valuemap:
+                name: 华为风扇运行状态5.25.31
+              tags:
+                - tag: Application
+                  value: 风扇
+              trigger_prototypes:
+                - uuid: 171b0d552a084a32a3b03f2d1c5d4809
+                  expression: 'last(/LW_Template SNMP Huawei Switch Network_S General/FanState[{#SNMPINDEX}])>1'
+                  name: '[网络设备]{HOST.NAME}设备风扇{#SNMPVALUE} 异常'
+                  priority: HIGH
+                  description: |
+                    状态值表示：
+                    1⇒正常
+                    2⇒异常
+        - uuid: ca2bb1d144ce496d8e81a61d2ac94006
+          name: '端口表 UP'
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE},IF-MIB::ifName,{#SNMPOPEN},IF-MIB::ifOperStatus]'
+          key: ifDescr
+          delay: '3600'
+          filter:
+            evaltype: AND
+            conditions:
+              - macro: '{#SNMPOPEN}'
+                value: (1|3)
+                formulaid: A
+              - macro: '{#SNMPVALUE}'
+                value: '@Network interfaces for discovery'
+                formulaid: B
+          lifetime: 3d
+          description: 端口表
+          item_prototypes:
+            - uuid: f981f9c84db74e1a8835a6e515bf2baf
+              name: '{#SNMPVALUE}（端口启用管理状态）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifAdminStatus.{#SNMPINDEX}'
+              key: 'ifAdminStatus[{#SNMPVALUE}]'
+              delay: 2m
+              history: 7d
+              tags:
+                - tag: Application
+                  value: 端口状态
+            - uuid: 03485664fc4841c89746fa1d8d7da3ad
+              name: '{#SNMPVALUE}（端口描述）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifAlias.{#SNMPINDEX}'
+              key: 'ifAlias[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: 端口描述
+              tags:
+                - tag: Application
+                  value: 端口信息
+            - uuid: 3214447eb9154d5985099ab181a486e8
+              name: '{#SNMPVALUE}（端口每秒接收速率）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifHCInOctets.{#SNMPINDEX}'
+              key: 'ifHCInOctetsPersecond[{#SNMPVALUE}]'
+              delay: 2m
+              history: 7d
+              units: bps
+              description: 端口每秒接收速率
+              preprocessing:
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+                - type: MULTIPLIER
+                  parameters:
+                    - '8'
+              tags:
+                - tag: Application
+                  value: 端口速率
+            - uuid: a3c3685d60af4e3f8aff532b50124ae4
+              name: '{#SNMPVALUE}（端口接收总流量）(5分钟)'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifHCInOctets.{#SNMPINDEX}'
+              key: 'ifHCInOctets[{#SNMPVALUE}]'
+              delay: 5m
+              history: 7d
+              status: DISABLED
+              discover: NO_DISCOVER
+              units: B
+              preprocessing:
+                - type: SIMPLE_CHANGE
+                  parameters:
+                    - ''
+              tags:
+                - tag: Application
+                  value: 端口速率
+            - uuid: c7a5829f0ed34474a63b83f6b53cbb30
+              name: '{#SNMPVALUE}（端口每秒发送速率）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifHCOutOctets.{#SNMPINDEX}'
+              key: 'ifHCOutOctetsPersecond[{#SNMPVALUE}]'
+              delay: 2m
+              history: 7d
+              units: bps
+              description: |
+                端口每秒发送速率
+                .
+              preprocessing:
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+                - type: MULTIPLIER
+                  parameters:
+                    - '8'
+              tags:
+                - tag: Application
+                  value: 端口速率
+            - uuid: 2d0c743d976f44ae870f2f5b58a6a160
+              name: '{#SNMPVALUE}（端口发送总流量）(5分钟)'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifHCOutOctets.{#SNMPINDEX}'
+              key: 'ifHCOutOctets[{#SNMPVALUE}]'
+              delay: 5m
+              history: 7d
+              status: DISABLED
+              discover: NO_DISCOVER
+              units: B
+              preprocessing:
+                - type: SIMPLE_CHANGE
+                  parameters:
+                    - ''
+              tags:
+                - tag: Application
+                  value: 端口速率
+            - uuid: 27e721bf7b7c40fb843816df7bdc76cd
+              name: '{#SNMPVALUE}（端口带宽）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifHighSpeed.{#SNMPINDEX}'
+              key: 'ifHighSpeed[{#SNMPVALUE}]'
+              delay: 5m
+              history: 7d
+              units: bps
+              description: 端口带宽
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '1000000'
+              tags:
+                - tag: Application
+                  value: 端口带宽
+            - uuid: e0a8d7e450b24c53b6a4b8bb325370cf
+              name: '{#SNMPVALUE}（端口序号）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifIndex.{#SNMPINDEX}'
+              key: 'ifIndex[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              description: 端口序号
+              tags:
+                - tag: Application
+                  value: 端口信息
+            - uuid: 403d32c02576479c9ce55eb0f6fa2203
+              name: '{#SNMPVALUE}（端口每秒接收丢包数）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifInDiscards.{#SNMPINDEX}'
+              key: 'ifInDiscards[{#SNMPVALUE}]'
+              delay: 10m
+              history: 7d
+              description: 端口每秒接收丢包数
+              preprocessing:
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+              tags:
+                - tag: Application
+                  value: 端口错丢包
+            - uuid: 1d8c643d1b7c4cf682dedfb269645d96
+              name: '{#SNMPVALUE}（端口每秒接收错误包数）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifInErrors.{#SNMPINDEX}'
+              key: 'ifInErrors[{#SNMPVALUE}]'
+              delay: 10m
+              history: 7d
+              description: 端口每秒接收错误包数
+              preprocessing:
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+              tags:
+                - tag: Application
+                  value: 端口错丢包
+            - uuid: d035e655938141ef8533226b044242d7
+              name: '{#SNMPVALUE}（端口名称）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifName.{#SNMPINDEX}'
+              key: 'ifName[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: 端口名称
+              tags:
+                - tag: Application
+                  value: 端口信息
+            - uuid: 53a1bed84b1341fb85d19df51b4cef64
+              name: '{#SNMPVALUE}（端口物理连接状态）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifOperStatus.{#SNMPINDEX}'
+              key: 'ifOperStatus[{#SNMPVALUE}]'
+              delay: 2m
+              history: 7d
+              tags:
+                - tag: Application
+                  value: 端口状态
+              trigger_prototypes:
+                - uuid: 2cd19c5243a94796b736c36529ef94b8
+                  expression: 'last(/LW_Template SNMP Huawei Switch Network_S General/ifOperStatus[{#SNMPVALUE}])=2'
+                  name: '[网络设备]{HOST.NAME}设备端口{#SNMPVALUE}处于DOWN状态'
+                  priority: AVERAGE
+                  description: |
+                    状态值表示:
+                    1⇒正常
+                    2⇒关闭
+                    {HOST.NAME}设备端口{#SNMPVALUE}状态不正常，可能连线松动、未启用、对端设备重启、端口损坏等
+                  manual_close: 'YES'
+            - uuid: 53236dfca1cd416e81f88c19c34c64cb
+              name: '{#SNMPVALUE}（端口每秒发送丢包数）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifOutDiscards.{#SNMPINDEX}'
+              key: 'ifOutDiscards[{#SNMPVALUE}]'
+              delay: 10m
+              history: 7d
+              description: 端口每秒发送丢包数
+              preprocessing:
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+              tags:
+                - tag: Application
+                  value: 端口错丢包
+            - uuid: f2fbcd4af75840ecb67cdb09f958df1c
+              name: '{#SNMPVALUE}（端口每秒发送错误包数）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifOutErrors.{#SNMPINDEX}'
+              key: 'ifOutErrors[{#SNMPVALUE}]'
+              delay: 10m
+              history: 7d
+              description: 端口每秒发送错误包数
+              preprocessing:
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+              tags:
+                - tag: Application
+                  value: 端口错丢包
+            - uuid: a769f391d6274214a66d47b579b5a413
+              name: '{#SNMPVALUE}（端口物理地址）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifPhysAddress.{#SNMPINDEX}'
+              key: 'ifPhysAddress[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              description: 端口物理地址
+              tags:
+                - tag: Application
+                  value: 端口信息
+            - uuid: a1f0c514152e4005bb00bd36f304e33e
+              name: '{#SNMPVALUE}（端口带宽接收利用率）'
+              type: CALCULATED
+              key: 'ifSpeedifHCInOctetsPersecond[{#SNMPVALUE}]'
+              delay: 2m
+              history: 7d
+              units: '%'
+              params: '100*last(//ifHCInOctetsPersecond[{#SNMPVALUE}])/last(//ifHighSpeed[{#SNMPVALUE}])'
+              description: 端口带宽利用率
+              tags:
+                - tag: Application
+                  value: 端口带宽
+            - uuid: ac8c7aaa03034b8f9d99a798e894b08d
+              name: '{#SNMPVALUE}（端口带宽发送利用率）'
+              type: CALCULATED
+              key: 'ifSpeedifHCOutOctetsPersecond[{#SNMPVALUE}]'
+              delay: 2m
+              history: 7d
+              units: '%'
+              params: '100*last(//ifHCOutOctetsPersecond[{#SNMPVALUE}])/last(//ifHighSpeed[{#SNMPVALUE}])'
+              description: 端口带宽利用率
+              tags:
+                - tag: Application
+                  value: 端口带宽
+            - uuid: 7336d0960cdf42edb7735b2a2a052bf9
+              name: '{#SNMPVALUE}（端口类型）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifType.{#SNMPINDEX}'
+              key: 'ifType[{#SNMPVALUE}]'
+              delay: 1d
+              history: 7d
+              description: 端口类型
+              tags:
+                - tag: Application
+                  value: 端口信息
+          trigger_prototypes:
+            - uuid: 52e17cd78f8e440a996050367939f096
+              expression: 'last(/LW_Template SNMP Huawei Switch Network_S General/ifSpeedifHCOutOctetsPersecond[{#SNMPVALUE}])>90 and last(/LW_Template SNMP Huawei Switch Network_S General/ifHighSpeed[{#SNMPVALUE}])>0'
+              name: '[网络设备]{HOST.NAME}设备端口{#SNMPVALUE}带宽发送利用率大于90%'
+              priority: WARNING
+              description: |
+                (状态值表示当前利用率)
+                {HOST.NAME}设备端口{#SNMPVALUE}带宽发送利用率大于90%
+              manual_close: 'YES'
+            - uuid: 37733f5f6e574281abcdd4bd82f4f26f
+              expression: 'last(/LW_Template SNMP Huawei Switch Network_S General/ifSpeedifHCInOctetsPersecond[{#SNMPVALUE}])>90 and last(/LW_Template SNMP Huawei Switch Network_S General/ifHighSpeed[{#SNMPVALUE}])>0'
+              name: '[网络设备]{HOST.NAME}设备端口{#SNMPVALUE}带宽接收利用率大于90%'
+              priority: WARNING
+              description: |
+                (状态值表示当前利用率)
+                {HOST.NAME}设备端口{#SNMPVALUE}带宽接收利用率大于80%
+              manual_close: 'YES'
+          graph_prototypes:
+            - uuid: c449a26b75aa4b2fa96d258de2c8bd68
+              name: '网络端口 {#SNMPVALUE} 利用率'
+              graph_items:
+                - color: 2774A4
+                  item:
+                    host: 'LW_Template SNMP Huawei Switch Network_S General'
+                    key: 'ifSpeedifHCOutOctetsPersecond[{#SNMPVALUE}]'
+                - sortorder: '1'
+                  color: A54F10
+                  item:
+                    host: 'LW_Template SNMP Huawei Switch Network_S General'
+                    key: 'ifSpeedifHCInOctetsPersecond[{#SNMPVALUE}]'
+            - uuid: 695db22aaa18420b90b386a6eee437ed
+              name: '网络端口 {#SNMPVALUE} 总流量'
+              graph_items:
+                - drawtype: GRADIENT_LINE
+                  color: 00AA00
+                  item:
+                    host: 'LW_Template SNMP Huawei Switch Network_S General'
+                    key: 'ifHCInOctets[{#SNMPVALUE}]'
+                - sortorder: '1'
+                  drawtype: GRADIENT_LINE
+                  color: 3333FF
+                  item:
+                    host: 'LW_Template SNMP Huawei Switch Network_S General'
+                    key: 'ifHCOutOctets[{#SNMPVALUE}]'
+            - uuid: dfa675e2efe7404ca9a082171f778f60
+              name: '网络端口 {#SNMPVALUE} 速率'
+              graph_items:
+                - color: 2774A4
+                  item:
+                    host: 'LW_Template SNMP Huawei Switch Network_S General'
+                    key: 'ifHCInOctetsPersecond[{#SNMPVALUE}]'
+                - sortorder: '1'
+                  color: A54F10
+                  item:
+                    host: 'LW_Template SNMP Huawei Switch Network_S General'
+                    key: 'ifHCOutOctetsPersecond[{#SNMPVALUE}]'
+        - uuid: b3555cf4d2864d608929e2c43fc21d84
+          name: '端口表 DOWN'
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE2},IF-MIB::ifName,{#SNMPOPEN},IF-MIB::ifOperStatus]'
+          key: ifDescr2
+          delay: '3600'
+          filter:
+            evaltype: AND
+            conditions:
+              - macro: '{#SNMPOPEN}'
+                value: (2)
+                formulaid: A
+              - macro: '{#SNMPVALUE2}'
+                value: '@Network interfaces for discovery'
+                formulaid: B
+          lifetime: 0d
+          description: 端口表
+          item_prototypes:
+            - uuid: 533134a0fd0241dbbef40af85ef09902
+              name: '{#SNMPVALUE2} （端口启用管理状态）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifAdminStatus.{#SNMPINDEX}'
+              key: 'ifAdminStatus[{#SNMPVALUE2}]'
+              delay: 2m
+              tags:
+                - tag: Application
+                  value: 端口状态
+            - uuid: 7ecdf57288d642ca93ab184d500d0225
+              name: '{#SNMPVALUE2} （端口物理连接状态）'
+              type: SNMP_AGENT
+              snmp_oid: 'IF-MIB::ifOperStatus.{#SNMPINDEX}'
+              key: 'ifOperStatus[{#SNMPVALUE2}]'
+              delay: 2m
+              tags:
+                - tag: Application
+                  value: 端口状态
+        - uuid: 0987f7a5095d4d21b737d15adaf71e4c
+          name: 主板模块5
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE5},SNMPv2-SMI::mib-2.47.1.1.1.1.7,{#SNMPCLASS5},SNMPv2-SMI::mib-2.47.1.1.1.1.5,{#TEM5},1.3.6.1.4.1.2011.5.25.31.1.1.1.1.12]'
+          key: Module5.25.31
+          delay: '3600'
+          filter:
+            conditions:
+              - macro: '{#SNMPCLASS5}'
+                value: '9'
+                formulaid: A
+              - macro: '{#TEM5}'
+                value: '^[^ ]'
+                formulaid: B
+          lifetime: 3d
+          description: 5.25.31
+          item_prototypes:
+            - uuid: e9ccc40895b74cf28a48a51d8c527a5d
+              name: '{#SNMPVALUE5},{#SNMPINDEX} (CPU使用率最高阈值)'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.5.25.31.1.1.1.1.6.{#SNMPINDEX}'
+              key: 'CPUUsageThreshold[{#SNMPVALUE5},{#SNMPINDEX}]'
+              delay: '86400'
+              history: 7d
+              units: '%'
+              description: hwEntityCpuUsageThreshold
+              tags:
+                - tag: Application
+                  value: CPU
+            - uuid: 0e1e3b8a43314d65951c038c9466f4b2
+              name: '{#SNMPVALUE5},{#SNMPINDEX} (CPU使用率)'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.5.25.31.1.1.1.1.5.{#SNMPINDEX}'
+              key: 'CPUUsage[{#SNMPVALUE5},{#SNMPINDEX}]'
+              delay: '180'
+              history: 7d
+              units: '%'
+              description: hwEntityCpuUsage
+              tags:
+                - tag: Application
+                  value: CPU
+              trigger_prototypes:
+                - uuid: cd87edbf02894c7a810dddcb6f55140b
+                  expression: 'last(/LW_Template SNMP Huawei Switch Network_S General/CPUUsage[{#SNMPVALUE5},{#SNMPINDEX}])>80'
+                  name: '[网络设备]{HOST.NAME}板卡[{#SNMPVALUE5}]CPU使用率平均3分钟高于80%'
+                  priority: WARNING
+                  description: |
+                    (状态值表示当前使用率)
+                    设备CPU使用率平均3分钟高于80%
+                  manual_close: 'YES'
+                  dependencies:
+                    - name: '[网络设备]{HOST.NAME}板卡[{#SNMPVALUE5}]CPU使用率平均3分钟高于90%'
+                      expression: 'last(/LW_Template SNMP Huawei Switch Network_S General/CPUUsage[{#SNMPVALUE5},{#SNMPINDEX}])>90'
+                - uuid: 1f73234e88984f5b8e73c1c90d92d31e
+                  expression: 'last(/LW_Template SNMP Huawei Switch Network_S General/CPUUsage[{#SNMPVALUE5},{#SNMPINDEX}])>90'
+                  name: '[网络设备]{HOST.NAME}板卡[{#SNMPVALUE5}]CPU使用率平均3分钟高于90%'
+                  priority: HIGH
+                  description: |
+                    (状态值表示当前使用率)
+                    设备CPU使用率平均3分钟高于90%
+                  manual_close: 'YES'
+            - uuid: d6a0115ae6a2484fb2379e5b65bba5ca
+              name: '{#SNMPVALUE5},{#SNMPINDEX}  (厂商)'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.2.1.47.1.1.1.1.12.{#SNMPINDEX}'
+              key: 'Manufacturer[{#SNMPVALUE5},{#SNMPINDEX}]'
+              delay: '86400'
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: Application
+                  value: 主板信息
+            - uuid: a9778bcd61e64924b6a7ad650bb9229a
+              name: '{#SNMPVALUE5},{#SNMPINDEX} (内存总大小)'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.5.25.31.1.1.1.1.9.{#SNMPINDEX}'
+              key: 'MemoryTotal[{#SNMPVALUE5},{#SNMPINDEX}]'
+              delay: '86400'
+              history: 7d
+              units: B
+              description: hwEntityMemSize
+              tags:
+                - tag: Application
+                  value: 内存
+            - uuid: 08a5257c02424e7ea8f7783b9a7bcefb
+              name: '{#SNMPVALUE5},{#SNMPINDEX} (内存使用率最高阈值)'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.5.25.31.1.1.1.1.8.{#SNMPINDEX}'
+              key: 'MemoryUsageThreshold[{#SNMPVALUE5},{#SNMPINDEX}]'
+              delay: '86400'
+              history: 7d
+              units: '%'
+              description: hwEntityMemUsageThreshold
+              tags:
+                - tag: Application
+                  value: 内存
+            - uuid: 83d6cbaba57d4fa6a94579fa3c713102
+              name: '{#SNMPVALUE5},{#SNMPINDEX} (内存使用率)'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.5.25.31.1.1.1.1.7.{#SNMPINDEX}'
+              key: 'MemoryUsage[{#SNMPVALUE5},{#SNMPINDEX}]'
+              delay: '180'
+              history: 7d
+              units: '%'
+              description: hwEntityMemUsage
+              tags:
+                - tag: Application
+                  value: 内存
+              trigger_prototypes:
+                - uuid: 661b1d541fe64b18ab93519e8ccf08d2
+                  expression: 'last(/LW_Template SNMP Huawei Switch Network_S General/MemoryUsage[{#SNMPVALUE5},{#SNMPINDEX}])>80'
+                  name: '[网络设备]{HOST.NAME}板卡[{#SNMPVALUE5}]内存使用率平均3分钟高于80%'
+                  priority: WARNING
+                  description: |
+                    (状态值表示当前使用率)
+                    设备内存使用率平均3分钟高于80%
+                  manual_close: 'YES'
+                  dependencies:
+                    - name: '[网络设备]{HOST.NAME}板卡[{#SNMPVALUE5}]内存使用率平均3分钟高于90%'
+                      expression: 'last(/LW_Template SNMP Huawei Switch Network_S General/MemoryUsage[{#SNMPVALUE5},{#SNMPINDEX}])>90'
+                - uuid: c526d44f27034da59113b74239f96af0
+                  expression: 'last(/LW_Template SNMP Huawei Switch Network_S General/MemoryUsage[{#SNMPVALUE5},{#SNMPINDEX}])>90'
+                  name: '[网络设备]{HOST.NAME}板卡[{#SNMPVALUE5}]内存使用率平均3分钟高于90%'
+                  priority: HIGH
+                  description: |
+                    (状态值表示当前使用率)
+                    设备内存使用率平均3分钟高于90%
+                  manual_close: 'YES'
+            - uuid: d060b3868a2e49a6873844ee1d89b10e
+              name: '{#SNMPVALUE5},{#SNMPINDEX}  (型号)'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.2.1.47.1.1.1.1.13.{#SNMPINDEX}'
+              key: 'Model[{#SNMPVALUE5},{#SNMPINDEX}]'
+              delay: '86400'
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: Application
+                  value: 主板信息
+            - uuid: 8dd0ecbdac2c4d849cee479bb5de8bee
+              name: '{#SNMPVALUE5},{#SNMPINDEX}  (序列号)'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.2.1.47.1.1.1.1.11.{#SNMPINDEX}'
+              key: 'Serial[{#SNMPVALUE5},{#SNMPINDEX}]'
+              delay: '86400'
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: Application
+                  value: 主板信息
+            - uuid: f2eac6502da041bebbce5d19528e5a73
+              name: '{#SNMPVALUE5},{#SNMPINDEX} (当前温度)'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.5.25.31.1.1.1.1.11.{#SNMPINDEX}'
+              key: 'TemperatureBoard[{#SNMPVALUE5},{#SNMPINDEX}]'
+              delay: '180'
+              history: 7d
+              units: °C
+              description: hwEntityTemperature
+              tags:
+                - tag: Application
+                  value: 温度
+            - uuid: 96577095ad1b4893b18a24e5c5c918c4
+              name: '{#SNMPVALUE5},{#SNMPINDEX} (温度最高阈值)'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.5.25.31.1.1.1.1.12.{#SNMPINDEX}'
+              key: 'TemperatureHighThresholdBoard[{#SNMPVALUE5},{#SNMPINDEX}]'
+              delay: '86400'
+              history: 7d
+              units: °C
+              description: hwEntityTemperatureThreshold
+              tags:
+                - tag: Application
+                  value: 温度
+            - uuid: 8d94316147214e60b2d4bc390ccfbaf4
+              name: '{#SNMPVALUE5},{#SNMPINDEX}  (软件版本)'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.2.1.47.1.1.1.1.10.{#SNMPINDEX}'
+              key: 'Version[{#SNMPVALUE5},{#SNMPINDEX}]'
+              delay: '86400'
+              history: 7d
+              trends: '0'
+              value_type: CHAR
+              tags:
+                - tag: Application
+                  value: 主板信息
+            - uuid: 46359d06b39f4f94b607c64a252a62c8
+              name: '{#SNMPVALUE5},{#SNMPINDEX} (电压值)'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.5.25.31.1.1.1.1.13.{#SNMPINDEX}'
+              key: 'VoltageBoard[{#SNMPVALUE5},{#SNMPINDEX}]'
+              delay: '180'
+              history: 7d
+              value_type: FLOAT
+              units: V
+              description: hwEntityVoltage
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.001'
+              tags:
+                - tag: Application
+                  value: 电压
+            - uuid: 8f4c3733969a4d6890b717644a46e75e
+              name: '{#SNMPVALUE5},{#SNMPINDEX} (电压最高阈值)'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.5.25.31.1.1.1.1.15.{#SNMPINDEX}'
+              key: 'VoltageHighThresholdBoard[{#SNMPVALUE5},{#SNMPINDEX}]'
+              delay: '86400'
+              history: 7d
+              value_type: FLOAT
+              units: V
+              description: hwEntityVoltageHighThreshold
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.001'
+              tags:
+                - tag: Application
+                  value: 电压
+            - uuid: efb34cacd196494c9a76f29fb6faa9c3
+              name: '{#SNMPVALUE5},{#SNMPINDEX} (电压最低阈值)'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.5.25.31.1.1.1.1.14.{#SNMPINDEX}'
+              key: 'VoltageLowThresholdBoard[{#SNMPVALUE5},{#SNMPINDEX}]'
+              delay: '86400'
+              history: 7d
+              value_type: FLOAT
+              units: V
+              description: hwEntityVoltageLowThreshold
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.001'
+              tags:
+                - tag: Application
+                  value: 电压
+          trigger_prototypes:
+            - uuid: 93613cd5f8d44ea295c9d2062ad7c8fa
+              expression: 'last(/LW_Template SNMP Huawei Switch Network_S General/TemperatureBoard[{#SNMPVALUE5},{#SNMPINDEX}])>last(/LW_Template SNMP Huawei Switch Network_S General/TemperatureHighThresholdBoard[{#SNMPVALUE5},{#SNMPINDEX}])>0'
+              name: '[网络设备]{HOST.NAME}板卡[{#SNMPVALUE5}]温度过高，高于系统阈值'
+              priority: HIGH
+              description: |
+                (状态值1表示当前温度)
+                (状态值2表示温度阈值)
+                设备温度过高，高于系统阈值
+              manual_close: 'YES'
+            - uuid: 2bf05d59e1ed4a5fbb40d3a7ec74a4f2
+              expression: 'last(/LW_Template SNMP Huawei Switch Network_S General/VoltageBoard[{#SNMPVALUE5},{#SNMPINDEX}])<last(/LW_Template SNMP Huawei Switch Network_S General/VoltageLowThresholdBoard[{#SNMPVALUE5},{#SNMPINDEX}])'
+              name: '[网络设备]{HOST.NAME}板卡[{#SNMPVALUE5}]电压过低'
+              priority: WARNING
+              description: |
+                (状态值1表示当前电压)
+                (状态值2表示电压阈值)
+                设备电压低于系统阀值
+              manual_close: 'YES'
+            - uuid: eb5c9b44cdbe4de59ca985b139970251
+              expression: 'last(/LW_Template SNMP Huawei Switch Network_S General/VoltageBoard[{#SNMPVALUE5},{#SNMPINDEX}])>last(/LW_Template SNMP Huawei Switch Network_S General/VoltageHighThresholdBoard[{#SNMPVALUE5},{#SNMPINDEX}])'
+              name: '[网络设备]{HOST.NAME}板卡[{#SNMPVALUE5}]电压过高'
+              priority: WARNING
+              description: |
+                (状态值1表示当前电压)
+                (状态值2表示电压阈值)
+                设备电压高于系统阀值
+              manual_close: 'YES'
+          graph_prototypes:
+            - uuid: 400b4f2afc974daeacca7472de1d5528
+              name: '{#SNMPINDEX}CPU/内存使用率'
+              graph_items:
+                - color: 1A7C11
+                  item:
+                    host: 'LW_Template SNMP Huawei Switch Network_S General'
+                    key: 'CPUUsage[{#SNMPVALUE5},{#SNMPINDEX}]'
+                - sortorder: '1'
+                  color: F63100
+                  item:
+                    host: 'LW_Template SNMP Huawei Switch Network_S General'
+                    key: 'MemoryUsage[{#SNMPVALUE5},{#SNMPINDEX}]'
+            - uuid: fc592f26e6d34acaa5adec2f9b342b16
+              name: '{#SNMPINDEX}温度'
+              graph_items:
+                - color: 1A7C11
+                  item:
+                    host: 'LW_Template SNMP Huawei Switch Network_S General'
+                    key: 'TemperatureBoard[{#SNMPVALUE5},{#SNMPINDEX}]'
+                - sortorder: '1'
+                  color: F63100
+                  item:
+                    host: 'LW_Template SNMP Huawei Switch Network_S General'
+                    key: 'TemperatureHighThresholdBoard[{#SNMPVALUE5},{#SNMPINDEX}]'
+            - uuid: bb9ff919ad76410ea9e45cdcb8a5dfa8
+              name: '{#SNMPINDEX}电压'
+              graph_items:
+                - color: 1A7C11
+                  item:
+                    host: 'LW_Template SNMP Huawei Switch Network_S General'
+                    key: 'VoltageBoard[{#SNMPVALUE5},{#SNMPINDEX}]'
+                - sortorder: '1'
+                  color: F63100
+                  item:
+                    host: 'LW_Template SNMP Huawei Switch Network_S General'
+                    key: 'VoltageHighThresholdBoard[{#SNMPVALUE5},{#SNMPINDEX}]'
+                - sortorder: '2'
+                  color: 2774A4
+                  item:
+                    host: 'LW_Template SNMP Huawei Switch Network_S General'
+                    key: 'VoltageLowThresholdBoard[{#SNMPVALUE5},{#SNMPINDEX}]'
+        - uuid: 5d6376f2c4f34b6aba0a5802effeb289
+          name: 电源
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE},1.3.6.1.4.1.2011.2.23.1.9.1.2.1.1]'
+          key: Power
+          delay: '3600'
+          lifetime: 1d
+          item_prototypes:
+            - uuid: 51ff1cf787514931993505116914db58
+              name: '{#SNMPVALUE},{#SNMPINDEX} (电源状态)'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.2.23.1.9.1.2.1.2.{#SNMPINDEX}'
+              key: 'PowerStatus[{#SNMPVALUE},{#SNMPINDEX}]'
+              delay: '180'
+              history: 7d
+              valuemap:
+                name: 华为电源状态
+              tags:
+                - tag: Application
+                  value: 电源
+              trigger_prototypes:
+                - uuid: c0e49eec17344d87b86de784200d7781
+                  expression: 'last(/LW_Template SNMP Huawei Switch Network_S General/PowerStatus[{#SNMPVALUE},{#SNMPINDEX}])=3'
+                  name: '[网络设备]{HOST.NAME}设备{#SNMPVALUE}电源异常'
+                  priority: HIGH
+                  description: |
+                    (状态值表示当前状态)
+                    1⇒正常
+                    2⇒警告
+                    3⇒严重
+                    4⇒关闭
+                    5⇒不存在
+                    设备电源异常
+                  manual_close: 'YES'
+        - uuid: 2dc6989a0134484dbef6443c480fb9fc
+          name: 传感器5
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE5},SNMPv2-SMI::mib-2.47.1.1.1.1.7,{#SNMPCLASS5},SNMPv2-SMI::mib-2.47.1.1.1.1.5,{#TEM5},1.3.6.1.4.1.2011.5.25.31.1.1.1.1.12]'
+          key: Sensor5.25.31
+          delay: '3600'
+          filter:
+            conditions:
+              - macro: '{#SNMPCLASS5}'
+                value: (7|8)
+                formulaid: A
+              - macro: '{#TEM5}'
+                value: '^[0-9]*$'
+                formulaid: B
+          lifetime: 3d
+          description: 5.25.31
+          item_prototypes:
+            - uuid: f82213915cf34de795e8b4dc5c6586dc
+              name: '{#SNMPVALUE5},{#SNMPINDEX} (温度最高阀值)'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.5.25.31.1.1.1.1.12.{#SNMPINDEX}'
+              key: 'TemperatureHighThresholdSensor[{#SNMPVALUE5},{#SNMPINDEX}]'
+              delay: '86400'
+              history: 7d
+              units: °C
+              tags:
+                - tag: Application
+                  value: 温度
+            - uuid: e17ee4c0a0fe4e8a9427f0574d69347c
+              name: '{#SNMPVALUE5},{#SNMPINDEX} 温度'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.5.25.31.1.1.1.1.11.{#SNMPINDEX}'
+              key: 'TemperatureSensor[{#SNMPVALUE5},{#SNMPINDEX}]'
+              delay: '180'
+              history: 7d
+              units: °C
+              tags:
+                - tag: Application
+                  value: 温度
+          trigger_prototypes:
+            - uuid: 431c2eadb74f40919a43326e9d0d5cdb
+              expression: 'last(/LW_Template SNMP Huawei Switch Network_S General/TemperatureSensor[{#SNMPVALUE5},{#SNMPINDEX}])>last(/LW_Template SNMP Huawei Switch Network_S General/TemperatureHighThresholdSensor[{#SNMPVALUE5},{#SNMPINDEX}])'
+              name: '[网络设备]{HOST.NAME}实体[{#SNMPVALUE5}]温度过高，高于系统阀值'
+              priority: HIGH
+              description: |
+                (状态值1表示当前温度)
+                (状态值2表示温度阈值)
+              manual_close: 'YES'
+        - uuid: 7d982f19f60c4b54a616218dabf7829d
+          name: 实体状态5
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#SNMPVALUE5},SNMPv2-SMI::mib-2.47.1.1.1.1.7,{#SNMPCLASS5},SNMPv2-SMI::mib-2.47.1.1.1.1.5,{#TEM5},1.3.6.1.4.1.2011.5.25.31.1.1.1.1.12]'
+          key: SMIStatus5.25.31
+          delay: '3600'
+          filter:
+            conditions:
+              - macro: '{#SNMPCLASS5}'
+                value: (3|4|5|6|7|8|9|11|12)
+                formulaid: A
+              - macro: '{#TEM5}'
+                value: '^[0-9]*$'
+                formulaid: B
+          lifetime: 3d
+          description: 5.25.31
+          item_prototypes:
+            - uuid: 2d61a356d70c4e789b12d285712a30e4
+              name: '{#SNMPVALUE5},{#SNMPINDEX} (状态)'
+              type: SNMP_AGENT
+              snmp_oid: '1.3.6.1.4.1.2011.5.25.31.1.1.1.1.2.{#SNMPINDEX}'
+              key: 'HardwareStatus[{#SNMPVALUE5},{#SNMPINDEX}]'
+              delay: '300'
+              history: 7d
+              description: hwEntityOperStatus
+              valuemap:
+                name: 华为实体状态5.25.31
+              tags:
+                - tag: Application
+                  value: 实体状态
+              trigger_prototypes:
+                - uuid: d2789cf147a7469284e48f75e0a4983f
+                  expression: 'last(/LW_Template SNMP Huawei Switch Network_S General/HardwareStatus[{#SNMPVALUE5},{#SNMPINDEX}])=4'
+                  name: '[网络设备]{HOST.NAME}设备槽位{#SNMPVALUE5}离线'
+                  priority: HIGH
+                  description: |
+                    (状态值表示当前状态)
+                    1⇒该实体不支持
+                    2⇒该实体处于关闭状态
+                    3⇒该实体处于启用状态
+                    4⇒该实体断开连接
+                  manual_close: 'YES'
+      valuemaps:
+        - uuid: ba1999d52850426297e5971a9a21ab74
+          name: 华为光模块模式
+          mappings:
+            - value: '1'
+              newvalue: notSupported
+            - value: '2'
+              newvalue: singleMode
+            - value: '3'
+              newvalue: multiMode5
+            - value: '4'
+              newvalue: multiMode6
+            - value: '5'
+              newvalue: noValue
+        - uuid: 8c89e7597ccb4a53bfb3bffc11eb1d32
+          name: 华为实体状态5.25.31
+          mappings:
+            - value: '1'
+              newvalue: notSupported
+            - value: '2'
+              newvalue: disabled
+            - value: '3'
+              newvalue: enabled
+            - value: '4'
+              newvalue: offline
+        - uuid: 93637f157086446a9335ba78e99ef987
+          name: 华为电源状态
+          mappings:
+            - value: '1'
+              newvalue: normal
+            - value: '2'
+              newvalue: warning
+            - value: '3'
+              newvalue: critical
+            - value: '4'
+              newvalue: shutdown
+            - value: '5'
+              newvalue: notPresent
+            - value: '6'
+              newvalue: notFunctioning
+        - uuid: 3aaa5d9893f24c3b99cc7622fc69682b
+          name: 华为风扇在位状态5.25.31
+          mappings:
+            - value: '1'
+              newvalue: present
+            - value: '2'
+              newvalue: absent
+        - uuid: b340b23bcc904ae4a3247e7891c882e1
+          name: 华为风扇运行状态5.25.31
+          mappings:
+            - value: '1'
+              newvalue: normal
+            - value: '2'
+              newvalue: abnormal
+  triggers:
+    - uuid: 3a2b3a88429d4555842d7fa3b300e1b4
+      expression: 'max(/LW_Template SNMP Huawei Switch Network_S General/icmpping[,2,,,],3m)=0 and nodata(/LW_Template SNMP Huawei Switch Network_S General/sysUpTime,3m)=1'
+      recovery_mode: RECOVERY_EXPRESSION
+      recovery_expression: 'min(/LW_Template SNMP Huawei Switch Network_S General/icmpping[,2,,,],3m)=1 and nodata(/LW_Template SNMP Huawei Switch Network_S General/sysUpTime,2m)=0'
+      name: '[网络设备]{HOST.NAME}失联,持续3分钟未响应'
+      priority: HIGH
+      description: |
+        状态值1为系统持续运行时间和ICMP探测状态（1为通，0为断）
+        状态值2为BMC运行时间
+      manual_close: 'YES'
+    - uuid: c0d4fa03d15440789967f8c77119d634
+      expression: 'change(/LW_Template SNMP Huawei Switch Network_S General/sysUpTime)<0 and last(/LW_Template SNMP Huawei Switch Network_S General/sysUpTime)<1800 and avg(/LW_Template SNMP Huawei Switch Network_S General/icmpping[,2,,,],2m)<1'
+      name: '[网络设备]{HOST.NAME}设备刚发生重启'
+      priority: HIGH
+      description: |
+        (当前状态值为系统持续运行时间)
+        主机采集到的系统运行时间突然减少重置，当系统运行时间正常递增，则恢复告警，该值在设备连续运行未超过300多天时可以当作设备运行时间，当超过300多天根据型号不同，计数器会自动重置为0重新计算时间
+      manual_close: 'YES'
