@@ -417,9 +417,6 @@ zabbix_export:
               description: 当前状态值为BMC持续运行时间
               manual_close: 'YES'
               dependencies:
-                - name: '[操作系统] {HOST.NAME}主采集服务器 Agent 无法采集到数据'
-                  expression: 'nodata(/itops-server/agent.ping,2m)=1'
-                  recovery_expression: 'count(/itops-server/zabbix[process,history syncer,avg,busy],10m,"lt","75")=10 and count(/itops-server/agent.ping,10m,"eq","1")=10'
                 - name: '[硬件设备]{HOST.NAME}失联,持续3分钟未响应,设备可能宕机'
                   expression: 'max(/LW_Template SNMP NetApp General/icmpping[,2,,,],3m)=0 and nodata(/LW_Template SNMP NetApp General/sysUpTime,3m)=1'
                   recovery_expression: 'min(/LW_Template SNMP NetApp General/icmpping[,2,,,],10m)=1 and nodata(/LW_Template SNMP NetApp General/sysUpTime,2m)=0'
@@ -1501,10 +1498,6 @@ zabbix_export:
         当前状态值为系统持续运行时间和ICMP探测状态（1为通，0为断）
         设备无法采集到数据,可能是snmp协议未开启或者被拦截，也可能是网络设备链路断连、宕机
       manual_close: 'YES'
-      dependencies:
-        - name: '[操作系统] {HOST.NAME}主采集服务器 Agent 无法采集到数据'
-          expression: 'nodata(/itops-server/agent.ping,2m)=1'
-          recovery_expression: 'count(/itops-server/zabbix[process,history syncer,avg,busy],10m,"lt","75")=10 and count(/itops-server/agent.ping,10m,"eq","1")=10'
   graphs:
     - uuid: c66055ee09f54a05a4579ff02db2aaec
       name: 'ICMP ping监控'

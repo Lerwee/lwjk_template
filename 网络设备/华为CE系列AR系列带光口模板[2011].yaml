@@ -176,9 +176,6 @@ zabbix_export:
                 需要检查SNMP团体名是否不对应，或网络设备不支持多进程请求，或网络拦截snmp协议等
               manual_close: 'YES'
               dependencies:
-                - name: '[操作系统] {HOST.NAME}主采集服务器 Agent 无法采集到数据'
-                  expression: 'nodata(/itops-server/agent.ping,2m)=1'
-                  recovery_expression: 'count(/itops-server/zabbix[process,history syncer,avg,busy],10m,"lt","75")=10 and count(/itops-server/agent.ping,10m,"eq","1")=10'
                 - name: '[网络设备]{HOST.NAME}失联,持续3分钟未响应'
                   expression: 'max(/LW_Template SNMP Huawei Network with Optical General/icmpping[,2,,,],3m)=0 and nodata(/LW_Template SNMP Huawei Network with Optical General/sysUpTime,3m)=1'
                   recovery_expression: 'min(/LW_Template SNMP Huawei Network with Optical General/icmpping[,2,,,],3m)=1 and nodata(/LW_Template SNMP Huawei Network with Optical General/sysUpTime,2m)=0'
